@@ -1,0 +1,861 @@
+:root {
+    --darkblue: #66849e;
+    --lightblue: #e0e6ec;
+    --lightgrey: #f0f2f5;
+    --borderTop: #c2cbd8;
+    /* --background: #7e8987; */
+    --borderColor: #c0c2c4;
+    --bigShadow: 0 1px 1px rgba(0, 0, 0, 0.11),
+        0 2px 2px rgba(0, 0, 0, 0.11),
+        0 4px 4px rgba(0, 0, 0, 0.11),
+        0 8px 8px rgba(0, 0, 0, 0.11),
+        0 16px 16px rgba(0, 0, 0, 0.11),
+        0 32px 32px rgba(0, 0, 0, 0.11);
+
+    --shortShadow: 0 1px 1px rgba(0, 0, 0, 0.11),
+        0 2px 2px rgba(0, 0, 0, 0.11),
+        0 4px 4px rgba(0, 0, 0, 0.11),
+        0 6px 8px rgba(0, 0, 0, 0.11),
+        0 8px 16px rgba(0, 0, 0, 0.11);
+
+    --shadow4: 0 1px 1px rgba(0, 0, 0, 0.15),
+        0 1px 1px rgba(0, 0, 0, 0.15),
+        0 2px 2px rgba(0, 0, 0, 0.15),
+        0 2px 2px rgba(0, 0, 0, 0.15);
+
+    --shadowRight: 1px 0 1px rgba(0, 0, 0, 0.15),
+        2px 0 2px rgba(0, 0, 0, 0.15),
+        4px 0 4px rgba(0, 0, 0, 0.15);
+    /* 6px 0 8px rgba(0, 0, 0, 0.15); */
+
+    /* lesson colors */
+    --good: #Bee292;
+    --bad: #E29292;
+    --buttonColor: #a3b5c5;
+    --neutral: #F7e6cc;
+}
+
+
+body {
+    margin: 0;
+    font-family: 'Karla', 'Montserrat', sans-serif;
+    /* TRANSFER INTO .meat */
+    /* background: #F7faff; */
+    background: var(--lightgrey);
+    max-width: 100vw;
+    box-sizing: border-box;
+    letter-spacing: 1.25px;
+    scroll-behavior: smooth;
+
+    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.bold600 {
+    font-weight: 600;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+/* -------GLOBAL--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+button:hover {
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    background: var(--lightgrey);
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c2ced8;
+    border-radius: 10px;
+    width: 5px;
+
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 1em;
+    width: 95%;
+    
+}
+
+.container h2 {
+    margin-top: 0;
+    margin-left: 1rem;
+}
+
+.container a {
+    color: black;
+    text-decoration: none;
+}
+
+.userControls {
+    /* border: 1px solid black; */
+    padding-left: 1em;
+    
+    display: flex;
+    justify-content: space-between;
+}
+
+.userControls input {
+    padding: 15px 80px 15px 20px;
+    color: #525252;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFFFFF 0%, #464747 #F9F9F9 100%);
+    outline: none;
+
+}
+
+.userControls i {
+    position: relative;
+    left: -37px;
+    color: #8233C5;
+}
+
+.userControls select {
+    margin-left: 1em;
+    padding: 15px 40px 15px 30px;
+    color: #525252;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFFFFF 0%, #464747 #F9F9F9 100%);
+    outline: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 2px;
+
+}
+
+/* -------USER BODY--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+
+.user-grid {
+    width: 100%;
+    height: 77.3vh;
+    padding: 1em;
+    margin: 1em auto;
+    margin-bottom: 0;
+    /* border: 1px solid black; */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+    grid-auto-rows: 150px;
+    grid-gap: 1em;
+    justify-content: center;
+    overflow-y: auto;
+    text-align: left;
+
+}
+
+.users {
+    box-sizing: border-box;
+    padding: 0.5em;
+    border: 2px var(--borderColor) solid;
+    background: var(--lightgrey);
+    box-shadow: var(--shortShadow);
+    color: black;
+}
+
+
+.users h4 {
+    background: var(--neutral);
+    padding: 0.25em;
+    margin: 0;
+    margin-bottom: 1em;
+}
+
+.users p {
+    margin: 0 auto;
+    margin-top: 0;
+    margin-bottom: .75em;
+    width: 95%;
+
+}
+
+.users p:last-of-type {
+    margin-bottom: 1.5em;
+}
+
+
+/* -------USER SOLO PAGE--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+
+.containerSolo {
+    box-sizing: border-box;
+    margin: 0 auto;
+    margin-top: 0;
+    width: 95%;
+    /* border: 3px black solid; */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 94.5vh;
+    /* justify-content: space-between; */
+    
+
+}
+
+/* .containerSolo h2 {
+    background: var(--neutral);
+    padding: 0.5em em 0.5em 0.3em;
+    width: 10px;
+} */
+
+
+.containerSolo > div {
+    box-sizing: border-box;
+    /* height: 40vh; */
+    background: #f5f6f8;
+    background: #fbfbfc;
+    /* background: var(--lightgrey); */
+    
+    padding: 1em;
+    /* border: 2px solid #d8dadd; */
+    border: 2px solid var(--borderTop);
+    border-radius: 10px;
+    box-shadow: var(--shortShadow);
+}
+
+.containerSolo .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    box-sizing: border-box;
+    padding: 0 2em;
+    padding-top: 1em;
+}
+
+/* -------USER INFO SECTION--------- */
+/* -------RELATED--------- */
+.containerSolo .top .userInfo {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-width: 30%;
+    /* border: 1px solid green; */
+    height: 40vh;
+    
+}
+
+.containerSolo .top .userInfo > * {
+    margin: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+
+.tables {
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid black; */
+}
+
+.tables > div {
+    margin-left: 3em;
+}
+
+.tables > div > h4 {
+    margin: 0;
+    margin-bottom: 0.5em;
+    font-size: 1.25rem;
+    
+}
+
+.tables > div > div {
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* border: 1px solid black; */
+    border: 1px solid var(--lightblue);
+    height: 300px;
+    /* height: 70%; */
+    /* padding: 0.25em 0; */
+    border-radius: 3px;
+    /* box-shadow: var(--shadow4); */
+    /* box-shadow: var(--shadowRight); */
+    
+    
+}
+
+
+.tables table {
+    
+    height: 100%;
+    width: 400px;
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+    /* border: 1px green solid; */
+    
+    
+}
+
+.tables table thead tr {
+    position: sticky;
+    font-weight: 600;
+    font-size: 1rem;
+    background: var(--lightblue);
+    top: 0;
+    height: 60px;
+}
+
+
+
+.tables table td {
+    padding: 4px 8px;
+    text-align: center;
+    width: 100px;
+    /* border: 1px solid black; */
+}
+
+.tables table tbody td {
+    background: var(--lightgrey);
+}
+
+.renderLessonAmount:last-of-type {
+    margin-bottom: 2em;
+}
+
+
+/* -------Purchase Lessons--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+
+ .purchaseLesson {
+     margin-top: 2em;
+     height: 40vh;
+     /* border: 1px solid green; */
+ }
+
+ .purchaseLesson input,
+ .purchaseLesson button,
+ /* .purchaseLesson select {
+    padding: 15px 40px 15px 20px;
+    color: #525252;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 2px;
+    border: 2px solid var(--lightblue);
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFFFFF 0%, #464747 #F9F9F9 100%);
+    outline: none;
+    box-shadow: 0 1px ;
+ } */
+
+ .purchaseLesson h3 {
+     margin: 0;
+     margin-bottom: 0.75em;
+ }
+
+ 
+
+ /* -------PURCHASE LESSONS--------- */
+ /* -------GRID-RELATED STYLES--------- */
+
+ /* FLEX BOX TO DEVIDE details and checkout page
+    using flex-grid for the details section and flex-box for
+    the checkout section */
+.buyLesson {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: flex-start;
+     
+     /* height: 89%; */
+     margin: 0 auto;
+     width: 98%;
+     /* border: 1px solid black; */
+     height: 18em;
+    
+     
+ }
+
+.lessonDetails {
+    display: grid;
+    /* width: 600px; */
+    height: 100%;
+    grid-template-columns: 200px repeat(4, 50px) 200px;
+    grid-template-rows: repeat(5,50px);
+    /* grid-gap: 15px; */
+    grid-column-gap: 20px;
+    grid-row-gap: 15px;
+    /* border: 1px solid black; */
+    
+    /* grid-template-columns: 2fr repeat(4, 1fr) 2fr;
+    grid-template-rows: repeat(5, 1fr); */
+ }
+
+ /* .grid-item {
+    background: pink;
+    grid-column-start: 1;
+    grid-column-end: 3;
+ } */
+
+
+
+ .lessonType {
+    /* border: green solid 1px; */
+    grid-column-start:1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+ }
+
+ /* make styles for inputs and selects for the details */
+ .buyLesson input,
+ .buyLesson select { 
+    height: 95%;
+    color: #525252;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFFFFF 0%, #464747 #F9F9F9 100%);
+    outline: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 2px;
+ }
+
+ .lessonDetails .quantity {
+    /* border: 1px black solid; */
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+ }
+
+ .lessonDetails .duration {
+    /* border: 1px black solid; */
+    
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
+ }
+
+  .lessonDetails .partner1 {
+    /* border: 1px solid black; */
+      grid-column-start: 1;
+      grid-column-end: 4;
+      grid-row-start: 2;
+      grid-row-end: 3;
+  }
+
+  .lessonDetails .partner2 {
+      /* border: 1px solid black; */
+      grid-column-start: 1;
+      grid-column-end: 4;
+      grid-row-start: 3;
+      grid-row-end: 4;
+  }
+
+  .lessonDetails .partner3 {
+      /* border: 1px solid black; */
+      grid-column-start: 1;
+      grid-column-end: 4;
+      grid-row-start: 4;
+      grid-row-end: 5;
+  }
+
+  .lessonDetails select {
+    width: 100%;
+    height: 100%;
+  }
+
+  .lessonDetails .datePicker {
+    grid-column-start: 4;
+    grid-column-end: 7;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    /* border: 1px solid black; */
+  } 
+ .lessonDetails .clearBtn {
+     grid-column-start: 1;
+     grid-column-end: 2;
+     grid-row-start: 5;
+     grid-row-end: 6;
+    
+     letter-spacing: 1px;
+     font-size: 1rem;
+     font-weight: 700;
+     color: var(--darkblue);
+     border: none;
+     background: inherit;
+     justify-self: start;
+     opacity: 0.7;
+ }
+
+ .lessonDetails .clearBtn:hover {
+    opacity: 1;
+ }
+
+  .buyLesson .submitBtn {
+      /* grid-column-start: 6;
+      grid-column-end: 7;
+      grid-row-start: 5;
+      grid-row-end: 6; */
+      height: 50px;
+      background: var(--buttonColor);
+        border: 1px solid var(--buttonBorderColor);
+        font-weight: 800;
+        border-radius: 5px;
+        letter-spacing: 1px;
+        margin-bottom: 0;
+  }
+
+  .lessonDetails .submitBtn:hover {
+    background: #acbccb;
+  }
+
+.buyLesson .notes {
+    height: 100%;
+}
+
+
+
+
+ /* -------PURCHASE LESSONS--------- */
+ /* -------CHECKOUT-RELATED STYLES--------- */
+
+ .lessonCheckout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    height: 245px;
+    width: 400px;
+    /* border: 1px solid black; */
+
+ }
+
+ .lessonCheckout .checkoutPayment {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    justify-content: space-between;
+    /* border: 1px solid black; */
+ }
+
+ .checkoutPayment .discount {
+    min-height: 50px;
+    max-height: 60px;
+    /* border: 1px solid black; */
+ }
+
+ .checkoutPayment > div {
+    margin-bottom: 1em;
+ }
+
+ .checkoutPayment .discount input {
+    width: 100%;
+ }
+
+ .checkoutPayment .credit {
+    min-height: 50px;
+    max-height: 60px;
+ }
+
+ .checkoutPayment .credit input {
+    width: 98%;
+ }
+
+ .checkoutPayment .subtotal {
+    /* border: 1px solid pink; */
+    /* max-height: 50%; */
+    border-bottom: 2px solid black;
+    margin-bottom: 0.25em;
+
+ }
+
+ .checkoutPayment .subtotal p {
+    margin: 0;
+
+ }
+
+ .checkoutPayment .subtotal .subtotal-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25em;
+    margin-top: 0;
+ }
+
+ .checkoutPayment .total-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+ }
+
+ .checkoutPayment .total-line p {
+    margin-bottom: 0;
+    margin-top: 0;
+ }
+
+ .lessonCheckout .checkoutNotes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 45%;
+    height: 300px;
+    /* border: 1px solid black; */
+ }
+
+ .lessonCheckout .checkoutNotes textarea {
+    height: 50%;
+ }
+
+
+
+ 
+
+ 
+
+
+/* -------LESSONS PAGE--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+
+ .allowScroll {
+    /* border: 1px solid green; */
+    width: 100%;
+    padding: 0 2.5em;
+    overflow-y: auto;
+    
+ }
+
+ .allowScroll > div {
+     margin-bottom: 2em;
+    
+ }
+
+/* -------Add Lessons--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+
+.lessonsTable {
+    overflow-x: hidden;
+}
+
+
+.top .addLesson {
+    box-sizing: border-box;
+    /* border: 1px solid green; */
+    margin: 0 auto;
+    height: 40vh;
+    width: 100%;
+}
+
+.top .addLesson > * {
+    margin: 0;
+}
+
+.top .addLesson .addLessonBody {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+    height: 89%;
+    /* border: 1px solid pink; */
+    
+}
+
+.top .addLesson .addLessonBody .formControls {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    height: 89%;
+    /* border: 1px solid black; */
+    
+
+}
+
+.top .addLesson .addLessonBody .formControls input {
+    margin-bottom: 1.5em;
+}
+
+.top .addLesson .addLessonBody .formControls input,
+.top .addLesson .addLessonBody .formControls button {
+    padding: 15px 40px 15px 20px;
+    color: #525252;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 2px;
+    /* border: 2px solid var(--lightblue); */
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFFFFF 0%, #464747 #F9F9F9 100%);
+    outline: none;
+    box-shadow: 0 1px;
+}
+
+.top .addLesson .addLessonBody .formControls button {
+    padding: 15px 40px 15px 40px;
+    justify-self:  flex-end;
+    background: var(--buttonColor);
+    font-weight: 600;
+    color: black;
+    letter-spacing: 1.5px;
+}
+
+.top .addLesson .addLessonBody > div {
+    overflow-y: auto;
+    height: 90%;
+    border: 2px solid var(--lightblue);
+    /* box-shadow: var(--shadow4); */
+}
+
+.addLessonBody table {
+    height: 100%;
+    width: 700px;
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+    box-shadow: var(--shadow4);
+    /* border: 1px green solid; */
+    border-radius: 2px;
+}
+
+.addLessonBody table thead tr {
+    position: sticky;
+    font-weight: 600;
+    font-size: 1rem;
+    background: var(--lightblue);
+    top: 0;
+    height: 50px;
+    z-index: 1;
+}
+
+
+
+.addLessonBody table td {
+    padding: 4px 8px;
+    text-align: center;
+    width: 100px;
+    /* border: 1px solid black; */
+}
+
+
+.addLessonBody table tbody td {
+    background: var(--lightgrey);
+    height: 40px;
+}
+
+.lessonColumn {
+    width: 23%;
+}
+
+
+.deleteColumn {
+    width: 10%;
+
+}
+
+/* .actionBtns {
+    display: flex;
+}
+
+.deleteBtn {
+    position: relative;
+    top: 4px;
+    border: none;
+    font-size: 2rem;
+    opacity: 0.6;
+    color: var(--bad);
+    z-index: 0;
+}
+
+.deleteBtn:hover {
+    opacity: 1;
+    color: red;
+} */
+
+.table-Btn {
+    border: none;
+    font-size: 1.5rem;
+
+
+}
+
+
+
+
+/* -------Lesson Statistics--------- */
+/* -------RELATED--------- */
+/* -------STYLES--------- */
+
+
+
+.lessonModule {
+
+    box-sizing: border-box;
+}
+
+.lessonStats {
+    box-sizing: border-box;
+    height: 170vh;
+    /* background: pink;
+    border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* text-align: center; */
+}
+
+.lessonStats h3 {
+    margin-left: 0.5em;
+    margin-top: 0;
+}
+
+.lessonStats section {
+    margin: 0 auto;
+    align-self: center;
+    width: 98%;
+    border: 2px solid var(--lightblue);
+    margin-bottom: 2em;
+}
+
+.lessonStats section select {
+    padding: 15px 40px 15px 20px;
+    color: #525252;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 2px;
+    border: 2px solid var(--lightblue);
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFFFFF 0%, #464747 #F9F9F9 100%);
+    outline: none;
+    box-shadow: 0 1px;
+}
+
+
+.chart {
+    margin: 0 auto;
+    width: 500px;
+    margin-bottom: 2em;
+    
+}
+
+.lineChart {
+    width: 90%;
+}

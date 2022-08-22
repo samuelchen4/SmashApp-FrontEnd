@@ -49,8 +49,8 @@ const PaymentsOwed = (student) => {
       params: { user_id },
     })
       .then((res) => {
-        // console.log(res.data);
-        setUserInfo(res.data.userInfo);
+        console.log(res.data);
+        setUserInfo(res.data.userInfo[0]);
         setLessonsInfo(res.data.lessonInfo);
       })
       .catch((err) => console.log(err));

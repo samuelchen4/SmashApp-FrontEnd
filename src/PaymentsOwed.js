@@ -6,7 +6,7 @@ import Axios from 'axios';
 
 const PaymentsOwed = (student) => {
   const { user_id } = student;
-  const domain = 'http://localhost:5000';
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isExpanded, setIsExpanded] = useState(false);
   const [userInfo, setUserInfo] = useState('');
   const [lessonsInfo, setLessonsInfo] = useState([]);
@@ -45,7 +45,7 @@ const PaymentsOwed = (student) => {
 
   // get User info from user_id
   const getUserInfo = () => {
-    Axios.get(`${domain}/tracker/user`, {
+    Axios.get(`${domain}/paytracker/user`, {
       params: { user_id },
     })
       .then((res) => {

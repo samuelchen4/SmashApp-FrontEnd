@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // import { data } from './dummydata';
 
 const PaymentTracker = () => {
-  const domain = 'http://localhost:5000';
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [data, setData] = useState([]);
   const [isOutstanding, setIsOutstanding] = useState(true);
 
@@ -34,7 +34,7 @@ const PaymentTracker = () => {
 
   const getUsers = () => {
     //gets array of user_id and fn,ln for users with outstanding payments and does not duplicate
-    Axios.get(`${domain}/tracker`, {
+    Axios.get(`${domain}/paytracker`, {
       params: {
         sortBy: sortByValue,
       },

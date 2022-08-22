@@ -51,7 +51,7 @@ const Agenda = () => {
   const [combinedData, setCombinedData] = useState([]);
 
   useEffect(() => {
-    Axios.get('http://localhost:5000/agenda', {
+    Axios.get(`${domain}/agenda`, {
       params: { selectedDate: selectedDate },
     }).then((res) => {
       console.log(res.data);

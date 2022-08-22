@@ -14,7 +14,7 @@ const Users = () => {
   const [sortBy, setSortBy] = useState('ASC');
 
   const getUsers = () => {
-    Axios.get(`https://fzkytcnpth.execute-api.us-west-2.amazonaws.com/users`)
+    Axios.get(`https://fzkytcnpth.execute-api.us-west-2.amazonaws.com/{any+}`)
       .then((res) => {
         // console.log(res);
         setUsers(res.data);

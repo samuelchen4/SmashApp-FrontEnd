@@ -20,7 +20,7 @@ import { DatasetController } from 'chart.js';
 
 const Agenda = () => {
   // console.log(data);
-  const domain = 'http://localhost:5000';
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isOutstanding, setIsOutstanding] = useState(true);
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), 'yyyy-MM-dd')

@@ -30,18 +30,18 @@ const PaymentsOwed = (student) => {
   //     return totalOwed + lesson.price * lesson.lessonAmount * -1;
   //   }, 0);
 
-  const getCredits = () => {
-    Axios.get(`${domain}/tracker/user/credits`, {
-      params: {
-        userId: user_id,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        setCredit(res.data.credits);
-      })
-      .catch((err) => console.log(err));
-  };
+//   const getCredits = () => {
+//     Axios.get(`${domain}/tracker/user/credits`, {
+//       params: {
+//         userId: user_id,
+//       },
+//     })
+//       .then((res) => {
+//         console.log(res);
+//         setCredit(res.data.credits);
+//       })
+//       .catch((err) => console.log(err));
+//   };
 
   // get User info from user_id
   const getUserInfo = () => {
@@ -51,6 +51,7 @@ const PaymentsOwed = (student) => {
         console.log(res.data);
         setUserInfo(res.data.userInfo);
         setLessonsInfo(res.data.lessonInfo);
+        setCredit(res.data.credits)
       })
       .catch((err) => console.log(err));
   };
@@ -58,7 +59,7 @@ const PaymentsOwed = (student) => {
   // query student info based on the student id passed from paymentTracker
   useEffect(() => {
     getUserInfo();
-    getCredits();
+//     getCredits();
   }, []);
 
   useEffect(() => {

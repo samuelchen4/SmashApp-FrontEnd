@@ -51,7 +51,7 @@ const PaymentsOwed = (student) => {
         console.log(res.data);
         setUserInfo(res.data.userInfo);
         setLessonsInfo(res.data.lessonInfo);
-        setCredit(res.data.credits);
+        setCredit(res.data.credits.credits);
       })
       .catch((err) => console.log(err));
   };

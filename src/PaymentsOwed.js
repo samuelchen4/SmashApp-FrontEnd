@@ -45,9 +45,8 @@ const PaymentsOwed = (student) => {
 
   // get User info from user_id
   const getUserInfo = () => {
-    Axios.get(`${domain}/paytracker/user`, {
-      params: { user_id },
-    })
+    const userId = user_id
+    Axios.get(`${domain}/paytracker/user/${userId}`)
       .then((res) => {
         console.log(res.data);
         setUserInfo(res.data.userInfo[0]);

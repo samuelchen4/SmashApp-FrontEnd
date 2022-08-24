@@ -49,7 +49,7 @@ const PaymentsOwed = (student) => {
     Axios.get(`${domain}/paytracker/user/${userId}`)
       .then((res) => {
         console.log(res.data);
-        setUserInfo(res.data.userInfo[0]);
+        setUserInfo(res.data.userInfo);
         setLessonsInfo(res.data.lessonInfo);
       })
       .catch((err) => console.log(err));

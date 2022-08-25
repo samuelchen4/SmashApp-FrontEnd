@@ -11,7 +11,7 @@ import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 
 const User = () => {
-  const domain = 'http://localhost:5000';
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { id } = useParams();
 
   const [userInfo, setUserInfo] = useState('');
@@ -138,17 +138,14 @@ const User = () => {
 
   //get userinfo, purchase and sales data in three seperate arrays
   const getUserData = () => {
-    Axios.get(`${domain}/user/info`, {
-      params: {
-        user_id: id,
-      },
-    })
+    const userId = id;
+    Axios.get(`${domain}/user/${userId}`)
       .then((res) => {
-        console.log(res);
-        setUserInfo(res.data.userInfo[0]);
-        setPurchaseInfo(res.data.purchasesInfo);
-        setSaleInfo(res.data.salesInfo);
-        setLessonInfo(res.data.lessonInfo);
+        // console.log(res);
+        setUserInfo(res.data.userInfo);
+        setPurchaseInfo(res.data.purchaseLog);
+        setSaleInfo(res.data.salesLog);
+        setLessonInfo(res.data.lessonTypes);
       })
       .catch((err) => console.log(err));
   };

@@ -31,22 +31,22 @@ const PaymentsOwed = (student) => {
   //     return totalOwed + lesson.price * lesson.lessonAmount * -1;
   //   }, 0);
 
-//   const getCredits = () => {
-//     Axios.get(`${domain}/tracker/user/credits`, {
-//       params: {
-//         userId: user_id,
-//       },
-//     })
-//       .then((res) => {
-//         console.log(res);
-//         setCredit(res.data.credits);
-//       })
-//       .catch((err) => console.log(err));
-//   };
+  //   const getCredits = () => {
+  //     Axios.get(`${domain}/tracker/user/credits`, {
+  //       params: {
+  //         userId: user_id,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         console.log(res);
+  //         setCredit(res.data.credits);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
 
   // get User info from user_id
   const getUserInfo = () => {
-    const userId = user_id
+    const userId = user_id;
     Axios.get(`${domain}/paytracker/user/${userId}`)
       .then((res) => {
         console.log(res.data);
@@ -61,7 +61,7 @@ const PaymentsOwed = (student) => {
   // query student info based on the student id passed from paymentTracker
   useEffect(() => {
     getUserInfo();
-//     getCredits();
+    //     getCredits();
   }, []);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const PaymentsOwed = (student) => {
         </div>
       </div>
       <AnimatePresence>
-        {isExpanded && <LessonsTable {overdueLessonsInfo} />}
+        {isExpanded && <LessonsTable overdueLessonsInfo={overdueLessonsInfo} />}
       </AnimatePresence>
     </motion.article>
   );

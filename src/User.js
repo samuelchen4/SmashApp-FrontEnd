@@ -232,6 +232,7 @@ const User = () => {
         return lesson.price;
       }
     });
+    console.log(lessonP);
     setLessonPrice(lessonP);
   };
 

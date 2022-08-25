@@ -231,7 +231,8 @@ const User = () => {
       return lesson.type_id === lessonType;
     });
 
-    setLessonPrice(lessonP[0].price);
+    const price = lessonP[0].price;
+    setLessonPrice(price);
 
     console.log(lessonType);
     console.log(lessonP);

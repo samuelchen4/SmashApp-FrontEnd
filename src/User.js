@@ -237,7 +237,7 @@ const User = () => {
 
     console.log(lessonType);
     console.log(lessonP);
-    setLessonPrice(lessonP)[0];
+    setLessonPrice(lessonP[0]);
   };
 
   useEffect(() => {

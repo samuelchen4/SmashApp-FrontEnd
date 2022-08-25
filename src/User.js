@@ -214,15 +214,25 @@ const User = () => {
     );
   };
 
+  // const getLessonPrice = () => {
+  //   Axios.get(`${domain}/user/lesson/getPrice`, {
+  //     params: {
+  //       typeId: lessonType,
+  //     },
+  //   }).then((res) => {
+  //     // console.log(res);
+  //     setLessonPrice(res.data.price);
+  //   });
+  // };
+
+  //setlessonprice based on lessontype state
   const getLessonPrice = () => {
-    Axios.get(`${domain}/user/lesson/getPrice`, {
-      params: {
-        typeId: lessonType,
-      },
-    }).then((res) => {
-      // console.log(res);
-      setLessonPrice(res.data.price);
+    const lessonP = lessonInfo.filter((lesson) => {
+      if (lessonType === lesson.type_id) {
+        return lesson.price;
+      }
     });
+    setLessonPrice(lessonP);
   };
 
   useEffect(() => {

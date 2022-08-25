@@ -27,7 +27,9 @@ const User = () => {
 
   const [lessonType, setLessonType] = useState(1);
   const [lessonPrice, setLessonPrice] = useState(0);
-  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
+  const [purchaseLessonDates, setPurchaseLessonDates] = useState([
+    '2022-08-25',
+  ]);
 
   //purchase lesson states and hooks
   const [quantity, setQuantity] = useState(0);
@@ -85,6 +87,7 @@ const User = () => {
   };
 
   const submitPurchases = () => {
+    const userId = id;
     //add a purchase for each value of the quantity
     //post request, send lesson type, discount level
     // console.log(id, lessonType, discountAmount, discountNotes, quantity);
@@ -93,12 +96,11 @@ const User = () => {
 
     for (let i = 0; i < quantity; i++) {
       if (loopCredit > lessonCost) {
-        Axios.post(`${domain}/user/info/purchase`, {
-          userId: id,
+        Axios.post(`${domain}/user/:${userId}/purchase`, {
           lessonId: lessonType,
           discountAmount,
           discountNotes,
-          purchaseLessonDates,
+          purchaseLessonDates: purchaseLessonDates[i],
           partnerId1,
           partnerId2,
           partnerId3,
@@ -115,7 +117,7 @@ const User = () => {
           lessonId: lessonType,
           discountAmount,
           discountNotes,
-          purchaseLessonDates,
+          purchaseLessonDates: purchaseLessonDates[i],
           partnerId1,
           partnerId2,
           partnerId3,
@@ -235,8 +237,9 @@ const User = () => {
       })
       .map((lesson) => lesson.price);
 
+    console.log(lessonInfo);
     console.log(lessonType);
-    console.log(lessonP);
+    console.log(lessonP[0]);
     setLessonPrice(lessonP[0]);
   };
 

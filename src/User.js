@@ -229,18 +229,20 @@ const User = () => {
 
   //setlessonprice based on lessontype state
   const getLessonPrice = () => {
-    const lessonP = lessonInfo
-      .filter((lesson) => {
-        if (lesson.type_id === lessonType) {
-          return lesson;
-        }
-      })
-      .map((lesson) => lesson.price);
+    const lessonP = lessonInfo.filter((lesson) => {
+      if (lesson.type_id === lessonType) {
+        return lesson;
+      }
+    });
+
+    const lessonP2 = lessonP.map((lesson) => lesson.price);
 
     console.log(lessonInfo);
     console.log(lessonType);
-    console.log(lessonP[0]);
-    setLessonPrice(lessonP[0]);
+    console.log(lessonP);
+    console.log(lessonP2);
+
+    // setLessonPrice(lessonP[0]);
   };
 
   useEffect(() => {

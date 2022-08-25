@@ -43,31 +43,31 @@ const User = () => {
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(false);
 
-  const getAllUsers = () => {
-    Axios.get(`${domain}/users`, {
-      params: {
-        sortBy: 'ASC',
-      },
-    })
-      .then((res) => {
-        setUsersArr(res.data);
-        // console.log(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const getAllUsers = () => {
+  //   Axios.get(`${domain}/users`, {
+  //     params: {
+  //       sortBy: 'ASC',
+  //     },
+  //   })
+  //     .then((res) => {
+  //       setUsersArr(res.data);
+  //       // console.log(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
-  const getLessonAmounts = () => {
-    Axios.get(`${domain}/user/lessons/amount`, {
-      params: {
-        userId: id,
-      },
-    })
-      .then((res) => {
-        // console.log(res.data);
-        setLessonAmountArr(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const getLessonAmounts = () => {
+  //   Axios.get(`${domain}/user/lessons/amount`, {
+  //     params: {
+  //       userId: id,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       setLessonAmountArr(res.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   const renderLessonAmount = () => {
     setDisplayLessons(
@@ -123,8 +123,8 @@ const User = () => {
         })
           .then((res) => {
             console.log(res);
-            getLessonAmounts();
-            getCredits();
+            // getLessonAmounts();
+            // getCredits();
             getUserData();
             setPayCredit(0);
             setQuantity(0);
@@ -146,15 +146,18 @@ const User = () => {
         setPurchaseInfo(res.data.purchaseLog);
         setSaleInfo(res.data.salesLog);
         setLessonInfo(res.data.lessonTypes);
+        setLessonAmountArr(res.data.avaliableLessons);
+        setCredit(res.data.credits);
+        setUsersArr(res.data.users);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     getUserData();
-    getAllUsers();
-    getLessonAmounts();
-    getCredits();
+    // getAllUsers();
+    // getLessonAmounts();
+    // getCredits();
   }, []);
 
   const renderPurchases = () => {
@@ -190,18 +193,18 @@ const User = () => {
     );
   };
 
-  const getCredits = () => {
-    Axios.get(`${domain}/user/credits`, {
-      params: {
-        userId: id,
-      },
-    })
-      .then((res) => {
-        console.log(res.data);
-        setCredit(res.data.credits);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const getCredits = () => {
+  //   Axios.get(`${domain}/user/credits`, {
+  //     params: {
+  //       userId: id,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setCredit(res.data.credits);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   const renderLessons = () => {
     setLessonDropdown(

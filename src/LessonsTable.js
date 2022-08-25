@@ -2,28 +2,28 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { motion } from 'framer-motion';
 
-const LessonsTable = (overdueLessonsInfo) => {
+const LessonsTable = (props) => {
   const domain = 'http://localhost:5000';
   //use student info to get lessons owed
-  const {overdueLessonsInfo} = overdueLessonsInfo
-  const { user_id, fn, ln, phone, email, dob } = studentInfo;
+  const { overdueLessonsInfo } = props;
+  // const { user_id, fn, ln, phone, email, dob } = studentInfo;
   //slice dob .slice[0,10]
   // const entries = Object.entries(lessons);
-//   const [lessons, setLessons] = useState([]);
+  //   const [lessons, setLessons] = useState([]);
 
-//   useEffect(() => {
-//     Axios.get(`${domain}/tracker/user/lessons`, {
-//       params: {
-//         user_id,
-//       },
-//     })
-//       .then((res) => {
-//         // console.log(res.data);
-//         setLessons(res.data);
-//       })
-//       .catch((err) => console.log(err));
-//   }, []);
-//   console.log(lessons);
+  //   useEffect(() => {
+  //     Axios.get(`${domain}/tracker/user/lessons`, {
+  //       params: {
+  //         user_id,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         // console.log(res.data);
+  //         setLessons(res.data);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }, []);
+  //   console.log(lessons);
   return (
     <motion.div
       animate={{ maxHeight: 400, opacity: 1 }}

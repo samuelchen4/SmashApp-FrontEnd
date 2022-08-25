@@ -112,7 +112,7 @@ const User = () => {
           .catch((err) => console.log(err));
         loopCredit -= lessonCost;
       } else if (loopCredit <= lessonCost) {
-        Axios.post(`${domain}/user/info/purchase`, {
+        Axios.post(`${domain}/user/:${userId}/purchase`, {
           userId: id,
           lessonId: lessonType,
           discountAmount,

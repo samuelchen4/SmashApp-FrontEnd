@@ -233,6 +233,8 @@ const User = () => {
         lesson_price = lesson.price;
       }
     });
+
+    console.log(lessonType);
     console.log(lessonP);
     console.log(lesson_price);
     setLessonPrice(lesson_price);

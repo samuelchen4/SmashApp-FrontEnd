@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const LessonsTable = (props) => {
   const domain = 'http://localhost:5000';
   //use student info to get lessons owed
-  const { overdueLessonsInfo } = props;
+  const { lessonsInfo } = props;
   // const { user_id, fn, ln, phone, email, dob } = studentInfo;
   //slice dob .slice[0,10]
   // const entries = Object.entries(lessons);
@@ -39,11 +39,11 @@ const LessonsTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {overdueLessonsInfo.map((lesson) => {
+          {lessonsInfo.map((lesson) => {
             return (
               <tr key={lesson.type_id}>
                 <td>{lesson.type_name}</td>
-                <td>{lesson.lessonAmount * -1}</td>
+                <td>{lesson.lessonAmount}</td>
               </tr>
             );
           })}

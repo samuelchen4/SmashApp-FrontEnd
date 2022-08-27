@@ -5,15 +5,15 @@ import LessonsTable from './LessonsTable';
 import Axios from 'axios';
 
 const PaymentsOwed = (student) => {
-  const { user_id } = student;
+  const { user_id, fn, ln, email, phone, dob } = student;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isExpanded, setIsExpanded] = useState(false);
-  const [userInfo, setUserInfo] = useState('');
+  // const [userInfo, setUserInfo] = useState('');
   const [lessonsInfo, setLessonsInfo] = useState([]);
   const [amountOwed, setAmountOwed] = useState(0);
   const [credit, setCredit] = useState(0);
   const [contacted, setContacted] = useState(false);
-  const [overdueLessonsInfo, setOverdueLessonsInfo] = useState([]);
+  // const [overdueLessonsInfo, setOverdueLessonsInfo] = useState([]);
 
   //changes opacity of lessons based on action
   const [isExecuted, setIsExecuted] = useState(false);
@@ -50,10 +50,11 @@ const PaymentsOwed = (student) => {
     Axios.get(`${domain}/paytracker/user/${userId}`)
       .then((res) => {
         console.log(res.data);
-        setUserInfo(res.data.userInfo);
-        setLessonsInfo(res.data.lessonInfo);
-        setCredit(res.data.credits.credits);
-        setOverdueLessonsInfo(res.data.overdueLessonsInfo);
+        // setUserInfo(res.data.userInfo);
+        setLessonsInfo(res.data.lessonInfo); //amount of lessons owe per type of lesson
+        setCredit(res.data.credits.credits); //credits avaliable
+        setAmountOwed(res.data.amountOwed.amountOwed); //amount Owed
+        // setOverdueLessonsInfo(res.data.overdueLessonsInfo);
       })
       .catch((err) => console.log(err));
   };
@@ -64,13 +65,13 @@ const PaymentsOwed = (student) => {
     //     getCredits();
   }, []);
 
-  useEffect(() => {
-    setAmountOwed(
-      lessonsInfo.reduce((totalOwed, lesson) => {
-        return totalOwed + lesson.price * lesson.lessonAmount * -1;
-      }, 0)
-    );
-  }, [lessonsInfo]);
+  // useEffect(() => {
+  //   setAmountOwed(
+  //     lessonsInfo.reduce((totalOwed, lesson) => {
+  //       return totalOwed + lesson.price * lesson.lessonAmount * -1;
+  //     }, 0)
+  //   );
+  // }, [lessonsInfo]);
 
   // console.log(lessonsInfo);
   // console.log(amountOwed);
@@ -83,11 +84,11 @@ const PaymentsOwed = (student) => {
       className={`payment-block ${actionExecuted}`}
     >
       <h5>
-        {userInfo.fn} {userInfo.ln}
+        {fn} {ln}
       </h5>
       <div className='contact-info'>
-        {userInfo.phone && <p>Phone: {userInfo.phone}</p>}
-        {userInfo.email && <p>Email: {userInfo.email}</p>}
+        {phone && <p>Phone: {phone}</p>}
+        {email && <p>Email: {email}</p>}
       </div>
       <div className='amount-owed'>
         <p>Amount Owed: ${amountOwed}</p>
@@ -102,7 +103,7 @@ const PaymentsOwed = (student) => {
         </div>
       </div>
       <AnimatePresence>
-        {isExpanded && <LessonsTable overdueLessonsInfo={overdueLessonsInfo} />}
+        {isExpanded && <LessonsTable lessonsInfo={lessonsInfo} />}
       </AnimatePresence>
     </motion.article>
   );

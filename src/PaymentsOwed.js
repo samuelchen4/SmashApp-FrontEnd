@@ -52,7 +52,7 @@ const PaymentsOwed = (student) => {
         console.log(res.data);
         // setUserInfo(res.data.userInfo);
         setLessonsInfo(res.data.lessonInfo); //amount of lessons owe per type of lesson
-        setCredit(res.data.credits.credits); //credits avaliable
+        setCredit(res.data.credits.credit); //credits avaliable
         setAmountOwed(res.data.amountOwed.amountOwed); //amount Owed
         // setOverdueLessonsInfo(res.data.overdueLessonsInfo);
       })

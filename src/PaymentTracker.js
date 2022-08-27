@@ -34,12 +34,9 @@ const PaymentTracker = () => {
 
   const getUsers = () => {
     //gets array of user_id and fn,ln for users with outstanding payments and does not duplicate
-    Axios.get(`${domain}/paytracker`, {
-      params: {
-        sortBy: sortByValue,
-      },
-    })
+    Axios.get(`${domain}/paytracker`)
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
       })
       .catch((err) => console.log(err));

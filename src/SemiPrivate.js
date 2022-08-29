@@ -80,7 +80,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     priceWithDiscountIncluded,
     duration,
     // duration,
-  } = privateLessonInfo;
+  } = semiPrivateLessonInfo;
 
   const userId = user_id;
   const purchaseId = purchase_id;

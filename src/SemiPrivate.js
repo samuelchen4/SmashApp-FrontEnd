@@ -114,7 +114,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const [partnerNameArr, setPartnerNameArr] = useState([]);
 
   //get first and last name based on id
-  const getFnLn = () => {
+  const getFnLn = (purchaseId) => {
     let fn = '';
     let ln = '';
     Axios.get(`${domain}/agenda/private/${purchaseId}/attended`).then((res) => {
@@ -126,7 +126,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     return fn, ln;
   };
 
-  console.log(getFnLn());
+  console.log(getFnLn(1));
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;
   //   if (newPurchaseHandled === 0) {

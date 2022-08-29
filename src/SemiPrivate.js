@@ -98,6 +98,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   // ];
 
   const partnerArr = [partner1_id, partner2_id, partner3_id];
+  console.log(partnerArr);
 
   // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);
@@ -183,6 +184,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const getPartnerNames = () => {
     let partnerBlock = '';
     partnerArr.map((partnerId) => {
+      console.log(partnerId);
       if (partnerId) {
         Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
           .then((res) => {

@@ -184,7 +184,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     let partnerBlock = '';
     partnerArr.map((partnerId) => {
       if (partnerId) {
-        Axios.get(`${domain}/private/partnerInfo/${partnerId}`)
+        Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
           .then((res) => {
             partnerBlock += ` ${res.data.fn} ${res.data.ln},`;
           })

@@ -245,9 +245,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
         <div className='lesson-info' disabled={isDisabled}>
           <p>{typeName}</p>
           <p className='lesson-time'>duration: {duration}</p>
-          <p>
-            {partnerName1} {partnerName2} {partnerName3}
-          </p>
+          <p>{/* {partnerName1} {partnerName2} {partnerName3} */}</p>
         </div>
         <div className='agenda-main-action'>
           <button className='btn' onClick={inputSale} disabled={isDisabled}>

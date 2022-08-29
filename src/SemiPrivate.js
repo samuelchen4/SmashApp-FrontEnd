@@ -126,7 +126,6 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     return fn, ln;
   };
 
-  console.log(getFnLn(1));
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;
   //   if (newPurchaseHandled === 0) {

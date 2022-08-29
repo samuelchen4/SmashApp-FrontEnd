@@ -71,10 +71,8 @@ const Private = (privateLessonInfo) => {
 
   const inputSale = () => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
-      body: {
-        attended: 1,
-        lessonPrice: priceWithDiscountIncluded,
-      },
+      attended: 1,
+      lessonPrice: priceWithDiscountIncluded,
     })
       .then((res) => {
         console.log(res);

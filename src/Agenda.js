@@ -53,7 +53,6 @@ const Agenda = () => {
   useEffect(() => {
     const lessonDate = selectedDate;
     Axios.get(`${domain}/agenda/${lessonDate}`).then((res) => {
-      console.log(res.data);
       setData(res.data);
     });
     getSemiPrivateData();

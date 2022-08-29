@@ -70,7 +70,12 @@ const Private = (privateLessonInfo) => {
   // };
 
   const inputSale = () => {
-    Axios.post(`${domain}/agenda/private/${purchaseId}/attended`)
+    Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
+      body: {
+        attended: 1,
+        lessonPrice,
+      },
+    })
       .then((res) => {
         console.log(res);
       })
@@ -78,7 +83,7 @@ const Private = (privateLessonInfo) => {
   };
 
   const undoSale = () => {
-    Axios.post(`${domain}/agenda/private/${purchaseId}/undoSale/`)
+    Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };

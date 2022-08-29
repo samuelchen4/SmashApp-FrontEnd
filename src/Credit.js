@@ -26,10 +26,8 @@ const Credit = (privateLessonInfo) => {
     event.preventDefault();
     //send post request
     Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
-      body: {
-        attended: 0,
-        lessonPrice: creditValue,
-      },
+      attended: 0,
+      lessonPrice: creditValue,
     })
       .then((res) => {
         console.log(res);

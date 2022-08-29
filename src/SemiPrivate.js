@@ -152,13 +152,17 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     })
       .then((res) => {
         console.log(res);
+        setIsDisabled(true);
       })
       .catch((err) => console.log(err));
   };
 
   const undoSale = () => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        setIsDisabled(false);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -180,7 +184,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     let partnerBlock = '';
     partnerArr.map((partnerId) => {
       if (partnerId) {
-        Axios.get(`${domain}/semiPrivate/partnerInfo/${partnerId}`)
+        Axios.get(`${domain}/private/partnerInfo/${partnerId}`)
           .then((res) => {
             partnerBlock += ` ${res.data.fn} ${res.data.ln},`;
           })
@@ -213,7 +217,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       exit={{ opacity: 0 }}
-      // className={`agenda-lessons`}
+      className='semiPrivate'
     >
       <h5 disabled={isDisabled}>
         {fn} {ln}

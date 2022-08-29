@@ -80,8 +80,9 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     priceWithDiscountIncluded,
     duration,
     // duration,
-  } = semiPrivateLessonInfo;
+  } = privateLessonInfo;
 
+  const userId = user_id;
   const purchaseId = purchase_id;
   const typeName = type_name;
 
@@ -129,7 +130,12 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   // };
 
   const inputSale = () => {
-    Axios.post(`${domain}/agenda/private/${purchaseId}/attended`)
+    Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
+      body: {
+        attended: 1,
+        lessonPrice: priceWithDiscountIncluded,
+      },
+    })
       .then((res) => {
         console.log(res);
       })
@@ -137,7 +143,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   };
 
   const undoSale = () => {
-    Axios.post(`${domain}/agenda/private/${purchaseId}/undoSale/`)
+    Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
@@ -191,6 +197,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
         {isNoShowOpen && (
           <div className='creditForm'>
             <Credit
+              userId={userId}
               purchaseId={purchaseId}
               lessonPrice={priceWithDiscountIncluded}
               paid={paid}

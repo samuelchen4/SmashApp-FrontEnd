@@ -73,7 +73,7 @@ const Private = (privateLessonInfo) => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
       body: {
         attended: 1,
-        lessonPrice,
+        lessonPrice: priceWithDiscountIncluded,
       },
     })
       .then((res) => {

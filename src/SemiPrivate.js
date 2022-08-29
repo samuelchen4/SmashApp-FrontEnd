@@ -3,7 +3,7 @@ import Private from './Private.js';
 import Axios from 'axios';
 //Semiprivate border, hold Private components as children
 
-const SemiPrivate = (studentInfo) => {
+const SemiPrivate = (semiPrivateLessonInfo) => {
   // const domain = 'http://localhost:5000';
   // const {
   //   type_name,
@@ -79,7 +79,7 @@ const SemiPrivate = (studentInfo) => {
     priceWithDiscountIncluded,
     duration,
     // duration,
-  } = privateLessonInfo;
+  } = semiPrivateLessonInfo;
 
   const purchaseId = purchase_id;
   const typeName = type_name;

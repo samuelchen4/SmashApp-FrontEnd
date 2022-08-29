@@ -188,6 +188,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       if (partnerId) {
         Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
           .then((res) => {
+            console.log(res.data);
             partnerBlock += ` ${res.data.fn} ${res.data.ln},`;
           })
           .catch((err) => console.log(err));

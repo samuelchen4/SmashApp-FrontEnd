@@ -78,13 +78,17 @@ const Private = (privateLessonInfo) => {
     })
       .then((res) => {
         console.log(res);
+        setIsDisabled(true);
       })
       .catch((err) => console.log(err));
   };
 
   const undoSale = () => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        setIsDisabled(false);
+      })
       .catch((err) => console.log(err));
   };
 

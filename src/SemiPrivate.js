@@ -191,6 +191,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
           .catch((err) => console.log(err));
       }
     });
+    console.log(partnerBlock);
     setPartnerNames(partnerBlock);
   };
 

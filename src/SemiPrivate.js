@@ -117,10 +117,12 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     const purchaseId = partner1_id;
     let fn = '';
     let ln = '';
-    Axios.get(`${domain}/agenda/private/${purchaseId}/attended`).then((res) => {
-      fn = res.data.fn;
-      ln = res.data.ln;
-    });
+    Axios.get(`${domain}/agenda/private/partnerInfo/${purchaseId}`).then(
+      (res) => {
+        fn = res.data.fn;
+        ln = res.data.ln;
+      }
+    );
 
     console.log(fn, ln);
     return fn, ln;

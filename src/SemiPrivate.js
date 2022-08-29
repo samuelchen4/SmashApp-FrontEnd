@@ -108,6 +108,10 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   //use to disable actions and grey out component once something has been submitted
   const [isDisabled, setIsDisabled] = useState(purchaseHandled);
 
+  const [partnerName1, setPartnerName1] = useState('');
+  const [partnerName2, setPartnerName2] = useState('');
+  const [partnerName3, setPartnerName3] = useState('');
+
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;
   //   if (newPurchaseHandled === 0) {
@@ -167,37 +171,30 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       .catch((err) => console.log(err));
   };
 
-  // const came = () => {
-  //   inputSale();
-  //   changePurchaseHandled();
-  // };
-
-  // const undo = () => {
-  //   undoSale();
-  //   changePurchaseHandled();
-  // };
-
-  // useEffect(() => {
-  //   getUserName();
-  // }, []);
-
-  const getPartnerNames = () => {
-    let partnerBlock = '';
-    const swaggie = partnerArr.map((partnerId) => {
-      console.log(partnerId);
-      if (partnerId) {
-        Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
-          .then((res) => {
-            console.log(res.data);
-            console.log(res.data[0]);
-            console.log(res.data[0].fn);
-            return (partnerBlock += ` ${res.data[0].fn} ${res.data[0].ln},`);
-          })
-          .catch((err) => console.log(err));
-      }
-    });
-    console.log(partnerBlock);
-    setPartnerNames(swaggie);
+  const getPartnerName = (partnerId) => {
+    // let partnerBlock = '';
+    // const swaggie = partnerArr.map((partnerId) => {
+    //   console.log(partnerId);
+    //   if (partnerId) {
+    //     Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
+    //       .then((res) => {
+    //         console.log(res.data);
+    //         console.log(res.data[0]);
+    //         console.log(res.data[0].fn);
+    //         return (partnerBlock += ` ${res.data[0].fn} ${res.data[0].ln},`);
+    //       })
+    //       .catch((err) => console.log(err));
+    //   }
+    // });
+    // console.log(partnerBlock);
+    // setPartnerNames(swaggie);
+    if (partnerId) {
+      Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`).then(
+        (res) => {
+          return `${res.data.fn} ${res.data.fn}`;
+        }
+      );
+    }
   };
 
   // const renderPartnerNames = () => {
@@ -211,7 +208,9 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   // };
 
   useEffect(() => {
-    getPartnerNames();
+    setPartnerName1(getPartnerName);
+    setPartnerName2(getPartnerName);
+    setPartnerName3(getPartnerName);
   }, []);
 
   // useEffect(() => {
@@ -223,47 +222,50 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       exit={{ opacity: 0 }}
-      className='semiPrivate'
     >
-      <h5 disabled={isDisabled}>
-        {fn} {ln}
-      </h5>
-      <div className='lesson-info' disabled={isDisabled}>
-        <p>{typeName}</p>
-        <p className='lesson-time'>duration: {duration}</p>
-        <p>{partnerNames}</p>
-      </div>
-      <div className='agenda-main-action'>
-        <button className='btn' onClick={inputSale} disabled={isDisabled}>
-          Came
-        </button>
-        <button
-          className='btn'
-          disabled={isDisabled}
-          onClick={() => {
-            setIsNoShowOpen(!isNoShowOpen);
-          }}
-        >
-          No Show
-        </button>
-        <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
-          <i class='bx bx-undo'></i>
-        </button>
-      </div>
-      <AnimatePresence>
-        {isNoShowOpen && (
-          <div className='creditForm'>
-            <Credit
-              userId={userId}
-              purchaseId={purchaseId}
-              lessonPrice={priceWithDiscountIncluded}
-              paid={paid}
-              setIsNoShowOpen={setIsNoShowOpen}
-              setIsDisabled={setIsDisabled}
-            />
-          </div>
-        )}
-      </AnimatePresence>
+      <section className='semiPrivate'>
+        <h5 disabled={isDisabled}>
+          {fn} {ln}
+        </h5>
+        <div className='lesson-info' disabled={isDisabled}>
+          <p>{typeName}</p>
+          <p className='lesson-time'>duration: {duration}</p>
+          <p>
+            {partnerName1} {partnerName2} {partnerName3}
+          </p>
+        </div>
+        <div className='agenda-main-action'>
+          <button className='btn' onClick={inputSale} disabled={isDisabled}>
+            Came
+          </button>
+          <button
+            className='btn'
+            disabled={isDisabled}
+            onClick={() => {
+              setIsNoShowOpen(!isNoShowOpen);
+            }}
+          >
+            No Show
+          </button>
+          <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
+            <i class='bx bx-undo'></i>
+          </button>
+        </div>
+        <AnimatePresence>
+          {isNoShowOpen && (
+            <div className='creditForm'>
+              <Credit
+                userId={userId}
+                purchaseId={purchaseId}
+                lessonPrice={priceWithDiscountIncluded}
+                paid={paid}
+                setIsNoShowOpen={setIsNoShowOpen}
+                setIsDisabled={setIsDisabled}
+              />
+            </div>
+          )}
+        </AnimatePresence>
+      </section>
     </motion.section>
   );
 };

@@ -77,6 +77,9 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     user_id,
     purchase_id,
     type_id,
+    partner1_id,
+    partner2_id,
+    partner3_id,
     priceWithDiscountIncluded,
     duration,
     // duration,
@@ -85,10 +88,21 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const userId = user_id;
   const purchaseId = purchase_id;
   const typeName = type_name;
+  // const partner1Id = partner1_id;
+  // const partner2Id = partner2_id;
+  // const partner3Id = partner3_id;
+  // const partnerArr = [
+  //   { partnerId: partner1_id, fn: '', ln: '' },
+  //   { partnerId: partner2_id, fn: '', ln: '' },
+  //   { partnerId: partner3_id, fn: '', ln: '' },
+  // ];
+
+  const partnerArr = [partner1_id, partner2_id, partner3_id];
 
   // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);
   const [isExecuted, setIsExecuted] = useState(false);
+  const [partnerNames, setPartnerNames] = useState('');
 
   //use to disable actions and grey out component once something has been submitted
   const [isDisabled, setIsDisabled] = useState(purchaseHandled);
@@ -162,6 +176,38 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   //   getUserName();
   // }, []);
 
+  const getPartnerNames = () => {
+    let partnerBlock = '';
+    partnerArr.map((partnerId) => {
+      if (partnerId) {
+        Axios.get(`${domain}/semiPrivate/partnerInfo/${partnerId}`)
+          .then((res) => {
+            partnerBlock += ` ${res.data.fn} ${res.data.ln},`;
+          })
+          .catch((err) => console.log(err));
+      }
+    });
+    setPartnerNames(partnerBlock);
+  };
+
+  // const renderPartnerNames = () => {
+  //   let partnerBlock = '';
+  //   const partners = partnerArr.map((partner) => {
+  //     if (partner.fn && partner.ln) {
+  //       partnerBlock += `${partner.fn} ${partner.ln},`;
+  //     }
+  //     setPartnerNames(partnerBlock);
+  //   });
+  // };
+
+  useEffect(() => {
+    getPartnerNames();
+  }, []);
+
+  // useEffect(() => {
+  //   renderPartnerNames();
+  // }, []);
+
   return (
     <motion.section
       animate={{ opacity: 1 }}
@@ -175,6 +221,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       <div className='lesson-info' disabled={isDisabled}>
         <p>{typeName}</p>
         <p className='lesson-time'>duration: {duration}</p>
+        <p>{partnerNames}</p>
       </div>
       <div className='agenda-main-action'>
         <button className='btn' onClick={inputSale} disabled={isDisabled}>

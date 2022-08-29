@@ -6,112 +6,98 @@ import { format } from 'date-fns';
 import Axios from 'axios';
 import Credit from './Credit';
 
-const Private = (studentInfo) => {
-  const domain = 'http://localhost:5000';
+const Private = (privateLessonInfo) => {
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const {
     type_name,
     fn,
     ln,
     scheduleddate,
-    start_time,
-    end_time,
+    purchaseHandled,
+    attended,
+    paid,
     user_id,
     purchase_id,
     type_id,
-    price,
-    partner1_id,
-    partner2_id,
-    partner3_id,
-    lessonInfo,
-    purchaseHandled,
+    priceWithDiscountIncluded,
     duration,
-  } = studentInfo;
+    // duration,
+  } = privateLessonInfo;
 
-  // console.log(scheduleddate.slice(0, 10));
+  const userId = user_id;
+  const purchaseId = purchase_id;
+  const typeName = type_name;
 
   // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);
   const [isExecuted, setIsExecuted] = useState(false);
-  const [userFn, setUserFn] = useState(fn);
-  const [userLn, setUserLn] = useState(ln);
 
   //use to disable actions and grey out component once something has been submitted
   const [isDisabled, setIsDisabled] = useState(purchaseHandled);
 
-  const changePurchaseHandled = () => {
-    let newPurchaseHandled = purchaseHandled;
-    if (newPurchaseHandled === 0) {
-      newPurchaseHandled = 1;
-    } else if (newPurchaseHandled === 1) {
-      newPurchaseHandled = 0;
-    }
-    Axios.put(`${domain}/agenda/private/purchaseHandled`, {
-      purchaseId: purchase_id,
-      purchaseHandled: newPurchaseHandled,
-    })
-      .then((res) => {
-        console.log(res);
-        if (isDisabled) {
-          setIsDisabled(0);
-        } else if (!isDisabled) {
-          setIsDisabled(1);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+  // const changePurchaseHandled = () => {
+  //   let newPurchaseHandled = purchaseHandled;
+  //   if (newPurchaseHandled === 0) {
+  //     newPurchaseHandled = 1;
+  //   } else if (newPurchaseHandled === 1) {
+  //     newPurchaseHandled = 0;
+  //   }
+  //   Axios.put(`${domain}/agenda/private/purchaseHandled`, {
+  //     purchaseId: purchase_id,
+  //     purchaseHandled: newPurchaseHandled,
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (isDisabled) {
+  //         setIsDisabled(0);
+  //       } else if (!isDisabled) {
+  //         setIsDisabled(1);
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
-  const getUserName = () => {
-    Axios.get(`${domain}/agenda/private/userName`, {
-      params: {
-        user_id,
-      },
-    })
-      .then((res) => {
-        // console.log(res.data);
-        setUserFn(res.data.fn);
-        setUserLn(res.data.ln);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const getUserName = () => {
+  //   Axios.get(`${domain}/agenda/private/userName`, {
+  //     params: {
+  //       user_id,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       setUserFn(res.data.fn);
+  //       setUserLn(res.data.ln);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   const inputSale = () => {
-    console.log(`${start_time} ${end_time}`);
-    Axios.post(`${domain}/agenda/private/came`, {
-      type_name,
-      userFn,
-      userLn,
-      scheduleddate: scheduleddate.slice(0, 10),
-      user_id,
-      purchase_id,
-      type_id,
-    })
+    Axios.post(`${domain}/agenda/private/${purchaseId}/attended`)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
   const undoSale = () => {
-    Axios.post(`${domain}/agenda/private/undoSale/`, {
-      purchaseId: purchase_id,
-    })
+    Axios.post(`${domain}/agenda/private/${purchaseId}/undoSale/`)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
 
-  const came = () => {
-    inputSale();
-    changePurchaseHandled();
-  };
+  // const came = () => {
+  //   inputSale();
+  //   changePurchaseHandled();
+  // };
 
-  const undo = () => {
-    undoSale();
-    changePurchaseHandled();
-  };
+  // const undo = () => {
+  //   undoSale();
+  //   changePurchaseHandled();
+  // };
 
-  useEffect(() => {
-    getUserName();
-  }, []);
+  // useEffect(() => {
+  //   getUserName();
+  // }, []);
 
   return (
     <motion.section
@@ -121,17 +107,14 @@ const Private = (studentInfo) => {
       // className={`agenda-lessons`}
     >
       <h5 disabled={isDisabled}>
-        {userFn} {userLn}
+        {fn} {ln}
       </h5>
       <div className='lesson-info' disabled={isDisabled}>
-        <p>{type_name}</p>
-        <p className='lesson-time'>
-          {/* {start_time}-{end_time} */}
-          duration: {duration}
-        </p>
+        <p>{typeName}</p>
+        <p className='lesson-time'>duration: {duration}</p>
       </div>
       <div className='agenda-main-action'>
-        <button className='btn' onClick={came} disabled={isDisabled}>
+        <button className='btn' onClick={inputSale} disabled={isDisabled}>
           Came
         </button>
         <button
@@ -143,11 +126,7 @@ const Private = (studentInfo) => {
         >
           No Show
         </button>
-        <button
-          className='undoBtn'
-          disabled={!isDisabled}
-          onClick={() => undo()}
-        >
+        <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
           <i class='bx bx-undo'></i>
         </button>
       </div>
@@ -155,8 +134,10 @@ const Private = (studentInfo) => {
         {isNoShowOpen && (
           <div className='creditForm'>
             <Credit
-              {...studentInfo}
-              changePurchaseHandled={changePurchaseHandled}
+              userId={userId}
+              purchaseId={purchaseId}
+              lessonPrice={priceWithDiscountIncluded}
+              paid={paid}
               setIsNoShowOpen={setIsNoShowOpen}
               setIsDisabled={setIsDisabled}
             />

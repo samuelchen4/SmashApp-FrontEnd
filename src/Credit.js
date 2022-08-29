@@ -2,64 +2,48 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Credit = ({
-  type_name,
-  fn,
-  ln,
-  scheduleddate,
-  start_time,
-  end_time,
-  user_id,
-  purchase_id,
-  type_id,
-  price,
-  changeAttended,
-  setIsNoShowOpen,
-  setIsDisabled,
-}) => {
-  const domain = 'http://localhost:5000';
+const Credit = (privateLessonInfo) => {
+  const {
+    userId,
+    purchaseId,
+    lessonPrice,
+    paid,
+    setIsNoShowOpen,
+    setIsDisabled,
+  } = privateLessonInfo;
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [rangeValue, setRangeValue] = useState('100');
-  const [creditValue, setCreditValue] = useState(price);
+  const [creditValue, setCreditValue] = useState(lessonPrice);
   //   console.log(rangeValue);
   //   console.log(price);
 
-  const truncatePrice = () => {
-    //only allow two decimal points
-    return Number(price.toFixed(2));
-  };
+  // const truncatePrice = () => {
+  //   //only allow two decimal points
+  //   return Number(price.toFixed(2));
+  // };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log(creditValue);
+  const submitDidNotAttend = (event) => {
+    event.preventDefault();
     //send post request
-    Axios.post(`${domain}/agenda/private/noshow`, {
-      user_id,
-      purchase_id,
-      type_id,
-      fn,
-      ln,
-      type_name,
-      scheduleddate: scheduleddate.slice(0, 10),
-      start_time,
-      end_time,
-      purchase_id,
-      credit: creditValue,
+    Axios.post(`${domain}/agenda/private/:purchaseId/attended`, {
+      body: {
+        attended: 0,
+        lessonPrice,
+      },
     })
       .then((res) => {
         console.log(res);
-        // changeAttended();
-        changeHandledStatus();
         setIsDisabled(true);
         setIsNoShowOpen(false);
       })
       .catch((err) => console.log(err));
   };
 
-  const changeHandledStatus = () => {
-    Axios.put(`${domain}/agenda/private/purchaseHandled`, {
-      purchaseId: purchase_id,
-    });
-  };
+  // const changeHandledStatus = () => {
+  //   Axios.put(`${domain}/agenda/private/purchaseHandled`, {
+  //     purchaseId: purchase_id,
+  //   });
+  // };
 
   return (
     <motion.form
@@ -67,7 +51,7 @@ const Credit = ({
       initial={{ maxHeight: 0, opacity: 0 }}
       exit={{ maxHeight: 0, opacity: 0 }}
       transition={{ ease: 'linear', duration: 0.3 }}
-      onSubmit={onSubmit}
+      onSubmit={(event) => submitDidNotAttend(event)}
     >
       <div>
         <label htmlFor='amount'>Amount:</label>

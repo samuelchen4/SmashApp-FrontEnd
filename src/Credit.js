@@ -68,7 +68,7 @@ const Credit = (privateLessonInfo) => {
             e.preventDefault();
             setRangeValue(e.target.value);
             setCreditValue(
-              Number((Number(e.target.value) / 100) * price).toFixed(2)
+              Number((Number(e.target.value) / 100) * lessonPrice).toFixed(2)
             );
           }}
         />

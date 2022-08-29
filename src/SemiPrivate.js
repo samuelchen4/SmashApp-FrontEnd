@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Private from './Private.js';
+import { motion, AnimatePresence } from 'framer-motion';
 import Axios from 'axios';
+import Credit from './Credit';
 //Semiprivate border, hold Private components as children
 
 const SemiPrivate = (semiPrivateLessonInfo) => {

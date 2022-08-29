@@ -1,8 +1,6 @@
 // AGENDA SUB COMPONENT FOR PRIVATE CLASSES
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { format } from 'date-fns';
 import Axios from 'axios';
 import Credit from './Credit';
 

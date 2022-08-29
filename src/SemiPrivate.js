@@ -183,20 +183,21 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
 
   const getPartnerNames = () => {
     let partnerBlock = '';
-    partnerArr.map((partnerId) => {
+    const swaggie = partnerArr.map((partnerId) => {
       console.log(partnerId);
       if (partnerId) {
         Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
           .then((res) => {
             console.log(res.data);
             console.log(res.data[0]);
-            partnerBlock += ` ${res.data[0].fn} ${res.data[0].ln},`;
+            console.log(res.data[0].fn);
+            return (partnerBlock += ` ${res.data[0].fn} ${res.data[0].ln},`);
           })
           .catch((err) => console.log(err));
       }
     });
     console.log(partnerBlock);
-    setPartnerNames(partnerBlock);
+    setPartnerNames(swaggie);
   };
 
   // const renderPartnerNames = () => {

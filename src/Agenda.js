@@ -241,7 +241,7 @@ const Agenda = () => {
       <main className='agenda-main'>
         <h3>{selectedDate}</h3>
         <motion.ul layout className='lesson-list'>
-          {combinedData
+          {data
             .filter((lesson) => {
               if (sortBy === 'all') {
                 return lesson;

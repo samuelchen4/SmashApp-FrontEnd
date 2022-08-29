@@ -25,7 +25,7 @@ const Credit = (privateLessonInfo) => {
   const submitDidNotAttend = (event) => {
     event.preventDefault();
     //send post request
-    Axios.put(`${domain}/agenda/private/:purchaseId/attended`, {
+    Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
       body: {
         attended: 0,
         lessonPrice,

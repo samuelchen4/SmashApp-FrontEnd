@@ -28,7 +28,7 @@ const Credit = (privateLessonInfo) => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
       body: {
         attended: 0,
-        lessonPrice,
+        lessonPrice: creditValue,
       },
     })
       .then((res) => {
@@ -70,6 +70,7 @@ const Credit = (privateLessonInfo) => {
             setCreditValue(
               Number((Number(e.target.value) / 100) * lessonPrice).toFixed(2)
             );
+            console.log(creditValue);
           }}
         />
         <datalist id='tickmarks'>

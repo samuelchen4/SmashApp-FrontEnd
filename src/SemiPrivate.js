@@ -108,10 +108,25 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   //use to disable actions and grey out component once something has been submitted
   const [isDisabled, setIsDisabled] = useState(purchaseHandled);
 
-  const [partnerName1, setPartnerName1] = useState('');
-  const [partnerName2, setPartnerName2] = useState('');
-  const [partnerName3, setPartnerName3] = useState('');
+  // const [partnerName1, setPartnerName1] = useState('');
+  // const [partnerName2, setPartnerName2] = useState('');
+  // const [partnerName3, setPartnerName3] = useState('');
+  const [partnerNameArr, setPartnerNameArr] = useState([]);
 
+  //get first and last name based on id
+  const getFnLn = () => {
+    let fn = '';
+    let ln = '';
+    Axios.get(`${domain}/agenda/private/${purchaseId}/attended`).then((res) => {
+      fn = res.data.fn;
+      ln = res.data.ln;
+    });
+
+    console.log(fn, ln);
+    return fn, ln;
+  };
+
+  console.log(getFnLn());
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;
   //   if (newPurchaseHandled === 0) {
@@ -171,31 +186,28 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       .catch((err) => console.log(err));
   };
 
-  const getPartnerName = (partnerId) => {
-    // let partnerBlock = '';
-    // const swaggie = partnerArr.map((partnerId) => {
-    //   console.log(partnerId);
-    //   if (partnerId) {
-    //     Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
-    //       .then((res) => {
-    //         console.log(res.data);
-    //         console.log(res.data[0]);
-    //         console.log(res.data[0].fn);
-    //         return (partnerBlock += ` ${res.data[0].fn} ${res.data[0].ln},`);
-    //       })
-    //       .catch((err) => console.log(err));
-    //   }
-    // });
-    // console.log(partnerBlock);
-    // setPartnerNames(swaggie);
-    if (partnerId) {
-      Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`).then(
-        (res) => {
-          return `${res.data.fn} ${res.data.fn}`;
-        }
-      );
-    }
-  };
+  // const getPartnerName = () => {
+  //   const partnerNameArr = partnerArr.map((id) => {
+  //     if (partner)
+  //       return Axios.get(`${domain}/agenda/private/partnerInfo/${id}`);
+  //   });
+  // let partnerBlock = '';
+  // const swaggie = partnerArr.map((partnerId) => {
+  //   console.log(partnerId);
+  //   if (partnerId) {
+  //     Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`)
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         console.log(res.data[0]);
+  //         console.log(res.data[0].fn);
+  //         return (partnerBlock += ` ${res.data[0].fn} ${res.data[0].ln},`);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // });
+  // console.log(partnerBlock);
+  // setPartnerNames(swaggie);
+  // };
 
   // const renderPartnerNames = () => {
   //   let partnerBlock = '';
@@ -207,11 +219,11 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   //   });
   // };
 
-  useEffect(() => {
-    setPartnerName1(getPartnerName);
-    setPartnerName2(getPartnerName);
-    setPartnerName3(getPartnerName);
-  }, []);
+  // useEffect(() => {
+  //   setPartnerName1(getPartnerName);
+  //   setPartnerName2(getPartnerName);
+  //   setPartnerName3(getPartnerName);
+  // }, []);
 
   // useEffect(() => {
   //   renderPartnerNames();

@@ -123,7 +123,11 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   };
 
   const getPartnerNamesString = () => {
-    const partnerNameString = partnerNameArr.join();
+    const partnerNameString = partnerNameArr
+      .map((partnerInfo) => {
+        return `${partnerInfo.fn} ${partnerInfo.ln}`;
+      })
+      .join();
     setPartnerNames(partnerNameString);
   };
   //     const partnerNames = partnerArr.map((partnerId) => {

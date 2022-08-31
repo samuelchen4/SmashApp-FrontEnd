@@ -97,6 +97,9 @@ const PaymentsOwed = (student) => {
           <button onClick={haveContacted}>
             <i class='bx bx-check'></i>
           </button>
+          <button onCLick={haveContacted}>
+            <i class='bx bx-purchase-tag-alt'></i>
+          </button>
           <button onClick={toggleExpand}>
             <i class='bx bx-chevron-down'></i>
           </button>

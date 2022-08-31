@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Axios from 'axios';
 import Credit from './Credit';
+import { set } from 'date-fns/esm';
 //Semiprivate border, hold Private components as children
 
 const SemiPrivate = (semiPrivateLessonInfo) => {
@@ -110,24 +111,41 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   // const [partnerName1, setPartnerName1] = useState('');
   // const [partnerName2, setPartnerName2] = useState('');
   // const [partnerName3, setPartnerName3] = useState('');
-  const [partnerNameArr, setPartnerNameArr] = useState([]);
+  const [partnerNameArr, setPartnerNameArr] = useState('');
 
   //get first and last name based on id
-  const getFnLn = async () => {
-    const purchaseId = partner1_id;
+  const getFnLn = async (partnerId) => {
     let fn = '';
     let ln = '';
-    await Axios.get(`${domain}/agenda/private/partnerInfo/${purchaseId}`).then(
-      (res) => {
-        fn = res.data.fn;
-        ln = res.data.ln;
-      }
-    );
+    
+      await Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`).then(
+        (res) => {
+          fn = res.data.fn;
+          ln = res.data.ln;
+        }
+      );
 
-    console.log(fn, ln);
-    return fn, ln;
+      console.log(fn, ln);
+      return `${fn} ${ln}`
+    } 
   };
 
+  const setAllPartnerNames = () => {
+    const partnerNames = partnerArr.filter(partnerId => partnerId).map(partnerId=>{
+      return getFnLn(partnerId)
+    }).join(', ')
+    setPartnerNameArr(partnerNames);
+    
+//     const partnerNames = partnerArr.map((partnerId) => {
+//       if(partnerId) {
+// return getFnLn(partnerId);
+//       } else {
+//         return 
+//       }
+      
+//     });
+//     setPartnerNameArr(partnerNames);
+  };
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;
   //   if (newPurchaseHandled === 0) {
@@ -186,8 +204,8 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   };
 
   useEffect(() => {
-    getFnLn();
-  });
+    setAllPartnerNames();
+  }, []);
 
   // const getPartnerName = () => {
   //   const partnerNameArr = partnerArr.map((id) => {

@@ -819,9 +819,6 @@ font-size: 16px;
 
 }
 
-/* .semiPrivate-block {
-  background: #ffffff;
-} */
 
 .groupClass {
   
@@ -872,7 +869,7 @@ font-size: 16px;
 }
 
 .agenda-lessons p { 
-  margin-top: 0.5rem;
+  margin: 0;
   margin-bottom: 0.5rem;
   margin-right: 1em;
   font-size: 0.9rem;

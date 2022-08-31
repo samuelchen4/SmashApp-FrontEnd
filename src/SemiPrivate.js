@@ -124,7 +124,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const getPartnerNamesString = () => {
     const partnerNameString = partnerNameArr
       .map((partnerInfo) => {
-        return `${partnerInfo.fn} ${partnerInfo.ln}`;
+        return ` ${partnerInfo.fn} ${partnerInfo.ln}`;
       })
       .join();
     setPartnerNames(partnerNameString);

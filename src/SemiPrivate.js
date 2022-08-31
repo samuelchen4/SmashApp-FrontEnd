@@ -117,34 +117,36 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const getFnLn = async (partnerId) => {
     let fn = '';
     let ln = '';
-    
-      await Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`).then(
-        (res) => {
-          fn = res.data.fn;
-          ln = res.data.ln;
-        }
-      );
 
-      console.log(fn, ln);
-      return `${fn} ${ln}`
-    } 
+    await Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`).then(
+      (res) => {
+        fn = res.data.fn;
+        ln = res.data.ln;
+      }
+    );
+
+    console.log(fn, ln);
+    return `${fn} ${ln}`;
   };
 
   const setAllPartnerNames = () => {
-    const partnerNames = partnerArr.filter(partnerId => partnerId).map(partnerId=>{
-      return getFnLn(partnerId)
-    }).join(', ')
+    const partnerNames = partnerArr
+      .filter((partnerId) => partnerId)
+      .map((partnerId) => {
+        return getFnLn(partnerId);
+      })
+      .join(', ');
     setPartnerNameArr(partnerNames);
-    
-//     const partnerNames = partnerArr.map((partnerId) => {
-//       if(partnerId) {
-// return getFnLn(partnerId);
-//       } else {
-//         return 
-//       }
-      
-//     });
-//     setPartnerNameArr(partnerNames);
+
+    //     const partnerNames = partnerArr.map((partnerId) => {
+    //       if(partnerId) {
+    // return getFnLn(partnerId);
+    //       } else {
+    //         return
+    //       }
+
+    //     });
+    //     setPartnerNameArr(partnerNames);
   };
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;

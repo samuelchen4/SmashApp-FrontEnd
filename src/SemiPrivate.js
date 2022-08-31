@@ -137,17 +137,18 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       })
       .join(', ');
     setPartnerNameArr(partnerNames);
-
-    //     const partnerNames = partnerArr.map((partnerId) => {
-    //       if(partnerId) {
-    // return getFnLn(partnerId);
-    //       } else {
-    //         return
-    //       }
-
-    //     });
-    //     setPartnerNameArr(partnerNames);
+    console.log(partnerNames);
   };
+  //     const partnerNames = partnerArr.map((partnerId) => {
+  //       if(partnerId) {
+  // return getFnLn(partnerId);
+  //       } else {
+  //         return
+  //       }
+
+  //     });
+  //     setPartnerNameArr(partnerNames);
+
   // const changePurchaseHandled = () => {
   //   let newPurchaseHandled = purchaseHandled;
   //   if (newPurchaseHandled === 0) {
@@ -265,8 +266,8 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
         <div className='lesson-info' disabled={isDisabled}>
           <p>{typeName}</p>
           <p className='lesson-time'>duration: {duration}</p>
-          <p>{/* {partnerName1} {partnerName2} {partnerName3} */}</p>
         </div>
+        <p>{partnerNames}</p>
         <div className='agenda-main-action'>
           <button className='btn' onClick={inputSale} disabled={isDisabled}>
             Came

@@ -89,9 +89,9 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const userId = user_id;
   const purchaseId = purchase_id;
   const typeName = type_name;
-  // const partner1Id = partner1_id;
-  // const partner2Id = partner2_id;
-  // const partner3Id = partner3_id;
+  const partner1Id = partner1_id;
+  const partner2Id = partner2_id;
+  const partner3Id = partner3_id;
   // const partnerArr = [
   //   { partnerId: partner1_id, fn: '', ln: '' },
   //   { partnerId: partner2_id, fn: '', ln: '' },
@@ -114,31 +114,17 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const [partnerNameArr, setPartnerNameArr] = useState('');
 
   //get first and last name based on id
-  const getFnLn = async (partnerId) => {
-    let fn = '';
-    let ln = '';
-
-    await Axios.get(`${domain}/agenda/private/partnerInfo/${partnerId}`).then(
-      (res) => {
-        fn = res.data.fn;
-        ln = res.data.ln;
-      }
-    );
-
-    console.log(fn, ln);
-    return `${fn} ${ln}`;
+  const getPartnerNames = () => {
+    Axios.get(
+      `${domain}/agenda/private/partnerInfo/${partner1Id}/${partner2Id}/${partner3Id}`
+    ).then((res) => {
+      setPartnerNameArr(res.data);
+    });
   };
 
-  const setAllPartnerNames = async () => {
-    const partnerNames = partnerArr
-      .filter((partnerId) => partnerId)
-      .map((partnerId) => {
-        const partnerName = await getFnLn(partnerId)
-        return partnerName
-      })
-      .join(', ');
-    setPartnerNameArr(partnerNames);
-    console.log(partnerNames);
+  const getPartnerNamesString = () => {
+    const partnerNameString = partnerNameArr.join(', ');
+    setPartnerNames(partnerNameString);
   };
   //     const partnerNames = partnerArr.map((partnerId) => {
   //       if(partnerId) {
@@ -208,8 +194,12 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   };
 
   useEffect(() => {
-    setAllPartnerNames();
+    getPartnerNames();
   }, []);
+
+  useEffect(() => {
+    getPartnerNamesString();
+  }, [partnerNameArr]);
 
   // const getPartnerName = () => {
   //   const partnerNameArr = partnerArr.map((id) => {

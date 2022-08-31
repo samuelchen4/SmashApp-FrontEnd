@@ -129,11 +129,11 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     return `${fn} ${ln}`;
   };
 
-  const setAllPartnerNames = () => {
+  const setAllPartnerNames = async () => {
     const partnerNames = partnerArr
       .filter((partnerId) => partnerId)
       .map((partnerId) => {
-        return getFnLn(partnerId);
+        return await getFnLn(partnerId);
       })
       .join(', ');
     setPartnerNameArr(partnerNames);

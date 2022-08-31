@@ -98,8 +98,6 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   //   { partnerId: partner3_id, fn: '', ln: '' },
   // ];
 
-  const partnerArr = [partner1_id, partner2_id, partner3_id];
-
   // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);
   const [isExecuted, setIsExecuted] = useState(false);
@@ -111,13 +109,14 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   // const [partnerName1, setPartnerName1] = useState('');
   // const [partnerName2, setPartnerName2] = useState('');
   // const [partnerName3, setPartnerName3] = useState('');
-  const [partnerNameArr, setPartnerNameArr] = useState('');
+  const [partnerNameArr, setPartnerNameArr] = useState([]);
 
   //get first and last name based on id
   const getPartnerNames = () => {
     Axios.get(
       `${domain}/agenda/private/partnerInfo/${partner1Id}/${partner2Id}/${partner3Id}`
     ).then((res) => {
+      console.log(res.data);
       setPartnerNameArr(res.data);
     });
   };
@@ -202,6 +201,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   }, []);
 
   useEffect(() => {
+    console.log(partnerNameArr);
     getPartnerNamesString();
   }, [partnerNameArr]);
 

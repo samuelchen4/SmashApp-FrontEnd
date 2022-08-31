@@ -111,44 +111,47 @@ const Private = (privateLessonInfo) => {
       exit={{ opacity: 0 }}
       // className={`agenda-lessons`}
     >
-      <h5 disabled={isDisabled}>
-        {fn} {ln}
-      </h5>
-      <div className='lesson-info' disabled={isDisabled}>
-        <p>{typeName}</p>
-        <p className='lesson-time'>duration: {duration}</p>
-      </div>
-      <div className='agenda-main-action'>
-        <button className='btn' onClick={inputSale} disabled={isDisabled}>
-          Came
-        </button>
-        <button
-          className='btn'
-          disabled={isDisabled}
-          onClick={() => {
-            setIsNoShowOpen(!isNoShowOpen);
-          }}
-        >
-          No Show
-        </button>
-        <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
-          <i class='bx bx-undo'></i>
-        </button>
-      </div>
-      <AnimatePresence>
-        {isNoShowOpen && (
-          <div className='creditForm'>
-            <Credit
-              userId={userId}
-              purchaseId={purchaseId}
-              lessonPrice={priceWithDiscountIncluded}
-              paid={paid}
-              setIsNoShowOpen={setIsNoShowOpen}
-              setIsDisabled={setIsDisabled}
-            />
-          </div>
-        )}
-      </AnimatePresence>
+      {/* test to see if this section tag does anything weird. used to add className */}
+      <section className='private'>
+        <h5 disabled={isDisabled}>
+          {fn} {ln}
+        </h5>
+        <div className='lesson-info' disabled={isDisabled}>
+          <p>{typeName}</p>
+          <p className='lesson-time'>duration: {duration}</p>
+        </div>
+        <div className='agenda-main-action'>
+          <button className='btn' onClick={inputSale} disabled={isDisabled}>
+            Came
+          </button>
+          <button
+            className='btn'
+            disabled={isDisabled}
+            onClick={() => {
+              setIsNoShowOpen(!isNoShowOpen);
+            }}
+          >
+            No Show
+          </button>
+          <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
+            <i class='bx bx-undo'></i>
+          </button>
+        </div>
+        <AnimatePresence>
+          {isNoShowOpen && (
+            <div className='creditForm'>
+              <Credit
+                userId={userId}
+                purchaseId={purchaseId}
+                lessonPrice={priceWithDiscountIncluded}
+                paid={paid}
+                setIsNoShowOpen={setIsNoShowOpen}
+                setIsDisabled={setIsDisabled}
+              />
+            </div>
+          )}
+        </AnimatePresence>
+      </section>
     </motion.section>
   );
 };

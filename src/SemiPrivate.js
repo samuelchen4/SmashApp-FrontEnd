@@ -113,11 +113,11 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   const [partnerNameArr, setPartnerNameArr] = useState([]);
 
   //get first and last name based on id
-  const getFnLn = () => {
+  const getFnLn = async () => {
     const purchaseId = partner1_id;
     let fn = '';
     let ln = '';
-    Axios.get(`${domain}/agenda/private/partnerInfo/${purchaseId}`).then(
+    await Axios.get(`${domain}/agenda/private/partnerInfo/${purchaseId}`).then(
       (res) => {
         fn = res.data.fn;
         ln = res.data.ln;
@@ -166,10 +166,8 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
 
   const inputSale = () => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
-      body: {
-        attended: 1,
-        lessonPrice: priceWithDiscountIncluded,
-      },
+      attended: 1,
+      lessonPrice: priceWithDiscountIncluded,
     })
       .then((res) => {
         console.log(res);

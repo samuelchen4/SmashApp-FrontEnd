@@ -737,7 +737,7 @@ font-size: 16px;
 /* -------SEMI-PRIVATE--------- */
 /* -------RELATED--------- */
 /* -------STYLES--------- */
-.semiPrivate {
+/* .semiPrivate {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -752,7 +752,7 @@ font-size: 16px;
   padding: 0.5em;
   flex-grow: 1;
   margin-right: 0.25em;
-}
+} */
 
 .semiPrivate h5 {
   background: var(--semiPrivate);

@@ -271,7 +271,7 @@ const Agenda = () => {
                     layout
                     key={lesson.purchase_id}
                     whileHover={{ scale: 1.03 }}
-                    className='agenda-lessons semiPrivate-block'
+                    className='agenda-lessons'
                   >
                     <AnimatePresence>
                       <SemiPrivate {...lesson} />

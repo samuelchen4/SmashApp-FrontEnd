@@ -133,7 +133,8 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     const partnerNames = partnerArr
       .filter((partnerId) => partnerId)
       .map((partnerId) => {
-        return await getFnLn(partnerId);
+        const partnerName = await getFnLn(partnerId)
+        return partnerName
       })
       .join(', ');
     setPartnerNameArr(partnerNames);

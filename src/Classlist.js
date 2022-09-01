@@ -169,18 +169,26 @@ const Classlist = (classlistInfo) => {
     createClasslistTable();
   }, [isChecked]);
 
-  // const submitAttendance = () => {
-  //   //for new db change purchase to attended and handled
-  //   // e.preventDefault();
-  //   isChecked.map((student) => {
-  //     changePurchaseHandled(student);
-  //     Axios.put(`${domain}/agenda/classlist/submit`, {
-  //       purchase,
-  //     })
-  //       .then((res) => console.log(res))
-  //       .catch((err) => console.log(err));
-  //   });
-  // };
+  const submitAttendance = () => {
+    //for new db change purchase to attended and handled
+    // e.preventDefault();
+    isChecked.map((student) => {
+      const purchaseId = student.purchaseId;
+
+      const attended = student.attended;
+      const purchaseHandled = student.purchaseHandled;
+      const paid = student.paid;
+      const lessonPrice = student.priceWithDiscountIncluded;
+      Axios.put(`${domain}/agenda/group/classlist/${purchaseId}/submit`, {
+        attended,
+        purchaseHandled,
+        paid,
+        lessonPrice,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    });
+  };
 
   return (
     <motion.div
@@ -215,7 +223,7 @@ const Classlist = (classlistInfo) => {
         <button
           className='classlist-btn'
           type='submit'
-          // onClick={() => submitAttendance()}
+          onClick={() => submitAttendance()}
         >
           submit
         </button>

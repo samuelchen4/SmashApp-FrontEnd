@@ -155,13 +155,6 @@ const User = () => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    getUserData();
-    // getAllUsers();
-    // getLessonAmounts();
-    // getCredits();
-  }, []);
-
   const renderPurchases = () => {
     setPurchaseTable(
       purchaseInfo.map((purchase) => {
@@ -244,6 +237,10 @@ const User = () => {
 
     // setLessonPrice(lessonP[0]);
   };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   useEffect(() => {
     renderPurchases();

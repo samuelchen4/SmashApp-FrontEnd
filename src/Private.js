@@ -118,7 +118,7 @@ const Private = (privateLessonInfo) => {
         </h5>
         <div className='lesson-info' disabled={isDisabled}>
           <p>{typeName}</p>
-          <p className='lesson-time'>duration: {duration}</p>
+          <p className='lesson-time'>Duration: {duration}</p>
         </div>
         <div className='agenda-main-action'>
           <button className='btn' onClick={inputSale} disabled={isDisabled}>

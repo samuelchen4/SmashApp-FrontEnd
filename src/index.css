@@ -78,6 +78,9 @@ button:hover {
   
 }
 
+.bold600 {
+  font-weight: 600;
+}
 
 /* -------NAVBAR--------- */
 /* -------RELATED--------- */
@@ -795,6 +798,13 @@ font-size: 16px;
   cursor: pointer;
 }
 
+.agenda-lessons > * {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  /* margin-right: 1em; */
+  /* font-size: 0.9rem; */
+}
+
 .undoBtn {
   /* flex-grow: 0.25; */
   padding: 0.25em;
@@ -860,24 +870,22 @@ font-size: 16px;
 
 .lesson-info {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  margin-top: 0;
+  margin: 0;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+  margin-bottom: 0.5rem;
   line-height: 1.5;
   letter-spacing: 0.5px;
-}
-
-.agenda-lessons p { 
-  margin: 0;
-  margin-bottom: 0.5rem;
-  margin-right: 1em;
   font-size: 0.9rem;
 }
 
-.lesson-info p:last-of-type {
+
+
+/* .lesson-info p:last-of-type {
   margin-right: 0;
-}
+} */
 
 .agenda-main-action {
   display: flex;

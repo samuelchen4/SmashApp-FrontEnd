@@ -5,25 +5,33 @@ import LessonsTable from './LessonsTable';
 import Axios from 'axios';
 
 const PaymentsOwed = (student) => {
-  const { user_id, fn, ln, email, phone, dob } = student;
+  const { user_id, fn, ln, email, phone, dob, contacted } = student;
+  const userId = user_id;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isExpanded, setIsExpanded] = useState(false);
   // const [userInfo, setUserInfo] = useState('');
   const [lessonsInfo, setLessonsInfo] = useState([]);
   const [amountOwed, setAmountOwed] = useState(0);
   const [credit, setCredit] = useState(0);
-  const [contacted, setContacted] = useState(false);
+  const [didContact, setDidContact] = useState(contacted);
   // const [overdueLessonsInfo, setOverdueLessonsInfo] = useState([]);
 
   //changes opacity of lessons based on action
-  const [isExecuted, setIsExecuted] = useState(false);
-  let actionExecuted = isExecuted ? 'good' : '';
+  // const [isExecuted, setIsExecuted] = useState(false);
+  let actionExecuted = contacted ? 'good' : '';
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
-  const haveContacted = () => {
-    setIsExecuted(!isExecuted);
+  // const haveContacted = () => {
+  //   setIsExecuted(!isExecuted);
+  // };
+
+  // change contactedStatus on DB
+  const changeContactedStatus = () => {
+    Axios.put(`${domain}/paytracker/${userId}/changeContacted`, {
+      contactedStatus: !contacted,
+    }).then(setDidContact(!contacted));
   };
 
   // const calcAmountOwed = () =>
@@ -94,10 +102,10 @@ const PaymentsOwed = (student) => {
         <p>Amount Owed: ${amountOwed}</p>
         {credit ? <p>Credit: ${credit}</p> : <p>Credit: $0</p>}
         <div className='action-buttons'>
-          <button onClick={haveContacted}>
+          <button onClick={changeContactedStatus}>
             <i class='bx bx-check'></i>
           </button>
-          <button onCLick={haveContacted}>
+          <button onCLick={changeContactedStatus}>
             <i class='bx bx-purchase-tag-alt'></i>
           </button>
           <button onClick={toggleExpand}>

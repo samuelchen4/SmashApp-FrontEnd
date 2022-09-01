@@ -834,7 +834,6 @@ font-size: 16px;
 
 
 .agenda-lessons h5 {
-  margin: 0;
   padding: 0.25rem 0.25rem 0.25rem 0.25rem;
   font-size: 1.25rem;
   
@@ -873,14 +872,14 @@ font-size: 16px;
 
 .lesson-info > * {
   margin: 0;
-  margin-bottom: 0.25em;
+  margin-bottom: 0.5em;
 }
 
 
 
-/* .lesson-info p:last-of-type {
-  margin-right: 0;
-} */
+.lesson-info > *:last-child {
+  margin-bottom: 0;
+}
 
 .agenda-main-action {
   display: flex;

@@ -18,7 +18,7 @@ const PaymentsOwed = (student) => {
 
   //changes opacity of lessons based on action
   // const [isExecuted, setIsExecuted] = useState(false);
-  let actionExecuted = contacted ? 'good' : '';
+  let actionExecuted = didContact ? 'good' : '';
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -29,7 +29,7 @@ const PaymentsOwed = (student) => {
 
   // change contactedStatus on DB
   const changeContactedStatus = () => {
-    Axios.put(`${domain}/paytracker/${userId}/changeContacted`, {
+    Axios.put(`${domain}/paytracker/user/${userId}/changeContacted`, {
       contactedStatus: !contacted,
     }).then(setDidContact(!contacted));
   };

@@ -260,7 +260,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
         </h5>
         <div className='lesson-info' disabled={isDisabled}>
           <p>
-            <span className='bold600'>{typeName}</span>
+            <span className='bold600'>Lesson Type:</span> {typeName}
           </p>
           <p>
             <span className='bold600'>Partners:</span> {partnerNames}

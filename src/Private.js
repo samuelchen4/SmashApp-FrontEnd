@@ -118,7 +118,7 @@ const Private = (privateLessonInfo) => {
         </h5>
         <div className='lesson-info' disabled={isDisabled}>
           <p>
-            <span className='bold600'>{typeName}</span>
+            <span className='bold600'>Lesson Type:</span> {typeName}
           </p>
           <p className='lesson-time'>
             <span className='bold600'>Duration:</span> {duration}

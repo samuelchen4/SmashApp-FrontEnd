@@ -14,7 +14,6 @@ const Classlist = (classlistInfo) => {
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
-  // const [classlist, setClasslist] = useState([]);
   const [isChecked, setIsChecked] = useState([]);
   const [isDisabled, setIsDisabled] = useState(0);
   let usersId = [];
@@ -70,29 +69,31 @@ const Classlist = (classlistInfo) => {
     //   );
     //   setUserIdArr(usersId);
     // };
-    classlist.map((student, index) => {
-      const { fn, ln, email, phone, purchase_id, paid, attended } = student;
-      const purchaseId = purchase_id;
-      return (
-        <tr key={purchaseId}>
-          <td>
-            {fn} {ln}
-          </td>
-          <td>{phone}</td>
-          <td>{email}</td>
-          <td>{paid ? `Yes` : `No`}</td>
-          <td>
-            <input
-              type='checkbox'
-              name='user'
-              value={purchaseId}
-              checked={isChecked[index].attended}
-              onChange={() => handleCheckbox(index)}
-            />
-          </td>
-        </tr>
-      );
-    });
+    setClasslistTable(
+      classlist.map((student, index) => {
+        const { fn, ln, email, phone, purchase_id, paid, attended } = student;
+        const purchaseId = purchase_id;
+        return (
+          <tr key={purchaseId}>
+            <td>
+              {fn} {ln}
+            </td>
+            <td>{phone}</td>
+            <td>{email}</td>
+            <td>{paid ? `Yes` : `No`}</td>
+            <td>
+              <input
+                type='checkbox'
+                name='user'
+                value={purchaseId}
+                checked={isChecked[index].attended}
+                onChange={() => handleCheckbox(index)}
+              />
+            </td>
+          </tr>
+        );
+      })
+    );
   };
 
   const copyEmails = () => {
@@ -203,7 +204,7 @@ const Classlist = (classlistInfo) => {
               <td>Attended</td>
             </tr>
           </thead>
-          <tbody>{classlist}</tbody>
+          <tbody>{classlistTable}</tbody>
         </table>
         <ReactToPrint
           trigger={() => <button className='classlist-btn'>print</button>}

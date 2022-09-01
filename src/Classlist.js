@@ -71,7 +71,7 @@ const Classlist = (classlistInfo) => {
     // };
     setClasslistTable(
       classlist.map((student, index) => {
-        const { fn, ln, email, phone, purchase_id, paid, attended } = student;
+        const { fn, ln, email, phone, purchase_id, paid } = student;
         const purchaseId = purchase_id;
         return (
           <tr key={purchaseId}>

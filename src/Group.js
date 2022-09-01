@@ -1,5 +1,6 @@
 //AGENDA SUB COMPONENT FOR GROUP CLASSES
 import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 import PropTypes from 'prop-types';
 import Classlist from './Classlist';
 import AddStudent from './AddStudent';
@@ -7,16 +8,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PieChart from './PieChart';
 
 const Group = (groupInfo) => {
-  const {
-    type_name,
-    students,
-    time,
-    type_id,
-    user_id,
-    selectedDate,
-    price,
-    capacity,
-  } = groupInfo;
+  const { type_name, duration, type_id, scheduleddate, capacity } = groupInfo;
+  const lessonType = type_id;
+  const typeName = type_name;
+  const lessonDate = scheduleddate;
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
+
   // console.log(Array.isArray(students));
   //if classlist is open or not
   const [isOpenClasslist, setIsOpenClasslist] = useState(false);
@@ -25,12 +22,28 @@ const Group = (groupInfo) => {
 
   const [addStudentClicked, setAddStudentClicked] = useState(false);
   const [amountStudents, setAmountStudents] = useState(0);
-
-  const [userIdArr, setUserIdArr] = useState([]);
+  const [classlist, setClasslist] = useState([]);
+  const [users, setUsers] = useState([]);
 
   //changes opacity of lessons based on action
   const [isExecuted, setIsExecuted] = useState(false);
   let actionExecuted = isExecuted ? 'Fade' : '';
+
+  const getClasslist = () => {
+    Axios.get(`${domain}/agenda/group/classlist/${lessonType}/${lessonDate}`)
+      .then((res) => {
+        console.log(res.data);
+        setClasslist(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getUsers = () => {
+    Axios.get(`${domain}/users`).then((res) => {
+      console.log(res.data);
+      setUsers(res.data);
+    });
+  };
 
   const displayClasslist = (e) => {
     e.preventDefault();
@@ -42,22 +55,10 @@ const Group = (groupInfo) => {
     setIsOpenAddStudent(!isOpenAddStudent);
   };
 
-  // const getNumberStudents = () => {
-  //   Axios.get(`${domain}/agenda/group/capacity`, {
-  //     params: {
-  //       type_id,
-  //     },
-  //   }).then((res) => console.log(res));
-  // };
-
-  // useEffect(() => {
-  //   const addStudent = () => {
-  //     const newStudent = { name: studentInfo, attendance: true };
-  //     students.push(newStudent);
-  //     console.log('added user');
-  //   };
-  //   addStudent(studentInfo);
-  // }, [studentInfo]);
+  useEffect(() => {
+    getClasslist();
+    getUsers();
+  }, []);
 
   return (
     <motion.section
@@ -68,12 +69,12 @@ const Group = (groupInfo) => {
       className={` groupClass`}
     >
       <div className='title'>
-        <h5>{type_name}</h5>
+        <h5>{typeName}</h5>
         <PieChart amountStudents={amountStudents} capacity={capacity} />
       </div>
 
       <div className='lesson-info'>
-        <p className='lesson-time'>{time}</p>
+        <p className='lesson-time'>{duration}</p>
       </div>
       <div className='agenda-main-action'>
         <button className='btn' onClick={displayAddUser}>
@@ -94,25 +95,28 @@ const Group = (groupInfo) => {
         <AnimatePresence>
           {isOpenAddStudent && (
             <AddStudent
-              typeId={type_id}
-              selectedDate={selectedDate}
+              lessonType={lessonType}
+              lessonDate={lessonDate}
+              users={users}
+              setUsers={setUsers}
               setAddStudentClicked={setAddStudentClicked}
-              userIdArr={userIdArr}
+              setClasslist={setClasslist}
             />
           )}
         </AnimatePresence>
         <AnimatePresence>
           {isOpenClasslist && (
             <Classlist
-              students={students}
-              type_id={type_id}
-              typeName={type_name}
-              selectedDate={selectedDate}
+              lessonType={lessonType}
+              typeName={typeName}
+              lessonDate={lessonDate}
               addStudentClicked={addStudentClicked}
               setAddStudentClicked={setAddStudentClicked}
               setAmountStudents={setAmountStudents}
-              setUserIdArr={setUserIdArr}
-              price={price}
+              users={users}
+              setUsers={setUsers}
+              classlist={classlist}
+              setClasslist={setClasslist}
             />
           )}
         </AnimatePresence>
@@ -122,7 +126,7 @@ const Group = (groupInfo) => {
 };
 
 Group.defaultProps = {
-  time: 'no time',
+  // time: 'no time',
   students: false,
 };
 

@@ -300,7 +300,7 @@ const Agenda = () => {
                     className='agenda-lessons'
                   >
                     <AnimatePresence>
-                      <Group {...lesson} selectedDate={selectedDate} />
+                      <Group {...lesson} />
                     </AnimatePresence>
                   </motion.li>
                 );

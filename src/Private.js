@@ -117,8 +117,12 @@ const Private = (privateLessonInfo) => {
           {fn} {ln}
         </h5>
         <div className='lesson-info' disabled={isDisabled}>
-          <p>{typeName}</p>
-          <p className='lesson-time'>Duration: {duration}</p>
+          <p>
+            <span className='bold600'>{typeName}</span>
+          </p>
+          <p className='lesson-time'>
+            <span className='bold600'>Duration:</span> {duration}
+          </p>
         </div>
         <div className='agenda-main-action'>
           <button className='btn' onClick={inputSale} disabled={isDisabled}>

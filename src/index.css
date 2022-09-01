@@ -808,7 +808,8 @@ font-size: 16px;
 }
 
 .private > *,
-.semiPrivate > * {
+.semiPrivate > *, 
+.groupLesson > * {
   margin: 0;
   margin-bottom: 0.5rem;
   /* margin-right: 1em; */
@@ -816,7 +817,8 @@ font-size: 16px;
 }
 
 .private > *:last-child,
-.semiPrivate > *:last-child {
+.semiPrivate > *:last-child,
+.groupLesson > *:last-child {
   margin-bottom: 0;
 }
 
@@ -867,7 +869,7 @@ font-size: 16px;
   margin-right: 0.25rem;
   /* line-height: 1.5; */
   letter-spacing: 0.5px;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .lesson-info > * {

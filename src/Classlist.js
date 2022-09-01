@@ -13,7 +13,7 @@ const Classlist = (classlistInfo) => {
     setClasslist,
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
-  // const [classlistArr, setClasslistArr] = useState([]);
+  const [classlistTable, setClasslistTable] = useState([]);
   // const [classlist, setClasslist] = useState([]);
   const [isChecked, setIsChecked] = useState([]);
   const [isDisabled, setIsDisabled] = useState(0);
@@ -42,33 +42,58 @@ const Classlist = (classlistInfo) => {
   //   });
   // };
 
-  // const renderClasslist = () => {
-  //   setClasslist(
-  //     classlistArr.map((student, index) => {
-  //       const { fn, ln, email, phone, user_id } = student;
-  //       usersId.push(user_id);
-  //       return (
-  //         <tr key={user_id}>
-  //           <td>
-  //             {fn} {ln}
-  //           </td>
-  //           <td>
-  //             <input
-  //               type='checkbox'
-  //               name='user'
-  //               value={user_id}
-  //               checked={isChecked[index].attended}
-  //               onChange={() => handleCheckbox(index)}
-  //             />
-  //           </td>
-  //           <td>{phone}</td>
-  //           <td>{email}</td>
-  //         </tr>
-  //       );
-  //     })
-  //   );
-  //   setUserIdArr(usersId);
-  // };
+  const createClasslistTable = () => {
+    // const renderClasslist = () => {
+    //   setClasslist(
+    //     classlistArr.map((student, index) => {
+    //       const { fn, ln, email, phone, user_id } = student;
+    //       usersId.push(user_id);
+    //       return (
+    //         <tr key={user_id}>
+    //           <td>
+    //             {fn} {ln}
+    //           </td>
+    //           <td>
+    // <input
+    //   type='checkbox'
+    //   name='user'
+    //   value={user_id}
+    //   checked={isChecked[index].attended}
+    //   onChange={() => handleCheckbox(index)}
+    // />
+    //           </td>
+    //           <td>{phone}</td>
+    //           <td>{email}</td>
+    //         </tr>
+    //       );
+    //     })
+    //   );
+    //   setUserIdArr(usersId);
+    // };
+    classlist.map((student, index) => {
+      const { fn, ln, email, phone, purchase_id, paid, attended } = student;
+      const purchaseId = purchase_id;
+      return (
+        <tr key={purchaseId}>
+          <td>
+            {fn} {ln}
+          </td>
+          <td>{phone}</td>
+          <td>{email}</td>
+          <td>{paid ? `Yes` : `No`}</td>
+          <td>
+            <input
+              type='checkbox'
+              name='user'
+              value={purchaseId}
+              checked={isChecked[index].attended}
+              onChange={() => handleCheckbox(index)}
+            />
+          </td>
+        </tr>
+      );
+    });
+  };
 
   const copyEmails = () => {
     //copies all the emails and commas seperates them
@@ -101,67 +126,47 @@ const Classlist = (classlistInfo) => {
     navigator.clipboard.writeText(copiedPhoneNumbers);
   };
 
-  // const handleCheckbox = (position) => {
-  //   const updatedCheckedState = isChecked.map((user, index) =>
-  //     index === position
-  //       ? {
-  //           userId: user.userId,
-  //           purchaseId: user.purchaseId,
-  //           paid: user.paid,
-  //           attended: !user.attended,
-  //           purchaseHandled: user.purchaseHandled,
-  //         }
-  //       : {
-  //           userId: user.userId,
-  //           purchaseId: user.purchaseId,
-  //           paid: user.paid,
-  //           attended: user.attended,
-  //           purchaseHandled: user.purchaseHandled,
-  //         }
-  //   );
-  //   setIsChecked(updatedCheckedState);
-  // };
+  const handleCheckbox = (position) => {
+    const updatedCheckedState = isChecked.map((user, index) =>
+      index === position
+        ? {
+            userId: user.userId,
+            purchaseId: user.purchaseId,
+            paid: user.paid,
+            attended: !user.attended,
+            purchaseHandled: user.purchaseHandled,
+            priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+          }
+        : {
+            userId: user.userId,
+            purchaseId: user.purchaseId,
+            paid: user.paid,
+            attended: user.attended,
+            purchaseHandled: user.purchaseHandled,
+            priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+          }
+    );
+    setIsChecked(updatedCheckedState);
+  };
 
-  // useEffect(() => {
-  //   setIsChecked(
-  //     classlist.map((user) => {
-  //       return {
-  //         userId: user.user_id,
-  //         purchaseId: user.purchase_id,
-  //         paid: user.paid,
-  //         attended: user.attended,
-  //         purchaseHandled: user.purchaseHandled,
-  //         priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-  //       };
-  //     })
-  //   );
-  // }, [classlist]);
+  useEffect(() => {
+    setIsChecked(
+      classlist.map((user) => {
+        return {
+          userId: user.user_id,
+          purchaseId: user.purchase_id,
+          paid: user.paid,
+          attended: user.attended,
+          purchaseHandled: user.purchaseHandled,
+          priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+        };
+      })
+    );
+  }, []);
 
-  // useEffect(() => {
-  //   renderClasslist();
-  // }, [isChecked]);
-
-  // const changePurchaseHandled = (student) => {
-  //   let newPurchaseHandled = student.purchaseHandled;
-  //   if (newPurchaseHandled === 0) {
-  //     newPurchaseHandled = 1;
-  //   } else if (newPurchaseHandled === 1) {
-  //     newPurchaseHandled = 0;
-  //   }
-  //   Axios.put(`${domain}/agenda/private/purchaseHandled`, {
-  //     purchaseId: student.purchaseId,
-  //     purchaseHandled: newPurchaseHandled,
-  //   })
-  //     .then((res) => {
-  //       console.log(res);
-  //       // if (isDisabled) {
-  //       //   setIsDisabled(0);
-  //       // } else if (!isDisabled) {
-  //       //   setIsDisabled(1);
-  //       // }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+  useEffect(() => {
+    createClasslistTable();
+  }, [isChecked]);
 
   // const submitAttendance = () => {
   //   //for new db change purchase to attended and handled
@@ -188,13 +193,14 @@ const Classlist = (classlistInfo) => {
           <thead className='classlist-titles'>
             <tr>
               <td>Name</td>
-              <td>Attended</td>
               <td>
                 <button onClick={copyPhoneNumbers}>Phone</button>
               </td>
               <td>
                 <button onClick={copyEmails}>Email</button>
               </td>
+              <td>paid</td>
+              <td>Attended</td>
             </tr>
           </thead>
           <tbody>{classlist}</tbody>

@@ -68,59 +68,61 @@ const Group = (groupInfo) => {
       exit={{ opacity: 0 }}
       className={` groupClass`}
     >
-      <div className='title'>
-        <h5>{typeName}</h5>
-        <PieChart amountStudents={amountStudents} capacity={capacity} />
-      </div>
+      <section className='groupLesson'>
+        <div className='title'>
+          <h5>{typeName}</h5>
+          <PieChart amountStudents={amountStudents} capacity={capacity} />
+        </div>
 
-      <div className='lesson-info'>
-        <p className='lesson-time'>{duration}</p>
-      </div>
-      <div className='agenda-main-action'>
-        <button className='btn' onClick={displayAddUser}>
-          Add
-        </button>
-        <button className='btn' onClick={displayClasslist}>
-          Classlist
-        </button>
-        <button
-          className='undoBtn'
-          // disabled={!isDisabled}
-          // onClick={() => undo()}
-        >
-          <i class='bx bx-undo'></i>
-        </button>
-      </div>
-      <div className='lesson-addon'>
-        <AnimatePresence>
-          {isOpenAddStudent && (
-            <AddStudent
-              lessonType={lessonType}
-              lessonDate={lessonDate}
-              users={users}
-              setUsers={setUsers}
-              setAddStudentClicked={setAddStudentClicked}
-              setClasslist={setClasslist}
-            />
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {isOpenClasslist && (
-            <Classlist
-              lessonType={lessonType}
-              typeName={typeName}
-              lessonDate={lessonDate}
-              addStudentClicked={addStudentClicked}
-              setAddStudentClicked={setAddStudentClicked}
-              setAmountStudents={setAmountStudents}
-              users={users}
-              setUsers={setUsers}
-              classlist={classlist}
-              setClasslist={setClasslist}
-            />
-          )}
-        </AnimatePresence>
-      </div>
+        <div className='lesson-info'>
+          <p className='lesson-time'>{duration}</p>
+        </div>
+        <div className='agenda-main-action'>
+          <button className='btn' onClick={displayAddUser}>
+            Add
+          </button>
+          <button className='btn' onClick={displayClasslist}>
+            Classlist
+          </button>
+          <button
+            className='undoBtn'
+            // disabled={!isDisabled}
+            // onClick={() => undo()}
+          >
+            <i class='bx bx-undo'></i>
+          </button>
+        </div>
+        <div className='lesson-addon'>
+          <AnimatePresence>
+            {isOpenAddStudent && (
+              <AddStudent
+                lessonType={lessonType}
+                lessonDate={lessonDate}
+                users={users}
+                setUsers={setUsers}
+                setAddStudentClicked={setAddStudentClicked}
+                setClasslist={setClasslist}
+              />
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isOpenClasslist && (
+              <Classlist
+                lessonType={lessonType}
+                typeName={typeName}
+                lessonDate={lessonDate}
+                addStudentClicked={addStudentClicked}
+                setAddStudentClicked={setAddStudentClicked}
+                setAmountStudents={setAmountStudents}
+                users={users}
+                setUsers={setUsers}
+                classlist={classlist}
+                setClasslist={setClasslist}
+              />
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
     </motion.section>
   );
 };

@@ -70,7 +70,7 @@ const Group = (groupInfo) => {
     >
       <section className='groupLesson'>
         <div className='title'>
-          <h5>{typeName}</h5>
+          <h5>{lessonName}</h5>
           <PieChart amountStudents={amountStudents} capacity={capacity} />
         </div>
 

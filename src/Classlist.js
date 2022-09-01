@@ -208,7 +208,7 @@ const Classlist = (classlistInfo) => {
         <button
           className='classlist-btn'
           type='submit'
-          onClick={() => submitAttendance()}
+          // onClick={() => submitAttendance()}
         >
           submit
         </button>

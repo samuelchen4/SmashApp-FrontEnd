@@ -10,24 +10,24 @@ import PieChart from './PieChart';
 const Group = (groupInfo) => {
   const { type_name, duration, type_id, scheduleddate, capacity } = groupInfo;
   const lessonType = type_id;
-  const typeName = type_name;
+  const lessonName = type_name;
   const lessonDate = scheduleddate;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
 
   // console.log(Array.isArray(students));
   //if classlist is open or not
-  const [isOpenClasslist, setIsOpenClasslist] = useState(false);
+  const [isOpenClasslist, setIsOpenClasslist] = useState(0);
   // if add users is open or not
-  const [isOpenAddStudent, setIsOpenAddStudent] = useState(false);
+  const [isOpenAddStudent, setIsOpenAddStudent] = useState(0);
 
-  const [addStudentClicked, setAddStudentClicked] = useState(false);
+  const [addStudentClicked, setAddStudentClicked] = useState(0);
   const [amountStudents, setAmountStudents] = useState(0);
   const [classlist, setClasslist] = useState([]);
   const [users, setUsers] = useState([]);
 
   //changes opacity of lessons based on action
-  const [isExecuted, setIsExecuted] = useState(false);
-  let actionExecuted = isExecuted ? 'Fade' : '';
+  // const [isExecuted, setIsExecuted] = useState(false);
+  // let actionExecuted = isExecuted ? 'Fade' : '';
 
   const getClasslist = () => {
     Axios.get(`${domain}/agenda/group/classlist/${lessonType}/${lessonDate}`)
@@ -109,7 +109,7 @@ const Group = (groupInfo) => {
             {isOpenClasslist && (
               <Classlist
                 lessonType={lessonType}
-                typeName={typeName}
+                lessonName={lessonName}
                 lessonDate={lessonDate}
                 addStudentClicked={addStudentClicked}
                 setAddStudentClicked={setAddStudentClicked}

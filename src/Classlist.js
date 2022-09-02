@@ -12,96 +12,22 @@ const Classlist = (classlistInfo) => {
     classlist,
     setClasslist,
     setIsDisabled,
+    isChecked,
+    setIsChecked,
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
-  const [isChecked, setIsChecked] = useState(
-    classlist.map((user) => {
-      return {
-        userId: user.user_id,
-        purchaseId: user.purchase_id,
-        paid: user.paid,
-        attended: user.attended,
-        purchaseHandled: user.purchaseHandled,
-        priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-      };
-    })
-  );
+
   let usersId = [];
 
   const componentRef = useRef();
-
-  // useEffect(() => {
-  // }, []);
 
   useEffect(() => {
     console.log(isChecked);
     createClasslistTable();
   }, [isChecked]);
 
-  // useEffect(() => {
-  //   getClasslist();
-  //   return () => {
-  //     setAddStudentClicked(false);
-  //   };
-  // }, [addStudentClicked]);
-  // console.log(classList);
-
-  // const getClasslist = () => {
-  //   Axios.get(`${domain}/agenda/classlist`, {
-  //     params: {
-  //       typeName: typeName,
-  //       date: selectedDate,
-  //     },
-  //   }).then((res) => {
-  //     // console.log(res.data);
-  //     setClasslistArr(res.data);
-  //     setAmountStudents(res.data.length);
-  //   });
-  // };
-
-  // method that gets the attended status based on purchaseId
-  // used to determine checked status in classlistTable
-  // const determineCheckedStatus = (purchaseId) => {
-  //   const attendedStatus = isChecked
-  //     .find((student) => {
-  //       return student.purchaseId === purchaseId;
-  //     })
-  //     .map((student) => {
-  //       return student.attended;
-  //     });
-  //   console.log(attendedStatus);
-  //   return attendedStatus[0] ? true : false;
-  // };
-
   const createClasslistTable = () => {
-    // const renderClasslist = () => {
-    //   setClasslist(
-    //     classlistArr.map((student, index) => {
-    //       const { fn, ln, email, phone, user_id } = student;
-    //       usersId.push(user_id);
-    //       return (
-    //         <tr key={user_id}>
-    //           <td>
-    //             {fn} {ln}
-    //           </td>
-    //           <td>
-    // <input
-    //   type='checkbox'
-    //   name='user'
-    //   value={user_id}
-    //   checked={isChecked[index].attended}
-    //   onChange={() => handleCheckbox(index)}
-    // />
-    //           </td>
-    //           <td>{phone}</td>
-    //           <td>{email}</td>
-    //         </tr>
-    //       );
-    //     })
-    //   );
-    //   setUserIdArr(usersId);
-    // };
     setClasslistTable(
       classlist.map((student, index) => {
         const { fn, ln, email, phone, purchase_id, paid } = student;

@@ -63,6 +63,7 @@ const Classlist = (classlistInfo) => {
   // method that gets the attended status based on purchaseId
   // used to determine checked status in classlistTable
   const determineCheckedStatus = (purchaseId) => {
+    console.log(purchaseId);
     const attendedStatus = isChecked.find((student) => {
       return student.purchaseId === purchaseId;
     }).attended;
@@ -180,6 +181,7 @@ const Classlist = (classlistInfo) => {
 
   //change checked status based on purchaseId
   const handleCheckbox = (purchaseId) => {
+    console.log(purchaseId);
     const updatedCheckedState = isChecked.map((user) =>
       user.purchaseId === purchaseId
         ? {
@@ -241,7 +243,7 @@ const Classlist = (classlistInfo) => {
               <td>
                 <button onClick={copyEmails}>Email</button>
               </td>
-              <td>paid</td>
+              <td>Paid</td>
               <td>Attended</td>
             </tr>
           </thead>

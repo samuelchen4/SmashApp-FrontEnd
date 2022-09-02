@@ -24,6 +24,8 @@ const Group = (groupInfo) => {
   const [addStudentClicked, setAddStudentClicked] = useState(0);
   const [amountStudents, setAmountStudents] = useState(0);
   const [classlist, setClasslist] = useState([]);
+  const [isChecked, setIsChecked] = useState([]);
+
   const [users, setUsers] = useState([]);
 
   //changes opacity of lessons based on action
@@ -35,6 +37,18 @@ const Group = (groupInfo) => {
       .then((res) => {
         // console.log(res.data);
         setClasslist(res.data);
+        setIsChecked(
+          res.data.map((user) => {
+            return {
+              userId: user.user_id,
+              purchaseId: user.purchase_id,
+              paid: user.paid,
+              attended: user.attended,
+              purchaseHandled: user.purchaseHandled,
+              priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+            };
+          })
+        );
         setIsDisabled(res.data[0].purchaseHandled ? true : false);
       })
       .catch((err) => console.log(err));
@@ -63,7 +77,15 @@ const Group = (groupInfo) => {
   }, []);
 
   const undoSubmitAttendace = () => {
-    setIsDisabled(false);
+    isChecked.map((student) => {
+      const purchaseId = student.purchaseId;
+      Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale`).then(
+        (res) => {
+          console.log(res);
+          setIsDisabled(false);
+        }
+      );
+    });
   };
 
   return (
@@ -116,6 +138,8 @@ const Group = (groupInfo) => {
                 setUsers={setUsers}
                 setAddStudentClicked={setAddStudentClicked}
                 setClasslist={setClasslist}
+                isChecked={isChecked}
+                setIsChecked={setIsChecked}
               />
             )}
           </AnimatePresence>
@@ -132,6 +156,8 @@ const Group = (groupInfo) => {
                 setUsers={setUsers}
                 classlist={classlist}
                 setClasslist={setClasslist}
+                isChecked={isChecked}
+                setIsChecked={setIsChecked}
                 setIsDisabled={setIsDisabled}
               />
             )}

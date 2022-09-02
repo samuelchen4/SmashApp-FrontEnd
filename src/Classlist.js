@@ -186,7 +186,7 @@ const Classlist = (classlistInfo) => {
             userId: user.userId,
             purchaseId: user.purchaseId,
             paid: user.paid,
-            attended: !user.attended,
+            attended: user.attended ? 0 : 1, //if the checked value is currently 0 change it to 1 and vise versa
             purchaseHandled: user.purchaseHandled,
             priceWithDiscountIncluded: user.priceWithDiscountIncluded,
           }

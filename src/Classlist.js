@@ -63,11 +63,15 @@ const Classlist = (classlistInfo) => {
   // method that gets the attended status based on purchaseId
   // used to determine checked status in classlistTable
   const determineCheckedStatus = (purchaseId) => {
-    console.log(purchaseId);
-    const attendedStatus = isChecked.find((student) => {
-      return student.purchaseId === purchaseId;
-    }).attended;
-    return attendedStatus ? true : false;
+    const attendedStatus = isChecked
+      .find((student) => {
+        return student.purchaseId === purchaseId;
+      })
+      .map((student) => {
+        return student.attended;
+      });
+    console.log(attendedStatus);
+    return attendedStatus[0] ? true : false;
   };
 
   const createClasslistTable = () => {
@@ -181,7 +185,6 @@ const Classlist = (classlistInfo) => {
 
   //change checked status based on purchaseId
   const handleCheckbox = (purchaseId) => {
-    console.log(purchaseId);
     const updatedCheckedState = isChecked.map((user) =>
       user.purchaseId === purchaseId
         ? {

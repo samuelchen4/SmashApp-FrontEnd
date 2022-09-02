@@ -120,7 +120,7 @@ const Classlist = (classlistInfo) => {
                 type='checkbox'
                 name='user'
                 value={purchaseId}
-                checked={false}
+                checked={isChecked[index].attended ? true : false}
                 onChange={() => handleCheckbox(index)}
               />
             </td>

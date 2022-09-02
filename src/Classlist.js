@@ -15,25 +15,24 @@ const Classlist = (classlistInfo) => {
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
-  const [isChecked, setIsChecked] = useState([]);
+  const [isChecked, setIsChecked] = useState(
+    classlist.map((user) => {
+      return {
+        userId: user.user_id,
+        purchaseId: user.purchase_id,
+        paid: user.paid,
+        attended: user.attended,
+        purchaseHandled: user.purchaseHandled,
+        priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+      };
+    })
+  );
   let usersId = [];
 
   const componentRef = useRef();
 
-  useEffect(() => {
-    setIsChecked(
-      classlist.map((user) => {
-        return {
-          userId: user.user_id,
-          purchaseId: user.purchase_id,
-          paid: user.paid,
-          attended: user.attended,
-          purchaseHandled: user.purchaseHandled,
-          priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-        };
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  // }, []);
 
   useEffect(() => {
     console.log(isChecked);
@@ -120,8 +119,8 @@ const Classlist = (classlistInfo) => {
                 type='checkbox'
                 name='user'
                 value={purchaseId}
-                // checked={isChecked[index].attended ? true : false}
-                checked={false}
+                checked={isChecked[index].attended ? true : false}
+                // checked={false}
                 onChange={() => handleCheckbox(index)}
               />
             </td>

@@ -36,6 +36,7 @@ const Classlist = (classlistInfo) => {
   }, []);
 
   useEffect(() => {
+    console.log(isChecked);
     createClasslistTable();
   }, [isChecked]);
 
@@ -62,17 +63,17 @@ const Classlist = (classlistInfo) => {
 
   // method that gets the attended status based on purchaseId
   // used to determine checked status in classlistTable
-  const determineCheckedStatus = (purchaseId) => {
-    const attendedStatus = isChecked
-      .find((student) => {
-        return student.purchaseId === purchaseId;
-      })
-      .map((student) => {
-        return student.attended;
-      });
-    console.log(attendedStatus);
-    return attendedStatus[0] ? true : false;
-  };
+  // const determineCheckedStatus = (purchaseId) => {
+  //   const attendedStatus = isChecked
+  //     .find((student) => {
+  //       return student.purchaseId === purchaseId;
+  //     })
+  //     .map((student) => {
+  //       return student.attended;
+  //     });
+  //   console.log(attendedStatus);
+  //   return attendedStatus[0] ? true : false;
+  // };
 
   const createClasslistTable = () => {
     // const renderClasslist = () => {
@@ -119,7 +120,7 @@ const Classlist = (classlistInfo) => {
                 type='checkbox'
                 name='user'
                 value={purchaseId}
-                checked={isChecked[index].attended ? true : false}
+                checked={false}
                 onChange={() => handleCheckbox(index)}
               />
             </td>

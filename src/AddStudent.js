@@ -60,32 +60,32 @@ const AddStudent = (propsFromGroup) => {
   //   setStudentEmail('');
   // };
 
-  const addStudentDB = () => {
-    if (!userIdArr.includes(Number(usersDropdownValue))) {
-      Axios.post(`${domain}/agenda/add`, {
-        // fn: studentfn,
-        // ln: studentln,
-        // phone: studentPhone,
-        // email: studentEmail,
-        // typeId: typeId,
-        // scheduledDate: selectedDate,
+  // const addStudentDB = () => {
+  //   if (!userIdArr.includes(Number(usersDropdownValue))) {
+  //     Axios.post(`${domain}/agenda/add`, {
+  //       // fn: studentfn,
+  //       // ln: studentln,
+  //       // phone: studentPhone,
+  //       // email: studentEmail,
+  //       // typeId: typeId,
+  //       // scheduledDate: selectedDate,
 
-        userId: usersDropdownValue,
-        scheduledDate: selectedDate,
-        typeId,
-      })
-        .then((res) => {
-          console.log(
-            `User ${usersDropdownValue} was added to ${typeId} on ${selectedDate}`
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (userIdArr.includes(Number(usersDropdownValue))) {
-      alert(`This user has already been added to this class!`);
-    }
-  };
+  //       userId: usersDropdownValue,
+  //       scheduledDate: selectedDate,
+  //       typeId,
+  //     })
+  //       .then((res) => {
+  //         console.log(
+  //           `User ${usersDropdownValue} was added to ${typeId} on ${selectedDate}`
+  //         );
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } else if (userIdArr.includes(Number(usersDropdownValue))) {
+  //     alert(`This user has already been added to this class!`);
+  //   }
+  // };
   // console.log(`${studentfn} ${studentln}`);
   // console.log(userIdArr);
   return (
@@ -94,7 +94,7 @@ const AddStudent = (propsFromGroup) => {
       initial={{ maxHeight: 0, opacity: 0 }}
       exit={{ maxHeight: 0, opacity: 0 }}
       transition={{ ease: 'linear', duration: 0.3 }}
-      onSubmit={onSubmit}
+      // onSubmit={onSubmit}
     >
       <div className='name'>
         {/* <div className='names'>

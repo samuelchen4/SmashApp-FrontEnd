@@ -19,6 +19,7 @@ const Group = (groupInfo) => {
   const [isOpenClasslist, setIsOpenClasslist] = useState(0);
   // if add users is open or not
   const [isOpenAddStudent, setIsOpenAddStudent] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [addStudentClicked, setAddStudentClicked] = useState(0);
   const [amountStudents, setAmountStudents] = useState(0);
@@ -34,6 +35,7 @@ const Group = (groupInfo) => {
       .then((res) => {
         console.log(res.data);
         setClasslist(res.data);
+        setIsDisabled(res.data[0].purchaseHandled ? true : false);
       })
       .catch((err) => console.log(err));
   };
@@ -60,6 +62,10 @@ const Group = (groupInfo) => {
     getUsers();
   }, []);
 
+  const undoSubmitAttendace = () => {
+    setIsDisabled(false);
+  };
+
   return (
     <motion.section
       // layout
@@ -78,16 +84,24 @@ const Group = (groupInfo) => {
           <p className='lesson-time'>{duration}</p>
         </div>
         <div className='agenda-main-action'>
-          <button className='btn' onClick={displayAddUser}>
+          <button
+            className='btn'
+            disabled={isDisabled}
+            onClick={displayAddUser}
+          >
             Add
           </button>
-          <button className='btn' onClick={displayClasslist}>
+          <button
+            className='btn'
+            disabled={isDisabled}
+            onClick={displayClasslist}
+          >
             Classlist
           </button>
           <button
             className='undoBtn'
-            // disabled={!isDisabled}
-            // onClick={() => undo()}
+            disabled={!isDisabled}
+            onClick={undoSubmitAttendace}
           >
             <i class='bx bx-undo'></i>
           </button>
@@ -118,6 +132,7 @@ const Group = (groupInfo) => {
                 setUsers={setUsers}
                 classlist={classlist}
                 setClasslist={setClasslist}
+                setIsDisabled={setIsDisabled}
               />
             )}
           </AnimatePresence>

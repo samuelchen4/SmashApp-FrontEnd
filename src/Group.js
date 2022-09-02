@@ -33,7 +33,7 @@ const Group = (groupInfo) => {
   const getClasslist = () => {
     Axios.get(`${domain}/agenda/group/classlist/${lessonType}/${lessonDate}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setClasslist(res.data);
         setIsDisabled(res.data[0].purchaseHandled ? true : false);
       })

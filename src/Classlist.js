@@ -11,11 +11,11 @@ const Classlist = (classlistInfo) => {
     setUsers,
     classlist,
     setClasslist,
+    setIsDisabled,
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
   const [isChecked, setIsChecked] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(0);
   let usersId = [];
 
   const componentRef = useRef();
@@ -226,6 +226,7 @@ const Classlist = (classlistInfo) => {
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     });
+    setIsDisabled(true);
   };
 
   return (
@@ -265,9 +266,9 @@ const Classlist = (classlistInfo) => {
         >
           submit
         </button>
-        <button className='undoBtn'>
+        {/* <button className='undoBtn'>
           <i class='bx bx-undo'></i>
-        </button>
+        </button> */}
       </div>
     </motion.div>
   );

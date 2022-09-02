@@ -119,8 +119,8 @@ const Classlist = (classlistInfo) => {
                 type='checkbox'
                 name='user'
                 value={purchaseId}
-                checked={() => determineCheckedStatus(purchaseId)}
-                onChange={() => handleCheckbox(purchaseId)}
+                checked={isChecked.attended ? true : false}
+                onChange={() => handleCheckbox(index)}
               />
             </td>
           </tr>
@@ -184,9 +184,9 @@ const Classlist = (classlistInfo) => {
   // };
 
   //change checked status based on purchaseId
-  const handleCheckbox = (purchaseId) => {
-    const updatedCheckedState = isChecked.map((user) =>
-      user.purchaseId === purchaseId
+  const handleCheckbox = (position) => {
+    const updatedCheckedState = isChecked.map((user, index) =>
+      index === position
         ? {
             userId: user.userId,
             purchaseId: user.purchaseId,

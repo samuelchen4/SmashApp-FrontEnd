@@ -4,21 +4,17 @@ import Axios from 'axios';
 import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const AddStudent = ({
-  typeId,
-  selectedDate,
-  setAddStudentClicked,
-  userIdArr,
-}) => {
-  // const { typeId, selectedDate } = type;
-  const domain = 'http://localhost:5000';
+const AddStudent = (propsFromGroup) => {
+  const { lessonType, lessonDate, users, setUsers, setClasslist } =
+    propsFromGroup;
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   // const currentDate = format(new Date(), 'yyyy-MM-dd');
   // console.log(selectedDate);
   // console.log(typeId);
-  const [studentfn, setStudentfn] = useState('');
-  const [studentln, setStudentln] = useState('');
-  const [studentPhone, setStudentPhone] = useState('');
-  const [studentEmail, setStudentEmail] = useState('');
+  // const [studentfn, setStudentfn] = useState('');
+  // const [studentln, setStudentln] = useState('');
+  // const [studentPhone, setStudentPhone] = useState('');
+  // const [studentEmail, setStudentEmail] = useState('');
 
   const [usersArr, setUsersArr] = useState([]);
   const [usersDropdown, setUsersDropdown] = useState([]);
@@ -52,17 +48,17 @@ const AddStudent = ({
     renderUsersDropdown();
   }, [usersArr]);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
 
-    addStudentDB();
-    setAddStudentClicked(true);
+  //   addStudentDB();
+  //   setAddStudentClicked(true);
 
-    setStudentfn('');
-    setStudentln('');
-    setStudentPhone('');
-    setStudentEmail('');
-  };
+  //   setStudentfn('');
+  //   setStudentln('');
+  //   setStudentPhone('');
+  //   setStudentEmail('');
+  // };
 
   const addStudentDB = () => {
     if (!userIdArr.includes(Number(usersDropdownValue))) {

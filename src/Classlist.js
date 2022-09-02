@@ -20,6 +20,25 @@ const Classlist = (classlistInfo) => {
 
   const componentRef = useRef();
 
+  useEffect(() => {
+    setIsChecked(
+      classlist.map((user) => {
+        return {
+          userId: user.user_id,
+          purchaseId: user.purchase_id,
+          paid: user.paid,
+          attended: user.attended,
+          purchaseHandled: user.purchaseHandled,
+          priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+        };
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    createClasslistTable();
+  }, [isChecked]);
+
   // useEffect(() => {
   //   getClasslist();
   //   return () => {
@@ -40,6 +59,15 @@ const Classlist = (classlistInfo) => {
   //     setAmountStudents(res.data.length);
   //   });
   // };
+
+  // method that gets the attended status based on purchaseId
+  // used to determine checked status in classlistTable
+  const determineCheckedStatus = (purchaseId) => {
+    const attendedStatus = isChecked.find((student) => {
+      return student.purchaseId === purchaseId;
+    }).attended;
+    return attendedStatus ? true : false;
+  };
 
   const createClasslistTable = () => {
     // const renderClasslist = () => {
@@ -86,8 +114,8 @@ const Classlist = (classlistInfo) => {
                 type='checkbox'
                 name='user'
                 value={purchaseId}
-                checked={isChecked[index].attended}
-                onChange={() => handleCheckbox(index)}
+                checked={() => determineCheckedStatus(purchaseId)}
+                onChange={() => handleCheckbox(purchaseId)}
               />
             </td>
           </tr>
@@ -127,9 +155,33 @@ const Classlist = (classlistInfo) => {
     navigator.clipboard.writeText(copiedPhoneNumbers);
   };
 
-  const handleCheckbox = (position) => {
-    const updatedCheckedState = isChecked.map((user, index) =>
-      index === position
+  // const handleCheckbox = (position) => {
+  //   const updatedCheckedState = isChecked.map((user, index) =>
+  //     index === position
+  //       ? {
+  //           userId: user.userId,
+  //           purchaseId: user.purchaseId,
+  //           paid: user.paid,
+  //           attended: !user.attended,
+  //           purchaseHandled: user.purchaseHandled,
+  //           priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+  //         }
+  //       : {
+  //           userId: user.userId,
+  //           purchaseId: user.purchaseId,
+  //           paid: user.paid,
+  //           attended: user.attended,
+  //           purchaseHandled: user.purchaseHandled,
+  //           priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+  //         }
+  //   );
+  //   setIsChecked(updatedCheckedState);
+  // };
+
+  //change checked status based on purchaseId
+  const handleCheckbox = (purchaseId) => {
+    const updatedCheckedState = isChecked.map((user) =>
+      user.purchaseId === purchaseId
         ? {
             userId: user.userId,
             purchaseId: user.purchaseId,
@@ -149,25 +201,6 @@ const Classlist = (classlistInfo) => {
     );
     setIsChecked(updatedCheckedState);
   };
-
-  useEffect(() => {
-    setIsChecked(
-      classlist.map((user) => {
-        return {
-          userId: user.user_id,
-          purchaseId: user.purchase_id,
-          paid: user.paid,
-          attended: user.attended,
-          purchaseHandled: user.purchaseHandled,
-          priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-        };
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    createClasslistTable();
-  }, [isChecked]);
 
   const submitAttendance = () => {
     //for new db change purchase to attended and handled

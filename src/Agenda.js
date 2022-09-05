@@ -216,18 +216,12 @@ const Agenda = () => {
               placeholder='search...'
               value={search}
               onChange={searchLesson}
-              className='custom-input'
             />
             <i class='bx bx-search-alt'></i>
           </form>
           <div className='sort-by'>
             <p>sort by: </p>
-            <select
-              name='sortby'
-              id='sortby'
-              onChange={sort}
-              className='custom-select'
-            >
+            <select name='sortby' id='sortby' onChange={sort}>
               <option value='all'>all</option>
               <option value='group'>group</option>
               <option value='private'>private</option>
@@ -239,7 +233,6 @@ const Agenda = () => {
           <AgendaDatePicker
             wrapperClassName='datePicker'
             setSelectedDate={setSelectedDate}
-            className='custom-select'
           />
         </section>
       </header>

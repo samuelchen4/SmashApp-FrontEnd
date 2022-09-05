@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
+import SelectSearch from 'react-select-search';
 
 const AddStudent = (propsFromGroup) => {
   const { lessonType, lessonDate, users, setUsers, setClasslist } =
@@ -16,20 +17,31 @@ const AddStudent = (propsFromGroup) => {
   // const [studentPhone, setStudentPhone] = useState('');
   // const [studentEmail, setStudentEmail] = useState('');
 
-  const [usersArr, setUsersArr] = useState([]);
+  // const [usersArr, setUsersArr] = useState([]);
   const [usersDropdown, setUsersDropdown] = useState([]);
   const [usersDropdownValue, setUsersDropdownValue] = useState(1);
 
   useEffect(() => {
-    getUsers();
+    setPartnerDropdownData();
   }, []);
 
-  const getUsers = () => {
-    //get Users for dropdown menu
-    Axios.get(`${domain}/navbar/addLesson/users`).then((res) => {
-      // console.log(res.data);
-      setUsersArr(res.data);
-    });
+  // const getUsers = () => {
+  //   //get Users for dropdown menu
+  //   Axios.get(`${domain}/navbar/addLesson/users`).then((res) => {
+  //     // console.log(res.data);
+  //     setUsersArr(res.data);
+  //   });
+  // };
+
+  const setPartnerDropdownData = () => {
+    setUsersDropdown(
+      users.map((user) => {
+        return {
+          name: `${user.fn} ${user.ln}`,
+          value: user.user_id,
+        };
+      })
+    );
   };
 
   const renderUsersDropdown = () => {
@@ -127,7 +139,7 @@ const AddStudent = (propsFromGroup) => {
           value={studentEmail}
           onChange={(e) => setStudentEmail(e.target.value)}
         /> */}
-        <label htmlFor='user'>User:</label>
+        {/* <label htmlFor='user'>User:</label>
         <select
           name='user'
           value={usersDropdownValue}
@@ -138,7 +150,8 @@ const AddStudent = (propsFromGroup) => {
           placeholder='names...'
         >
           {usersDropdown}
-        </select>
+        </select> */}
+        <SelectSearch options={usersDropdown} placeholder='...Add Partner' />
       </div>
       <button type='submit'>Add Student</button>
     </motion.form>

@@ -943,7 +943,7 @@ font-size: 16px;
 }
 
 
-.lesson-addon form button {
+.lesson-addon .classlist button {
   padding: 0.5em 0.7em;
   margin-right: 0.5em;
   border-radius: 5px;

@@ -44,17 +44,17 @@ const AddStudent = (propsFromGroup) => {
     );
   };
 
-  const renderUsersDropdown = () => {
-    setUsersDropdown(
-      usersArr.map((user) => {
-        return (
-          <option value={user.user_id} key={user.user_id}>
-            {user.fn} {user.ln}
-          </option>
-        );
-      })
-    );
-  };
+  // const renderUsersDropdown = () => {
+  //   setUsersDropdown(
+  //     usersArr.map((user) => {
+  //       return (
+  //         <option value={user.user_id} key={user.user_id}>
+  //           {user.fn} {user.ln}
+  //         </option>
+  //       );
+  //     })
+  //   );
+  // };
 
   // const onSubmit = (e) => {
   //   e.preventDefault();
@@ -147,7 +147,12 @@ const AddStudent = (propsFromGroup) => {
         >
           {usersDropdown}
         </select> */}
-        <SelectSearch options={usersDropdown} placeholder='...Add Partner' />
+        <SelectSearch
+          options={usersDropdown}
+          name='partner'
+          value={0}
+          placeholder='...Add Partner'
+        />
       </div>
       <button type='submit'>Add Student</button>
     </motion.form>

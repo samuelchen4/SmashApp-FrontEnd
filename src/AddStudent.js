@@ -4,6 +4,7 @@ import Axios from 'axios';
 import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import SelectSearch from 'react-select-search';
+import './react-select-search.css';
 
 const AddStudent = (propsFromGroup) => {
   const { lessonType, lessonDate, users, setUsers, setClasslist } =
@@ -148,7 +149,6 @@ const AddStudent = (propsFromGroup) => {
           {usersDropdown}
         </select> */}
         <SelectSearch
-          className='select-search'
           options={usersDropdown}
           name='partner'
           value={0}

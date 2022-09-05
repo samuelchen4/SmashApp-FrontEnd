@@ -53,9 +53,11 @@ const AddStudent = (propsFromGroup) => {
       colors: {
         ...theme.colors,
         dangerLight: '#E29292',
-        primary: '#a3b5c5',
-        primary25: '#f0f2f5',
-        neutral20: '#e0e6ec',
+        primary: '#a3b5c5', //buttonColor
+        // primary25: '#f0f2f5', //lightGrey
+        primary25: '#e0e6ec', //lightBlue
+        primary75: '#e0e6ec',
+        neutral10: '#f0f2f5', //lightGrey
       },
     };
   };

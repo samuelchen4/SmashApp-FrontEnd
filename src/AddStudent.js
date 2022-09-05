@@ -149,12 +149,12 @@ const AddStudent = (propsFromGroup) => {
           {usersDropdown}
         </select> */}
         <SelectSearch
-          className='select-search'
+          className='select-search-'
           options={usersDropdown}
           name='partner'
           value={0}
-          multiple
-          search
+          multiple={true}
+          search={true}
           autoComplete='on'
           placeholder='Select Student'
         />

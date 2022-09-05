@@ -56,10 +56,6 @@ const AddStudent = (propsFromGroup) => {
     );
   };
 
-  useEffect(() => {
-    renderUsersDropdown();
-  }, [usersArr]);
-
   // const onSubmit = (e) => {
   //   e.preventDefault();
 

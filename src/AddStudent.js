@@ -151,6 +151,9 @@ const AddStudent = (propsFromGroup) => {
           options={usersDropdown}
           name='partner'
           value={0}
+          multiple={true}
+          search={true}
+          autoComplete='on'
           placeholder='...Add Partner'
         />
       </div>

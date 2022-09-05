@@ -47,6 +47,19 @@ const AddStudent = (propsFromGroup) => {
     );
   };
 
+  const customTheme = (theme) => {
+    return {
+      ...theme,
+      colors: {
+        ...theme.colors,
+        dangerLight: '#E29292',
+        primary: '#a3b5c5',
+        primary25: '#f0f2f5',
+        neutral20: '#e0e6ec',
+      },
+    };
+  };
+
   // const renderUsersDropdown = () => {
   //   setUsersDropdown(
   //     usersArr.map((user) => {
@@ -151,6 +164,7 @@ const AddStudent = (propsFromGroup) => {
           {usersDropdown}
         </select> */}
         <Select
+          theme={customTheme}
           options={usersDropdown}
           isMulti
           placeholder='Select partner'

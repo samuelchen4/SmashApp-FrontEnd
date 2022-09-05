@@ -151,10 +151,10 @@ const AddStudent = (propsFromGroup) => {
           options={usersDropdown}
           name='partner'
           value={0}
-          multiple={true}
-          search={true}
+          multiple
+          search
           autoComplete='on'
-          placeholder='...Add Partner'
+          placeholder='Select Student'
         />
       </div>
       <button type='submit'>Add Student</button>

@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import SelectSearch from 'react-select-search';
 import './react-select-search.css';
+import Select from 'react-select'; //accepts value and label properties
+import makeAnimated from 'react-select/animated';
 
 const AddStudent = (propsFromGroup) => {
   const { lessonType, lessonDate, users, setUsers, setClasslist } =
@@ -38,7 +40,7 @@ const AddStudent = (propsFromGroup) => {
     setUsersDropdown(
       users.map((user) => {
         return {
-          name: `${user.fn} ${user.ln}`,
+          label: `${user.fn} ${user.ln}`,
           value: user.user_id,
         };
       })
@@ -148,12 +150,11 @@ const AddStudent = (propsFromGroup) => {
         >
           {usersDropdown}
         </select> */}
-        <SelectSearch
-          className='select-search'
+        <Select
           options={usersDropdown}
-          multiple
-          search
-          placeholder='Select Student'
+          isMulti
+          placeholder='Select partner'
+          isSearchable
         />
       </div>
       <button type='submit'>Add Student</button>

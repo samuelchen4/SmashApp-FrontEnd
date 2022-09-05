@@ -18,6 +18,7 @@
     "react-multi-date-picker": "^3.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-select": "^5.4.0",
     "react-select-search": "^3.0.10",
     "react-to-print": "^2.14.7",
     "scheduler-react": "^2.0.20",

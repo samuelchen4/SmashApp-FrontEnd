@@ -151,6 +151,7 @@ const Group = (groupInfo) => {
                 lessonDate={lessonDate}
                 users={users}
                 setUsers={setUsers}
+                getClasslist={getClasslist}
                 setAddStudentClicked={setAddStudentClicked}
                 setClasslist={setClasslist}
                 isChecked={isChecked}

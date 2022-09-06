@@ -9,8 +9,14 @@ import Select from 'react-select'; //accepts value and label properties
 import makeAnimated from 'react-select/animated';
 
 const AddStudent = (propsFromGroup) => {
-  const { lessonType, lessonDate, users, setUsers, setClasslist } =
-    propsFromGroup;
+  const {
+    lessonType,
+    lessonDate,
+    users,
+    setUsers,
+    getClasslist,
+    setClasslist,
+  } = propsFromGroup;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   // const currentDate = format(new Date(), 'yyyy-MM-dd');
   // console.log(selectedDate);
@@ -73,12 +79,15 @@ const AddStudent = (propsFromGroup) => {
     // once promise resolves add purchaseId to classlist State
     const userId = addedStudent.value;
     if (userId) {
-      Axios.post(`${domain}/group/classlist/${lessonType}/${lessonDate}/add`, {
-        userId,
-      })
+      Axios.post(
+        `${domain}/agenda/group/classlist/${lessonType}/${lessonDate}/add`,
+        {
+          userId,
+        }
+      )
         .then((res) => {
           console.log(res);
-          // setClasslist()
+          getClasslist();
         })
         .catch((err) => console.log(err));
     } else {

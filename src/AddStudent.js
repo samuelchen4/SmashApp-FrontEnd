@@ -1,9 +1,9 @@
 // adding student to Agenda group classlist
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
-import SelectSearch from 'react-select-search';
+// import SelectSearch from 'react-select-search';
 import './react-select-search.css';
 import Select from 'react-select'; //accepts value and label properties
 import makeAnimated from 'react-select/animated';
@@ -23,6 +23,7 @@ const AddStudent = (propsFromGroup) => {
   // const [usersArr, setUsersArr] = useState([]);
   const [usersDropdown, setUsersDropdown] = useState([]);
   const [usersDropdownValue, setUsersDropdownValue] = useState(1);
+  const [addedStudent, setAddedStudent] = useState({ userId: 0 });
 
   useEffect(() => {
     setPartnerDropdownData();
@@ -55,11 +56,30 @@ const AddStudent = (propsFromGroup) => {
         dangerLight: '#E29292',
         primary: '#a3b5c5', //buttonColor
         // primary25: '#f0f2f5', //lightGrey
-        primary25: '#e0e6ec', //lightBlue
-        primary75: '#e0e6ec',
-        neutral10: '#f0f2f5', //lightGrey
+        primary25: '#f0f2f5', //lightGrey
+        primary50: '#f0f2f5', //lightGrey
+        primary75: '#f0f2f5', //lightGrey
+        // neutral10: '#f0f2f5', //lightGrey
+        neutral10: '#e0e6ec', //lightBlue
       },
     };
+  };
+
+  const addStudentToClasslist = () => {
+    // create purchaseId
+    // for submitted userId for that lessonType and lessonDate
+    // paid = 0, attended = 0, purchaseHandled =0
+    // once promise resolves add purchaseId to classlist State
+    const userId = addedStudent.userId;
+    if (userId) {
+      Axios.post(`${domain}/group/classlist/${lessonType}/${lessonDate}/add`, {
+        userId,
+      }).then((res) => {
+        console.log(res);
+      });
+    } else {
+      alert(`No user in dropdown`);
+    }
   };
 
   // const renderUsersDropdown = () => {
@@ -168,12 +188,16 @@ const AddStudent = (propsFromGroup) => {
         <Select
           theme={customTheme}
           options={usersDropdown}
-          isMulti
-          placeholder='Select partner'
+          // isMulti
+          placeholder='Select Partner'
           isSearchable
+          onChange={setAddedStudent}
+          noOptionsMessage={() => `Student not found...`}
         />
       </div>
-      <button type='submit'>Add Student</button>
+      <button type='submit' onClick={addStudentToClasslist}>
+        Add Student
+      </button>
     </motion.form>
   );
 };

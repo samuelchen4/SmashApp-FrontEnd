@@ -14,6 +14,7 @@ const AddStudent = (propsFromGroup) => {
     lessonDate,
     users,
     setUsers,
+    classlist,
     getClasslist,
     setClasslist,
   } = propsFromGroup;
@@ -73,12 +74,17 @@ const AddStudent = (propsFromGroup) => {
 
   const addStudentToClasslist = (event) => {
     event.preventDefault();
+    const userId = addedStudent.value;
+    // check if user is already in classlist
+    const isUserAlreadyInClass = classlist.find(
+      (user) => user.user_id === userId
+    );
     // create purchaseId
     // for submitted userId for that lessonType and lessonDate
     // paid = 0, attended = 0, purchaseHandled =0
     // once promise resolves add purchaseId to classlist State
-    const userId = addedStudent.value;
-    if (userId) {
+
+    if (userId && !isUserAlreadyInClass) {
       Axios.post(
         `${domain}/agenda/group/classlist/${lessonType}/${lessonDate}/add`,
         {
@@ -90,8 +96,10 @@ const AddStudent = (propsFromGroup) => {
           getClasslist();
         })
         .catch((err) => console.log(err));
+    } else if (userId && isUserAlreadyInClass) {
+      alert(`user is already in this class for the selected date`);
     } else {
-      alert(`No user in dropdown`);
+      alert(`no user selected in dropdown`);
     }
   };
 

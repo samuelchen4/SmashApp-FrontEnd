@@ -32,23 +32,43 @@ const Group = (groupInfo) => {
   // const [isExecuted, setIsExecuted] = useState(false);
   // let actionExecuted = isExecuted ? 'Fade' : '';
 
+  useEffect(() => {
+    getClasslist();
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    setIsChecked(
+      classlist.map((user) => {
+        return {
+          userId: user.user_id,
+          purchaseId: user.purchase_id,
+          paid: user.paid,
+          attended: user.attended,
+          purchaseHandled: user.purchaseHandled,
+          priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+        };
+      })
+    );
+  }, [classlist]);
+
   const getClasslist = () => {
     Axios.get(`${domain}/agenda/group/classlist/${lessonType}/${lessonDate}`)
       .then((res) => {
         // console.log(res.data);
         setClasslist(res.data);
-        setIsChecked(
-          res.data.map((user) => {
-            return {
-              userId: user.user_id,
-              purchaseId: user.purchase_id,
-              paid: user.paid,
-              attended: user.attended,
-              purchaseHandled: user.purchaseHandled,
-              priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-            };
-          })
-        );
+        // setIsChecked(
+        //   res.data.map((user) => {
+        //     return {
+        //       userId: user.user_id,
+        //       purchaseId: user.purchase_id,
+        //       paid: user.paid,
+        //       attended: user.attended,
+        //       purchaseHandled: user.purchaseHandled,
+        //       priceWithDiscountIncluded: user.priceWithDiscountIncluded,
+        //     };
+        //   })
+        // );
         setIsDisabled(res.data[0].purchaseHandled ? true : false);
       })
       .catch((err) => console.log(err));
@@ -56,7 +76,7 @@ const Group = (groupInfo) => {
 
   const getUsers = () => {
     Axios.get(`${domain}/users`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setUsers(res.data);
     });
   };
@@ -70,11 +90,6 @@ const Group = (groupInfo) => {
     e.preventDefault();
     setIsOpenAddStudent(!isOpenAddStudent);
   };
-
-  useEffect(() => {
-    getClasslist();
-    getUsers();
-  }, []);
 
   const undoSubmitAttendace = () => {
     isChecked.map((student) => {

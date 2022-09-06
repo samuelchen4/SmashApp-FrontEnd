@@ -23,7 +23,7 @@ const AddStudent = (propsFromGroup) => {
   // const [usersArr, setUsersArr] = useState([]);
   const [usersDropdown, setUsersDropdown] = useState([]);
   const [usersDropdownValue, setUsersDropdownValue] = useState(1);
-  const [addedStudent, setAddedStudent] = useState({ userId: 0 });
+  const [addedStudent, setAddedStudent] = useState({ value: 0 });
 
   useEffect(() => {
     setPartnerDropdownData();
@@ -65,17 +65,19 @@ const AddStudent = (propsFromGroup) => {
     };
   };
 
-  const addStudentToClasslist = () => {
+  const addStudentToClasslist = (event) => {
+    event.preventDefault();
     // create purchaseId
     // for submitted userId for that lessonType and lessonDate
     // paid = 0, attended = 0, purchaseHandled =0
     // once promise resolves add purchaseId to classlist State
-    const userId = addedStudent.userId;
+    const userId = addedStudent.value;
     if (userId) {
       Axios.post(`${domain}/group/classlist/${lessonType}/${lessonDate}/add`, {
         userId,
       }).then((res) => {
         console.log(res);
+        // setClasslist()
       });
     } else {
       alert(`No user in dropdown`);
@@ -188,14 +190,13 @@ const AddStudent = (propsFromGroup) => {
         <Select
           theme={customTheme}
           options={usersDropdown}
-          // isMulti
           placeholder='Select Partner'
           isSearchable
           onChange={setAddedStudent}
           noOptionsMessage={() => `Student not found...`}
         />
       </div>
-      <button type='submit' onClick={addStudentToClasslist}>
+      <button type='submit' onClick={(event) => addStudentToClasslist(event)}>
         Add Student
       </button>
     </motion.form>

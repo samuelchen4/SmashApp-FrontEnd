@@ -75,10 +75,12 @@ const AddStudent = (propsFromGroup) => {
     if (userId) {
       Axios.post(`${domain}/group/classlist/${lessonType}/${lessonDate}/add`, {
         userId,
-      }).then((res) => {
-        console.log(res);
-        // setClasslist()
-      });
+      })
+        .then((res) => {
+          console.log(res);
+          // setClasslist()
+        })
+        .catch((err) => console.log(err));
     } else {
       alert(`No user in dropdown`);
     }

@@ -76,15 +76,8 @@ const User = () => {
   }, [students]);
 
   useEffect(() => {
-    setPaymentTotal(
-      Number(
-        (
-          lessonPrice * quantity * (1 - discountAmount / 100) -
-          payCredit
-        ).toFixed(2)
-      )
-    );
-  }, [quantity, lessonPrice, discountAmount, payCredit]);
+    calculateSubtotal();
+  }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
 
   //get userinfo, purchase and sales data in three seperate arrays
   const getUserData = () => {
@@ -161,12 +154,68 @@ const User = () => {
     );
   };
 
+  const calculateSubtotal = () => {
+    const quantity = purchaseLessonDates.length;
+    const subTotal = quantity * lessonPrice * discountAmount - payCredit;
+
+    setPaymentTotal(subTotal);
+  };
+
+  // const submitPurchases = () => {
+  //   const userId = id;
+  //   //add a purchase for each value of the quantity
+  //   //post request, send lesson type, discount level
+  //   // console.log(id, lessonType, discountAmount, discountNotes, quantity);
+  //   let lessonCost = lessonPrice * (1 - discountAmount / 100);
+  //   let loopCredit = payCredit;
+
+  //   for (let i = 0; i < quantity; i++) {
+  //     if (loopCredit > lessonCost) {
+  //       Axios.post(`${domain}/user/:${userId}/purchase`, {
+  //         lessonId: lessonType,
+  //         discountAmount,
+  //         discountNotes,
+  //         purchaseLessonDates: purchaseLessonDates[i],
+  //         // partnerId1,
+  //         // partnerId2,
+  //         // partnerId3,
+  //         credit: lessonCost,
+  //       })
+  //         .then((res) => {
+  //           console.log(res);
+  //         })
+  //         .catch((err) => console.log(err));
+  //       loopCredit -= lessonCost;
+  //     } else if (loopCredit <= lessonCost) {
+  //       Axios.post(`${domain}/user/:${userId}/purchase`, {
+  //         userId: id,
+  //         lessonId: lessonType,
+  //         discountAmount,
+  //         discountNotes,
+  //         purchaseLessonDates: purchaseLessonDates[i],
+  //         // partnerId1,
+  //         // partnerId2,
+  //         // partnerId3,
+  //         credit: loopCredit,
+  //       })
+  //         .then((res) => {
+  //           console.log(res);
+  //           // getLessonAmounts();
+  //           // getCredits();
+  //           getUserData();
+  //           setPayCredit(0);
+  //           setQuantity(0);
+  //           setLessonType(1);
+  //         })
+  //         .catch((err) => console.log(err));
+  //       loopCredit = 0;
+  //     }
+  //   }
+  // };
+
   const submitPurchases = () => {
     const userId = id;
-    //add a purchase for each value of the quantity
-    //post request, send lesson type, discount level
-    // console.log(id, lessonType, discountAmount, discountNotes, quantity);
-    let lessonCost = lessonPrice * (1 - discountAmount / 100);
+    let lessonCost = paymentTotal;
     let loopCredit = payCredit;
 
     for (let i = 0; i < quantity; i++) {
@@ -354,7 +403,7 @@ const User = () => {
                     >
                       {lessonDropdown}
                     </select>
-                    <input
+                    {/* <input
                       type='number'
                       min='0'
                       placeholder='quantity...'
@@ -364,7 +413,7 @@ const User = () => {
                         setQuantity(e.target.value);
                       }}
                       className='quantity'
-                    />
+                    /> */}
                     <input
                       type='number'
                       min='0'

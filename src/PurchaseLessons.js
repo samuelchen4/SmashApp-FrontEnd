@@ -77,12 +77,12 @@ const PurchaseLessons = (propsFromUser) => {
     setLessonPrice(lessonPriceArr[0]);
   };
 
-  const calculateSubtotal = () => {
-    const quantity = purchaseLessonDates.length;
-    const subTotal = quantity * lessonPrice * discountAmount - payCredit;
+  //   const calculateSubtotal = () => {
+  //     const quantity = purchaseLessonDates.length;
+  //     const subTotal = quantity * lessonPrice * discountAmount - payCredit;
 
-    setPaymentTotal(subTotal);
-  };
+  //     setPaymentTotal(subTotal);
+  //   };
 
   const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal

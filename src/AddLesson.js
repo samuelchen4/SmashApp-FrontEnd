@@ -55,7 +55,6 @@ const AddLesson = (propsFromLessons) => {
       lessonCapacity: addedLessonCapacity,
     })
       .then((res) => {
-        console.log(res.data);
         //update lessons state
         setLessons([
           ...lessons,
@@ -66,6 +65,8 @@ const AddLesson = (propsFromLessons) => {
             Capacity: addedLessonCapacity,
           },
         ]);
+        setAddedLessonName('');
+        setAddedLessonPrice(0);
       })
       .catch((err) => console.log(err));
   };

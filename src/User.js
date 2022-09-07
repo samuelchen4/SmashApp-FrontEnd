@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
+import Select from 'react-select'; //accepts value and label properties
 
 const User = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
@@ -18,7 +19,7 @@ const User = () => {
   const [purchaseInfo, setPurchaseInfo] = useState([]);
   const [saleInfo, setSaleInfo] = useState([]);
   const [lessonInfo, setLessonInfo] = useState([]);
-  const [lessonAmountArr, setLessonAmountArr] = useState([]);
+  const [lessonsAvailable, setLessonsAvailable] = useState([]);
   const [displayLessons, setDisplayLessons] = useState('');
 
   const [purchaseTable, setPurchaseTable] = useState('');
@@ -36,7 +37,7 @@ const User = () => {
   const [duration, setDuration] = useState(0);
   const [discountNotes, setDiscountNotes] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
-  const [usersArr, setUsersArr] = useState([]);
+  const [students, setStudents] = useState([]);
   const [partnerId1, setPartnerId1] = useState(0);
   const [partnerId2, setPartnerId2] = useState(0);
   const [partnerId3, setPartnerId3] = useState(0);
@@ -45,43 +46,64 @@ const User = () => {
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(false);
 
-  // const getAllUsers = () => {
-  //   Axios.get(`${domain}/users`, {
-  //     params: {
-  //       sortBy: 'ASC',
-  //     },
-  //   })
-  //     .then((res) => {
-  //       setUsersArr(res.data);
-  //       // console.log(res.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+  useEffect(() => {
+    getUserData();
+  }, []);
 
-  // const getLessonAmounts = () => {
-  //   Axios.get(`${domain}/user/lessons/amount`, {
-  //     params: {
-  //       userId: id,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       // console.log(res.data);
-  //       setLessonAmountArr(res.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+  useEffect(() => {
+    renderPurchaseLog();
+    renderSalesLog();
+    renderLessons();
+  }, [userInfo, purchaseInfo, saleInfo, lessonInfo]);
+
+  useEffect(() => {
+    renderLessonAmount();
+  }, [lessonAmountArr]);
+
+  //get lesson price each time lesson type changes in Purchase Lessons
+  useEffect(() => {
+    getLessonPrice();
+    checkIfSemi();
+    // console.log(lessonType);
+  }, [lessonType]);
+
+  useEffect(() => {
+    setPaymentTotal(
+      Number(
+        (
+          lessonPrice * quantity * (1 - discountAmount / 100) -
+          payCredit
+        ).toFixed(2)
+      )
+    );
+  }, [quantity, lessonPrice, discountAmount, payCredit]);
+
+  //get userinfo, purchase and sales data in three seperate arrays
+  const getUserData = () => {
+    const userId = id;
+    Axios.get(`${domain}/user/${userId}`)
+      .then((res) => {
+        // console.log(res);
+        setUserInfo(res.data.userInfo);
+        setPurchaseInfo(res.data.purchaseLog);
+        setSaleInfo(res.data.salesLog);
+        setLessonInfo(res.data.lessonTypes);
+        setLessonsAvailable(res.data.avaliableLessons);
+        setCredit(res.data.credits.credit);
+        setStudents(res.data.users);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const renderLessonAmount = () => {
     setDisplayLessons(
-      lessonAmountArr.map((lesson) => {
-        if (lesson.numberOfLessons !== 0) {
-          return (
-            <p key={lesson.type_id} className='renderLessonAmount'>
-              <span className='bold600'>{lesson.type_name}: </span>
-              {lesson.numberOfLessons}
-            </p>
-          );
-        }
+      lessonsAvailable.map((lessons) => {
+        return (
+          <p key={lesson.type_id} className='renderLessonAmount'>
+            <span className='bold600'>{lesson.type_name}: </span>
+            {lesson.lessonAmount}
+          </p>
+        );
       })
     );
   };
@@ -138,68 +160,39 @@ const User = () => {
     }
   };
 
-  //get userinfo, purchase and sales data in three seperate arrays
-  const getUserData = () => {
-    const userId = id;
-    Axios.get(`${domain}/user/${userId}`)
-      .then((res) => {
-        // console.log(res);
-        setUserInfo(res.data.userInfo);
-        setPurchaseInfo(res.data.purchaseLog);
-        setSaleInfo(res.data.salesLog);
-        setLessonInfo(res.data.lessonTypes);
-        setLessonAmountArr(res.data.avaliableLessons);
-        setCredit(res.data.credits);
-        setUsersArr(res.data.users);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const renderPurchases = () => {
+  const renderPurchaseLog = () => {
     setPurchaseTable(
       purchaseInfo.map((purchase) => {
         return (
           <tr key={purchase.purchase_id}>
             <td>{purchase.purchase_id}</td>
-            <td>{purchase.type_id}</td>
-            <td>scheduled Date</td>
+            <td>{purchase.type_name}</td>
+            <td>{purchase.scheduleddate.slice(0, 10)}</td>
             <td>{purchase.pay_method}</td>
-
             <td>{purchase.date ? purchase.date.slice(0, 10) : 'N/A'}</td>
-            <td>{purchase.recept_initial}</td>
+            <td>{purchase.receptInitial_purchase}</td>
           </tr>
         );
       })
     );
   };
 
-  const renderSales = () => {
+  const renderSalesLog = () => {
     setSaleTable(
       saleInfo.map((sale) => {
         return (
-          <motion.tr key={sale.sale_id}>
-            <td>{sale.sale_id}</td>
-            <td>{sale.type_id}</td>
-            <td>{sale.date ? sale.date.slice(0, 10) : 'N/A'}</td>
-            <td>{sale.recept_initial}</td>
-          </motion.tr>
+          <tr key={sale.purchase_id}>
+            <td>{sale.purchase_id}</td>
+            <td>{sale.type_name}</td>
+            <td>{sale.scheduleddate.slice(0, 10)}</td>
+            <td>{sale.pay_method}</td>
+            <td>{sale.date.slice(0, 10)}</td>
+            <td>{sale.receptInitial_sale}</td>
+          </tr>
         );
       })
     );
   };
-
-  // const getCredits = () => {
-  //   Axios.get(`${domain}/user/credits`, {
-  //     params: {
-  //       userId: id,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setCredit(res.data.credits);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
 
   const renderLessons = () => {
     setLessonDropdown(
@@ -209,75 +202,33 @@ const User = () => {
     );
   };
 
-  // const getLessonPrice = () => {
-  //   Axios.get(`${domain}/user/lesson/getPrice`, {
-  //     params: {
-  //       typeId: lessonType,
-  //     },
-  //   }).then((res) => {
-  //     // console.log(res);
-  //     setLessonPrice(res.data.price);
-  //   });
-  // };
-
   //setlessonprice based on lessontype state
   const getLessonPrice = () => {
-    const lessonP = lessonInfo.filter((lesson) => {
-      if (lesson.type_id === lessonType) {
-        return lesson;
-      }
-    });
+    const lessonPriceArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id === lessonType) {
+          return lesson;
+        }
+      })
+      .map((lesson) => lesson.price);
 
-    const lessonP2 = lessonP.map((lesson) => lesson.price);
-
-    console.log(lessonInfo);
-    console.log(lessonType);
-    console.log(lessonP);
-    console.log(lessonP2);
-
-    // setLessonPrice(lessonP[0]);
+    setLessonPrice(lessonPriceArr[0]);
   };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-  useEffect(() => {
-    renderPurchases();
-    renderSales();
-    renderLessons();
-  }, [userInfo, purchaseInfo, saleInfo, lessonInfo]);
-
-  useEffect(() => {
-    renderLessonAmount();
-  }, [lessonAmountArr]);
-
-  //get lesson price each time lesson type changes in Purchase Lessons
-  useEffect(() => {
-    getLessonPrice();
-    checkIfSemi();
-    // console.log(lessonType);
-  }, [lessonType]);
-
-  useEffect(() => {
-    setPaymentTotal(
-      Number(
-        (
-          lessonPrice * quantity * (1 - discountAmount / 100) -
-          payCredit
-        ).toFixed(2)
-      )
-    );
-  }, [quantity, lessonPrice, discountAmount, payCredit]);
-
-  // console.log(lessonPrice);
 
   //change state of isSemiPrivate
   const checkIfSemi = () => {
-    if (lessonType >= 6 && lessonType <= 8) {
-      setIsSemiPrivate(true);
+    const lessonNameArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id === lessonType) {
+          return lesson;
+        }
+      })
+      .map((lesson) => lesson.type_name);
+
+    if (lessonNameArr[0].toLowerCase().includes('semi')) {
+      return true;
     } else {
-      setIsSemiPrivate(false);
+      return false;
     }
   };
 
@@ -331,8 +282,8 @@ const User = () => {
                       <thead>
                         <tr>
                           <td>Purchase Id</td>
-                          <td>Type</td>
-                          <td>Scheduled Date</td>
+                          <td>Lesson</td>
+                          <td>Lesson Date</td>
                           <td>Pay Method</td>
                           <td>Date Bought</td>
                           <td>Initial</td>
@@ -349,8 +300,8 @@ const User = () => {
                       <thead>
                         <tr>
                           <td>Sales Id</td>
-                          <td>Type</td>
-                          <td>Date</td>
+                          <td>Lesson</td>
+                          <td>Date Attended</td>
                           <td>Initial</td>
                         </tr>
                       </thead>
@@ -384,9 +335,6 @@ const User = () => {
                     >
                       {lessonDropdown}
                     </select>
-                    {/* </div> */}
-
-                    {/* <label htmlFor='quantity'>Quantity</label> */}
                     <input
                       type='number'
                       min='0'
@@ -394,7 +342,6 @@ const User = () => {
                       name='quantity'
                       value={quantity}
                       onChange={(e) => {
-                        e.preventDefault();
                         setQuantity(e.target.value);
                       }}
                       className='quantity'
@@ -406,37 +353,11 @@ const User = () => {
                       name='duration'
                       value={duration}
                       onChange={(e) => {
-                        e.preventDefault();
                         setDuration(e.target.value);
                       }}
                       className='duration'
                     />
-
-                    <div className='partner1'>
-                      <SelectStudents
-                        users={usersArr}
-                        partnerId={partnerId1}
-                        setPartnerId={setPartnerId1}
-                        isSemiPrivate={isSemiPrivate}
-                      />
-                    </div>
-                    <div className='partner2'>
-                      <SelectStudents
-                        users={usersArr}
-                        partnerId={partnerId2}
-                        setPartnerId={setPartnerId2}
-                        isSemiPrivate={isSemiPrivate}
-                      />
-                    </div>
-                    <div className='partner3'>
-                      <SelectStudents
-                        users={usersArr}
-                        partnerId={partnerId3}
-                        setPartnerId={setPartnerId3}
-                        isSemiPrivate={isSemiPrivate}
-                      />
-                    </div>
-
+                    <Select />
                     <div className='datePicker'>
                       <DatePicker
                         format='YYYY/MM/DD'

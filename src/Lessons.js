@@ -10,7 +10,21 @@ import './users.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Lessons = () => {
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [lessons, setLessons] = useState([]);
+
+  useEffect(() => {
+    getLessons();
+  }, []);
+
+  const getLessons = () => {
+    Axios.get(`${domain}/lessons`)
+      .then((res) => {
+        // console.log(res.data);
+        setLessons(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className='meat'>
@@ -26,10 +40,14 @@ const Lessons = () => {
           >
             <h2>Lessons</h2>
             <motion.div className='top'>
-              <AddLesson setLessons={setLessons} lessons={lessons} />
+              <AddLesson
+                setLessons={setLessons}
+                lessons={lessons}
+                domain={domain}
+              />
             </motion.div>
             <motion.div className='lessonModule'>
-              <LessonStatistics lessons={lessons} />
+              <LessonStatistics lessons={lessons} domain={domain} />
             </motion.div>
           </motion.main>
         </div>

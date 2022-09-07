@@ -5,8 +5,8 @@ import Axios from 'axios';
 import AddLessonsReadonly from './AddLessonsReadonly';
 import AddLessonsEditable from './AddLessonsEditable';
 
-const AddLesson = ({ lessons, setLessons }) => {
-  const domain = 'http://localhost:5000';
+const AddLesson = (propsFromLessons) => {
+  const { lessons, setLessons, domain } = propsFromLessons;
   // const [lessons, setLessons] = useState([]);
   const [lessonsTable, setLessonsTable] = useState([]);
 
@@ -20,28 +20,10 @@ const AddLesson = ({ lessons, setLessons }) => {
   });
 
   useEffect(() => {
-    getLessons();
-  }, []);
-
-  const getLessons = () => {
-    Axios.get(`${domain}/lessons`)
-      .then((res) => {
-        console.log(res.data);
-        setLessons(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  // const storeLessonId = () => {
-  //   setLessonIdArr(
-  //     lessons.map((lesson, index) => {
-  //       return { lessonId: lesson.type_id, index: index };
-  //     })
-  //   );
-  // };
+    renderLessons();
+  }, [lessons]);
 
   const renderLessons = () => {
-    // storeLessonId();
     setLessonsTable(
       lessons.map((lesson) => {
         return (
@@ -59,17 +41,6 @@ const AddLesson = ({ lessons, setLessons }) => {
       })
     );
   };
-  // console.log(lessonIdArr);
-  // const deleteLesson = (index) => {
-  //   Axios.put(`${domain}/lessons/delete`, {
-  //     lessonId:
-  //   })
-
-  // }
-
-  useEffect(() => {
-    renderLessons();
-  }, [lessons]);
 
   const addLesson = () => {
     Axios.post(`${domain}/lessons/add`, {

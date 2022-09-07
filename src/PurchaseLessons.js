@@ -62,11 +62,18 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     console.log(lessonInfo);
     //callbackfn in filter has to return boolean value
-    const lessonPriceArr = lessonInfo
-      .filter((lesson) => lesson.type_id === lessonType)
-      .map((lesson) => lesson.price);
-    console.log(lessonPriceArr);
+    const lessonPriceArr = lessonInfo.filter((lesson) => {
+      if (lesson.type_id == lessonType) {
+        return true;
+      } else {
+        return false;
+      }
+    });
 
+    const lessonPriceArrMap = lessonPriceArr.map((lesson) => lesson.price);
+
+    console.log(lessonPriceArr);
+    console.log(lessonPriceArrMap);
     setLessonPrice(lessonPriceArr[0]);
   };
 

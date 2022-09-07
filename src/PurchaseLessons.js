@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import DatePicker from 'react-multi-date-picker';
+import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select';
 
 const PurchaseLessons = (propsFromUser) => {
@@ -9,6 +11,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [discountNotes, setDiscountNotes] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [studentsDropdown, setStudentsDropdown] = useState([]);
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
@@ -19,6 +22,66 @@ const PurchaseLessons = (propsFromUser) => {
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
   const [addedStudent, setAddedStudent] = useState([]);
+
+  useEffect(() => {
+    renderLessons();
+  }, [lessonInfo]);
+
+  useEffect(() => {
+    setPartnerDropdownData();
+  }, [students]);
+
+  useEffect(() => {
+    getLessonPrice();
+  }, [lessonType]);
+
+  useEffect(() => {
+    calculateSubtotal();
+  }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
+
+  const renderLessons = () => {
+    setLessonDropdown(
+      lessonInfo.map((lesson) => {
+        return <option value={lesson.type_id}>{lesson.type_name}</option>;
+      })
+    );
+  };
+
+  const setPartnerDropdownData = () => {
+    setStudentsDropdown(
+      students.map((user) => {
+        return {
+          label: `${user.fn} ${user.ln}`,
+          value: user.user_id,
+        };
+      })
+    );
+  };
+
+  const getLessonPrice = () => {
+    console.log(lessonType);
+    const lessonPriceArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id === lessonType) {
+          return lesson;
+        }
+      })
+      .map((lesson) => lesson.price);
+
+    setLessonPrice(lessonPriceArr[0]);
+  };
+
+  const calculateSubtotal = () => {
+    const quantity = purchaseLessonDates.length;
+    const subTotal = quantity * lessonPrice * discountAmount - payCredit;
+
+    setPaymentTotal(subTotal);
+  };
+
+  const submitPurchases = () => {
+    //post a puchase for this user, make puchase paid and deduct from the paymentTotal
+    //post purchases for partners if nessacary, make unpaid
+  };
 
   return (
     <>

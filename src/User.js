@@ -28,9 +28,7 @@ const User = () => {
 
   const [lessonType, setLessonType] = useState(1);
   const [lessonPrice, setLessonPrice] = useState(0);
-  const [purchaseLessonDates, setPurchaseLessonDates] = useState([
-    '2022-08-25',
-  ]);
+  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
 
   //purchase lesson states and hooks
   const [quantity, setQuantity] = useState(0);
@@ -392,13 +390,13 @@ const User = () => {
                         format='YYYY/MM/DD'
                         multiple
                         plugins={[<DatePanel />]}
-                        fixMainPosition={true}
-                        calendarPosition='top-right'
-                        relativeCalendarPosition='end'
-                        fixRelativePosition={true}
-                        // onClose={() => false}
+                        // fixMainPosition={true}
+                        // calendarPosition='top-right'
+                        // relativeCalendarPosition='end'
+                        // fixRelativePosition={true}
                         value={purchaseLessonDates}
                         onChange={setPurchaseLessonDates}
+                        minDate='2022/05/11'
                         style={{
                           width: '100%',
                           height: '100%',

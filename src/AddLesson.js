@@ -54,6 +54,7 @@ const AddLesson = (propsFromLessons) => {
     })
       .then((res) => {
         console.log(res.data);
+        //update lessons state
         setLessons([
           ...lessons,
           {
@@ -65,7 +66,6 @@ const AddLesson = (propsFromLessons) => {
         ]);
       })
       .catch((err) => console.log(err));
-    //update lessons state
   };
 
   const handleEditClick = (event, lesson) => {
@@ -104,7 +104,10 @@ const AddLesson = (propsFromLessons) => {
       lessonId: editLessonId,
       lessonName: editFormData.lessonName,
       price: editFormData.price,
+      Capacity: 0,
     };
+
+    const lessonId = editedLesson.lessonId;
 
     const newLessons = [...lessons];
     console.log(newLessons);
@@ -116,6 +119,14 @@ const AddLesson = (propsFromLessons) => {
     newLessons[index].type_name = editedLesson.lessonName;
     newLessons[index].price = editedLesson.price;
 
+    //send update to server
+    Axios.put(`${domain}/lessons/update/${lessonId}`, {
+      lessonName: editedLesson.lessonName,
+      lessonPrice: editedLesson.price,
+      lessonCapacity: editedLesson.Capacity,
+    });
+
+    //update start on Front-end
     setLessons(newLessons);
     setEditLessonId(null);
   };
@@ -148,14 +159,14 @@ const AddLesson = (propsFromLessons) => {
             type='text'
             name='lessonName'
             value={addedLessonName}
-            onChange={(e) => setLessonName(e.target.value)}
+            onChange={(e) => setAddedLessonName(e.target.value)}
           />
           <input
             placeholder='price...'
             type='number'
             name='price'
             value={addedLessonPrice}
-            onChange={(e) => setLessonPrice(e.target.value)}
+            onChange={(e) => setAddedLessonPrice(e.target.value)}
           />
 
           <button type='submit'>Add</button>

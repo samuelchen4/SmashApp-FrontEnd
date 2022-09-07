@@ -234,7 +234,7 @@ const PurchaseLessons = (propsFromUser) => {
                 </div>
                 <div className='total-line'>
                   <p>Total:</p>
-                  <p>${paymentTotal}</p>
+                  {/* <p>${paymentTotal}</p> */}
                 </div>
               </div>
             </div>

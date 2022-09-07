@@ -6,7 +6,7 @@ import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select';
 
 const PurchaseLessons = (propsFromUser) => {
-  const { lessonInfo, credit, students } = propsFromUser;
+  const { lessonInfo, credit, students, userId } = propsFromUser;
 
   const [discountNotes, setDiscountNotes] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
@@ -252,4 +252,4 @@ const PurchaseLessons = (propsFromUser) => {
   );
 };
 
-export default PurchaseLessons.js;
+export default PurchaseLessons;

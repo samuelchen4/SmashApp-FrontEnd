@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Axios from 'axios';
 import AddLessonsReadonly from './AddLessonsReadonly';
 import AddLessonsEditable from './AddLessonsEditable';
+import Lessons from './Lessons';
 
 const AddLesson = (propsFromLessons) => {
   const { lessons, setLessons, domain } = propsFromLessons;
@@ -11,7 +12,8 @@ const AddLesson = (propsFromLessons) => {
   const [lessonsTable, setLessonsTable] = useState([]);
 
   const [lessonName, setLessonName] = useState('');
-  const [lessonPrice, setLessonPrice] = useState();
+  const [lessonPrice, setLessonPrice] = useState(0);
+  const [lessonCapacity, setLessonCapacity] = useState(0);
   // const [lessonIdArr, setLessonIdArr] = useState([]);
   const [editLessonId, setEditLessonId] = useState(null);
   const [editFormData, setEditFormData] = useState({

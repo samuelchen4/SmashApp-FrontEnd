@@ -67,6 +67,7 @@ const PurchaseLessons = (propsFromUser) => {
         }
       })
       .map((lesson) => lesson.price);
+    console.log(lessonPriceArr);
 
     setLessonPrice(lessonPriceArr[0]);
   };

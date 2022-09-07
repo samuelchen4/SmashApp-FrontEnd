@@ -11,9 +11,9 @@ const AddLesson = (propsFromLessons) => {
   // const [lessons, setLessons] = useState([]);
   const [lessonsTable, setLessonsTable] = useState([]);
 
-  const [lessonName, setLessonName] = useState('');
-  const [lessonPrice, setLessonPrice] = useState(0);
-  const [lessonCapacity, setLessonCapacity] = useState(0);
+  const [addedLessonName, setAddedLessonName] = useState('');
+  const [addedLessonPrice, setAddedLessonPrice] = useState(0);
+  const [addedLessonCapacity, setAddedLessonCapacity] = useState(0);
   // const [lessonIdArr, setLessonIdArr] = useState([]);
   const [editLessonId, setEditLessonId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -45,12 +45,27 @@ const AddLesson = (propsFromLessons) => {
   };
 
   const addLesson = () => {
+    //send post request to database
+    //add capacity to front-end later
     Axios.post(`${domain}/lessons/add`, {
-      lessonName,
-      lessonPrice,
+      addedLessonName,
+      addedLessonPrice,
+      addedLessonCapacity,
     })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.data);
+        setLessons([
+          ...lessons,
+          {
+            type_id: res.data.lessonId,
+            type_name: addedLessonName,
+            price: addedLessonPrice,
+            Capacity: addedLessonCapacity,
+          },
+        ]);
+      })
       .catch((err) => console.log(err));
+    //update lessons state
   };
 
   const handleEditClick = (event, lesson) => {
@@ -132,14 +147,14 @@ const AddLesson = (propsFromLessons) => {
             placeholder='lesson name...'
             type='text'
             name='lessonName'
-            value={lessonName}
+            value={addedLessonName}
             onChange={(e) => setLessonName(e.target.value)}
           />
           <input
             placeholder='price...'
             type='number'
             name='price'
-            value={lessonPrice}
+            value={addedLessonPrice}
             onChange={(e) => setLessonPrice(e.target.value)}
           />
 
@@ -162,6 +177,7 @@ const AddLesson = (propsFromLessons) => {
                     {editLessonId === lesson.type_id ? (
                       <AddLessonsEditable
                         lesson={lesson}
+                        setLessons={setLessons}
                         editFormData={editFormData}
                         handleEditFormChange={handleEditFormChange}
                         handleCancelClick={handleCancelClick}

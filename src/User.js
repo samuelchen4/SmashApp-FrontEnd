@@ -58,7 +58,7 @@ const User = () => {
 
   useEffect(() => {
     renderLessonAmount();
-  }, [lessonAmountArr]);
+  }, [lessonsAvailable]);
 
   //get lesson price each time lesson type changes in Purchase Lessons
   useEffect(() => {
@@ -99,9 +99,9 @@ const User = () => {
     setDisplayLessons(
       lessonsAvailable.map((lessons) => {
         return (
-          <p key={lesson.type_id} className='renderLessonAmount'>
-            <span className='bold600'>{lesson.type_name}: </span>
-            {lesson.lessonAmount}
+          <p key={lessons.type_id} className='renderLessonAmount'>
+            <span className='bold600'>{lessons.type_name}: </span>
+            {lessons.lessonAmount}
           </p>
         );
       })

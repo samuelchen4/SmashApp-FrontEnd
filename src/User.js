@@ -44,7 +44,7 @@ const User = () => {
   const [credit, setCredit] = useState(0);
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
-  const [isSemiPrivate, setIsSemiPrivate] = useState(false);
+  const [isSemiPrivate, setIsSemiPrivate] = useState(true);
 
   useEffect(() => {
     getUserData();
@@ -154,6 +154,45 @@ const User = () => {
     );
   };
 
+  const renderLessons = () => {
+    setLessonDropdown(
+      lessonInfo.map((lesson) => {
+        return <option value={lesson.type_id}>{lesson.type_name}</option>;
+      })
+    );
+  };
+
+  //setlessonprice based on lessontype state
+  const getLessonPrice = () => {
+    console.log(lessonType);
+    const lessonPriceArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id === lessonType) {
+          return lesson;
+        }
+      })
+      .map((lesson) => lesson.price);
+
+    setLessonPrice(lessonPriceArr[0]);
+  };
+
+  //change state of isSemiPrivate
+  const checkIfSemi = () => {
+    const lessonNameArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id === lessonType) {
+          return lesson;
+        }
+      })
+      .map((lesson) => lesson.type_name);
+
+    if (lessonNameArr[0].toLowerCase().includes('semi')) {
+      setIsSemiPrivate(true);
+    } else {
+      setIsSemiPrivate(false);
+    }
+  };
+
   const calculateSubtotal = () => {
     const quantity = purchaseLessonDates.length;
     const subTotal = quantity * lessonPrice * discountAmount - payCredit;
@@ -214,90 +253,8 @@ const User = () => {
   // };
 
   const submitPurchases = () => {
-    const userId = id;
-    let lessonCost = paymentTotal;
-    let loopCredit = payCredit;
-
-    for (let i = 0; i < quantity; i++) {
-      if (loopCredit > lessonCost) {
-        Axios.post(`${domain}/user/:${userId}/purchase`, {
-          lessonId: lessonType,
-          discountAmount,
-          discountNotes,
-          purchaseLessonDates: purchaseLessonDates[i],
-          // partnerId1,
-          // partnerId2,
-          // partnerId3,
-          credit: lessonCost,
-        })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.log(err));
-        loopCredit -= lessonCost;
-      } else if (loopCredit <= lessonCost) {
-        Axios.post(`${domain}/user/:${userId}/purchase`, {
-          userId: id,
-          lessonId: lessonType,
-          discountAmount,
-          discountNotes,
-          purchaseLessonDates: purchaseLessonDates[i],
-          // partnerId1,
-          // partnerId2,
-          // partnerId3,
-          credit: loopCredit,
-        })
-          .then((res) => {
-            console.log(res);
-            // getLessonAmounts();
-            // getCredits();
-            getUserData();
-            setPayCredit(0);
-            setQuantity(0);
-            setLessonType(1);
-          })
-          .catch((err) => console.log(err));
-        loopCredit = 0;
-      }
-    }
-  };
-
-  const renderLessons = () => {
-    setLessonDropdown(
-      lessonInfo.map((lesson) => {
-        return <option value={lesson.type_id}>{lesson.type_name}</option>;
-      })
-    );
-  };
-
-  //setlessonprice based on lessontype state
-  const getLessonPrice = () => {
-    const lessonPriceArr = lessonInfo
-      .filter((lesson) => {
-        if (lesson.type_id === lessonType) {
-          return lesson;
-        }
-      })
-      .map((lesson) => lesson.price);
-
-    setLessonPrice(lessonPriceArr[0]);
-  };
-
-  //change state of isSemiPrivate
-  const checkIfSemi = () => {
-    const lessonNameArr = lessonInfo
-      .filter((lesson) => {
-        if (lesson.type_id === lessonType) {
-          return lesson;
-        }
-      })
-      .map((lesson) => lesson.type_name);
-
-    if (lessonNameArr[0].toLowerCase().includes('semi')) {
-      setIsSemiPrivate(true);
-    } else {
-      setIsSemiPrivate(false);
-    }
+    //post a puchase for this user, make puchase paid and deduct from the paymentTotal
+    //post purchases for partners if nessacary, make unpaid
   };
 
   return (
@@ -403,17 +360,6 @@ const User = () => {
                     >
                       {lessonDropdown}
                     </select>
-                    {/* <input
-                      type='number'
-                      min='0'
-                      placeholder='quantity...'
-                      name='quantity'
-                      value={quantity}
-                      onChange={(e) => {
-                        setQuantity(e.target.value);
-                      }}
-                      className='quantity'
-                    /> */}
                     <input
                       type='number'
                       min='0'

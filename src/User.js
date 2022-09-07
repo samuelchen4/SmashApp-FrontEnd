@@ -38,9 +38,11 @@ const User = () => {
   const [discountNotes, setDiscountNotes] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
   const [students, setStudents] = useState([]);
-  const [partnerId1, setPartnerId1] = useState(0);
-  const [partnerId2, setPartnerId2] = useState(0);
-  const [partnerId3, setPartnerId3] = useState(0);
+  const [studentsDropdown, setStudentsDropdown] = useState([]);
+  const [addedStudent, setAddedStudent] = useState([]);
+  // const [partnerId1, setPartnerId1] = useState(0);
+  // const [partnerId2, setPartnerId2] = useState(0);
+  // const [partnerId3, setPartnerId3] = useState(0);
   const [credit, setCredit] = useState(0);
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
@@ -52,9 +54,15 @@ const User = () => {
 
   useEffect(() => {
     renderPurchaseLog();
+  }, [purchaseInfo]);
+
+  useEffect(() => {
     renderSalesLog();
+  }, [purchaseInfo]);
+
+  useEffect(() => {
     renderLessons();
-  }, [userInfo, purchaseInfo, saleInfo, lessonInfo]);
+  }, [lessonInfo]);
 
   useEffect(() => {
     renderLessonAmount();
@@ -63,8 +71,11 @@ const User = () => {
   //get lesson price each time lesson type changes in Purchase Lessons
   useEffect(() => {
     getLessonPrice();
-    // console.log(lessonType);
   }, [lessonType]);
+
+  useEffect(() => {
+    setPartnerDropdownData();
+  }, [students]);
 
   useEffect(() => {
     setPaymentTotal(
@@ -94,69 +105,15 @@ const User = () => {
       .catch((err) => console.log(err));
   };
 
-  const renderLessonAmount = () => {
-    setDisplayLessons(
-      lessonsAvailable.map((lessons) => {
-        return (
-          <p key={lessons.type_id} className='renderLessonAmount'>
-            <span className='bold600'>{lessons.type_name}: </span>
-            {lessons.lessonAmount}
-          </p>
-        );
+  const setPartnerDropdownData = () => {
+    setStudentsDropdown(
+      students.map((user) => {
+        return {
+          label: `${user.fn} ${user.ln}`,
+          value: user.user_id,
+        };
       })
     );
-  };
-
-  const submitPurchases = () => {
-    const userId = id;
-    //add a purchase for each value of the quantity
-    //post request, send lesson type, discount level
-    // console.log(id, lessonType, discountAmount, discountNotes, quantity);
-    let lessonCost = lessonPrice * (1 - discountAmount / 100);
-    let loopCredit = payCredit;
-
-    for (let i = 0; i < quantity; i++) {
-      if (loopCredit > lessonCost) {
-        Axios.post(`${domain}/user/:${userId}/purchase`, {
-          lessonId: lessonType,
-          discountAmount,
-          discountNotes,
-          purchaseLessonDates: purchaseLessonDates[i],
-          partnerId1,
-          partnerId2,
-          partnerId3,
-          credit: lessonCost,
-        })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.log(err));
-        loopCredit -= lessonCost;
-      } else if (loopCredit <= lessonCost) {
-        Axios.post(`${domain}/user/:${userId}/purchase`, {
-          userId: id,
-          lessonId: lessonType,
-          discountAmount,
-          discountNotes,
-          purchaseLessonDates: purchaseLessonDates[i],
-          partnerId1,
-          partnerId2,
-          partnerId3,
-          credit: loopCredit,
-        })
-          .then((res) => {
-            console.log(res);
-            // getLessonAmounts();
-            // getCredits();
-            getUserData();
-            setPayCredit(0);
-            setQuantity(0);
-            setLessonType(1);
-          })
-          .catch((err) => console.log(err));
-        loopCredit = 0;
-      }
-    }
   };
 
   const renderPurchaseLog = () => {
@@ -193,6 +150,71 @@ const User = () => {
     );
   };
 
+  const renderLessonAmount = () => {
+    setDisplayLessons(
+      lessonsAvailable.map((lessons) => {
+        return (
+          <p key={lessons.type_id} className='renderLessonAmount'>
+            <span className='bold600'>{lessons.type_name}: </span>
+            {lessons.lessonAmount}
+          </p>
+        );
+      })
+    );
+  };
+
+  const submitPurchases = () => {
+    const userId = id;
+    //add a purchase for each value of the quantity
+    //post request, send lesson type, discount level
+    // console.log(id, lessonType, discountAmount, discountNotes, quantity);
+    let lessonCost = lessonPrice * (1 - discountAmount / 100);
+    let loopCredit = payCredit;
+
+    for (let i = 0; i < quantity; i++) {
+      if (loopCredit > lessonCost) {
+        Axios.post(`${domain}/user/:${userId}/purchase`, {
+          lessonId: lessonType,
+          discountAmount,
+          discountNotes,
+          purchaseLessonDates: purchaseLessonDates[i],
+          // partnerId1,
+          // partnerId2,
+          // partnerId3,
+          credit: lessonCost,
+        })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err));
+        loopCredit -= lessonCost;
+      } else if (loopCredit <= lessonCost) {
+        Axios.post(`${domain}/user/:${userId}/purchase`, {
+          userId: id,
+          lessonId: lessonType,
+          discountAmount,
+          discountNotes,
+          purchaseLessonDates: purchaseLessonDates[i],
+          // partnerId1,
+          // partnerId2,
+          // partnerId3,
+          credit: loopCredit,
+        })
+          .then((res) => {
+            console.log(res);
+            // getLessonAmounts();
+            // getCredits();
+            getUserData();
+            setPayCredit(0);
+            setQuantity(0);
+            setLessonType(1);
+          })
+          .catch((err) => console.log(err));
+        loopCredit = 0;
+      }
+    }
+  };
+
   const renderLessons = () => {
     setLessonDropdown(
       lessonInfo.map((lesson) => {
@@ -225,9 +247,9 @@ const User = () => {
       .map((lesson) => lesson.type_name);
 
     if (lessonNameArr[0].toLowerCase().includes('semi')) {
-      return true;
+      setIsSemiPrivate(true);
     } else {
-      return false;
+      setIsSemiPrivate(false);
     }
   };
 
@@ -356,7 +378,15 @@ const User = () => {
                       }}
                       className='duration'
                     />
-                    <Select />
+                    <Select
+                      options={studentsDropdown}
+                      onChange={setAddedStudent}
+                      placeholder='Select Partners'
+                      isSearchable
+                      isMult
+                      isDisabled={!isSemiPrivate}
+                      noOptionsMessage={() => `Student not found`}
+                    />
                     <div className='datePicker'>
                       <DatePicker
                         format='YYYY/MM/DD'

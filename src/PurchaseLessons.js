@@ -74,7 +74,7 @@ const PurchaseLessons = (propsFromUser) => {
 
     console.log(lessonPriceArr);
     console.log(lessonPriceArrMap);
-    setLessonPrice(lessonPriceArr[0]);
+    setLessonPrice(lessonPriceArrMap[0]);
   };
 
   //   const calculateSubtotal = () => {

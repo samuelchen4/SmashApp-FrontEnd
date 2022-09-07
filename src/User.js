@@ -297,7 +297,7 @@ const User = () => {
 
                   {credit ? `$${credit}` : `$0`}
                 </p>
-                {displayLessons}
+                {/* {displayLessons} */}
               </section>
               <section className='tables'>
                 <div className='purchaseLog'>

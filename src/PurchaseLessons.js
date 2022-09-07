@@ -62,9 +62,7 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     const lessonPriceArr = lessonInfo
       .filter((lesson) => {
-        if (lesson.type_id === lessonType) {
-          return lesson;
-        }
+        return lesson.type_id === lessonType;
       })
       .map((lesson) => lesson.price);
     console.log(lessonPriceArr);

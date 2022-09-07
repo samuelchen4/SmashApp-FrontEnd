@@ -62,19 +62,21 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     console.log(lessonInfo);
     //callbackfn in filter has to return boolean value
-    const lessonPriceArr = lessonInfo.filter((lesson) => {
-      if (lesson.type_id == lessonType) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+    const lessonPriceArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id == lessonType) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .map((lesson) => lesson.price);
 
     const lessonPriceArrMap = lessonPriceArr.map((lesson) => lesson.price);
 
     console.log(lessonPriceArr);
     console.log(lessonPriceArrMap);
-    setLessonPrice(lessonPriceArrMap[0]);
+    setLessonPrice(lessonPriceArr[0]);
   };
 
   //   const calculateSubtotal = () => {

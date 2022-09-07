@@ -63,7 +63,6 @@ const User = () => {
   //get lesson price each time lesson type changes in Purchase Lessons
   useEffect(() => {
     getLessonPrice();
-    checkIfSemi();
     // console.log(lessonType);
   }, [lessonType]);
 

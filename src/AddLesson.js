@@ -14,8 +14,10 @@ const AddLesson = (propsFromLessons) => {
   const [addedLessonName, setAddedLessonName] = useState('');
   const [addedLessonPrice, setAddedLessonPrice] = useState(0);
   const [addedLessonCapacity, setAddedLessonCapacity] = useState(0);
-  // const [lessonIdArr, setLessonIdArr] = useState([]);
+
   const [editLessonId, setEditLessonId] = useState(null);
+
+  //default value for form data
   const [editFormData, setEditFormData] = useState({
     lessonName: '',
     price: '',
@@ -48,9 +50,9 @@ const AddLesson = (propsFromLessons) => {
     //send post request to database
     //add capacity to front-end later
     Axios.post(`${domain}/lessons/add`, {
-      addedLessonName,
-      addedLessonPrice,
-      addedLessonCapacity,
+      lessonName: addedLessonName,
+      lessonPrice: addedLessonPrice,
+      lessonCapacity: addedLessonCapacity,
     })
       .then((res) => {
         console.log(res.data);
@@ -81,6 +83,7 @@ const AddLesson = (propsFromLessons) => {
   };
 
   const handleEditFormChange = (event) => {
+    //global method to handle form changes
     event.preventDefault();
     console.log(editFormData);
     const fieldName = event.target.getAttribute('name');

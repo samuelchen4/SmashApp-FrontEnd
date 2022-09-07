@@ -59,13 +59,13 @@ const User = () => {
     renderSalesLog();
   }, [purchaseInfo]);
 
-  useEffect(() => {
-    renderLessons();
-  }, [lessonInfo]);
+  // useEffect(() => {
+  //   renderLessons();
+  // }, [lessonInfo]);
 
-  useEffect(() => {
-    renderLessonAmount();
-  }, [lessonsAvailable]);
+  // useEffect(() => {
+  //   renderLessonAmount();
+  // }, [lessonsAvailable]);
 
   //get lesson price each time lesson type changes in Purchase Lessons
   // useEffect(() => {

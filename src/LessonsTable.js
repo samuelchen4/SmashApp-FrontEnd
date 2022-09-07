@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { motion } from 'framer-motion';
 
-const LessonsTable = (props) => {
-  const domain = 'http://localhost:5000';
+const LessonsTable = (propsFromLessons) => {
+  const { setLessons, lessons, domain } = propsFromLessons;
   //use student info to get lessons owed
   const { lessonsInfo } = props;
   // const { user_id, fn, ln, phone, email, dob } = studentInfo;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, TextareaHTMLAttributes } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './sidemenu/Sidebar';
 import SelectStudents from './SelectStudents';
+import PurchaseLessons from './PurchaseLessons';
 import { Link, useParams } from 'react-router-dom';
 import { set } from 'date-fns/esm';
 import Axios from 'axios';
@@ -20,31 +21,31 @@ const User = () => {
   const [saleInfo, setSaleInfo] = useState([]);
   const [lessonInfo, setLessonInfo] = useState([]);
   const [lessonsAvailable, setLessonsAvailable] = useState([]);
-  const [displayLessons, setDisplayLessons] = useState('');
+  // const [displayLessons, setDisplayLessons] = useState('');
 
   const [purchaseTable, setPurchaseTable] = useState('');
   const [saleTable, setSaleTable] = useState('');
-  const [lessonDropdown, setLessonDropdown] = useState('');
+  // const [lessonDropdown, setLessonDropdown] = useState('');
 
-  const [lessonType, setLessonType] = useState(1);
-  const [lessonPrice, setLessonPrice] = useState(0);
-  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
+  // const [lessonType, setLessonType] = useState(1);
+  // const [lessonPrice, setLessonPrice] = useState(0);
+  // const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
 
   //purchase lesson states and hooks
-  const [quantity, setQuantity] = useState(0);
+  // const [quantity, setQuantity] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [discountNotes, setDiscountNotes] = useState('');
-  const [discountAmount, setDiscountAmount] = useState(0);
+  // const [discountNotes, setDiscountNotes] = useState('');
+  // const [discountAmount, setDiscountAmount] = useState(0);
   const [students, setStudents] = useState([]);
-  const [studentsDropdown, setStudentsDropdown] = useState([]);
-  const [addedStudent, setAddedStudent] = useState([]);
+  // const [studentsDropdown, setStudentsDropdown] = useState([]);
+  // const [addedStudent, setAddedStudent] = useState([]);
   // const [partnerId1, setPartnerId1] = useState(0);
   // const [partnerId2, setPartnerId2] = useState(0);
   // const [partnerId3, setPartnerId3] = useState(0);
   const [credit, setCredit] = useState(0);
-  const [payCredit, setPayCredit] = useState(0);
-  const [paymentTotal, setPaymentTotal] = useState(0);
-  const [isSemiPrivate, setIsSemiPrivate] = useState(true);
+  // const [payCredit, setPayCredit] = useState(0);
+  // const [paymentTotal, setPaymentTotal] = useState(0);
+  // const [isSemiPrivate, setIsSemiPrivate] = useState(true);
 
   useEffect(() => {
     getUserData();
@@ -340,6 +341,13 @@ const User = () => {
               whileHover={{ backgroundColor: '#fbfbfc' }}
               className='purchaseLesson'
             >
+              <PurchaseLessons
+                lessonInfo={lessonInfo}
+                credit={credit}
+                students={students}
+                domain={domain}
+                userId={id}
+              />
               <h3>Purchase Lessons</h3>
               <form
                 onSubmit={(e) => {
@@ -371,6 +379,7 @@ const User = () => {
                       }}
                       className='duration'
                     />
+
                     <Select
                       options={studentsDropdown}
                       onChange={setAddedStudent}

@@ -35,9 +35,9 @@ const PurchaseLessons = (propsFromUser) => {
     getLessonPrice();
   }, [lessonType]);
 
-  useEffect(() => {
-    calculateSubtotal();
-  }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
+  //   useEffect(() => {
+  //     calculateSubtotal();
+  //   }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
 
   const renderLessons = () => {
     setLessonDropdown(

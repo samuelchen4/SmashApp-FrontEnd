@@ -83,7 +83,9 @@ const PurchaseLessons = (propsFromUser) => {
   };
 
   const calculateSubtotal = () => {
-    const subTotal = quantity * lessonPrice * (1 - discountAmount) - payCredit;
+    const subTotal =
+      quantity * lessonPrice * (1 - discountAmount / 100) - payCredit;
+    console.log(subTotal);
 
     setPaymentTotal(subTotal);
   };
@@ -172,13 +174,12 @@ const PurchaseLessons = (propsFromUser) => {
                   name='discount'
                   value={discountAmount}
                   onChange={(e) => {
-                    e.preventDefault();
                     setDiscountAmount(e.target.value);
                   }}
                   type='range'
                   min='0'
-                  max='1'
-                  step='0.1'
+                  max='100'
+                  step='10'
                   placeholder='amount...'
                   list='tickmarks'
                 />
@@ -238,7 +239,7 @@ const PurchaseLessons = (propsFromUser) => {
                 </div>
                 <div className='total-line'>
                   <p>Total:</p>
-                  {/* <p>${paymentTotal}</p> */}
+                  <p>${paymentTotal}</p>
                 </div>
               </div>
             </div>

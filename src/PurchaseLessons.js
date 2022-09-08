@@ -8,6 +8,7 @@ import Select from 'react-select';
 const PurchaseLessons = (propsFromUser) => {
   const { lessonInfo, credit, students, userId } = propsFromUser;
 
+  const todaysDate = new Date();
   const [discountNotes, setDiscountNotes] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
   const [quantity, setQuantity] = useState(0);
@@ -40,9 +41,9 @@ const PurchaseLessons = (propsFromUser) => {
     setQuantity(purchaseLessonDates.length);
   }, [purchaseLessonDates]);
 
-  //   useEffect(() => {
-  //     calculateSubtotal();
-  //   }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
+  useEffect(() => {
+    calculateSubtotal();
+  }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
 
   const renderLessons = () => {
     setLessonDropdown(
@@ -81,12 +82,11 @@ const PurchaseLessons = (propsFromUser) => {
     setLessonPrice(lessonPriceArr[0]);
   };
 
-  //   const calculateSubtotal = () => {
-  //     const quantity = purchaseLessonDates.length;
-  //     const subTotal = quantity * lessonPrice * discountAmount - payCredit;
+  const calculateSubtotal = () => {
+    const subTotal = quantity * lessonPrice * (1 - discountAmount) - payCredit;
 
-  //     setPaymentTotal(subTotal);
-  //   };
+    setPaymentTotal(subTotal);
+  };
 
   const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
@@ -137,7 +137,8 @@ const PurchaseLessons = (propsFromUser) => {
             />
             <div className='datePicker'>
               <DatePicker
-                format='YYYY/MM/DD'
+                // format='YYYY/MM/DD'
+                format='YYYY-MM-DD'
                 multiple
                 plugins={[<DatePanel />]}
                 // fixMainPosition={true}
@@ -146,7 +147,7 @@ const PurchaseLessons = (propsFromUser) => {
                 // fixRelativePosition={true}
                 value={purchaseLessonDates}
                 onChange={setPurchaseLessonDates}
-                minDate='2022/05/11'
+                // minDate={todaysDate}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -176,8 +177,8 @@ const PurchaseLessons = (propsFromUser) => {
                   }}
                   type='range'
                   min='0'
-                  max='100'
-                  step='10'
+                  max='1'
+                  step='0.1'
                   placeholder='amount...'
                   list='tickmarks'
                 />

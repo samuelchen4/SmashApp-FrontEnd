@@ -35,6 +35,11 @@ const PurchaseLessons = (propsFromUser) => {
     getLessonPrice();
   }, [lessonType]);
 
+  useEffect(() => {
+    console.log(purchaseLessonDates);
+    setQuantity(purchaseLessonDates.length);
+  }, [purchaseLessonDates]);
+
   //   useEffect(() => {
   //     calculateSubtotal();
   //   }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
@@ -72,10 +77,7 @@ const PurchaseLessons = (propsFromUser) => {
       })
       .map((lesson) => lesson.price);
 
-    const lessonPriceArrMap = lessonPriceArr.map((lesson) => lesson.price);
-
-    console.log(lessonPriceArr);
-    console.log(lessonPriceArrMap);
+    // console.log(lessonPriceArr);
     setLessonPrice(lessonPriceArr[0]);
   };
 
@@ -210,7 +212,6 @@ const PurchaseLessons = (propsFromUser) => {
                   }
                   value={payCredit}
                   onChange={(e) => {
-                    e.preventDefault();
                     setPayCredit(e.target.value);
                   }}
                 />

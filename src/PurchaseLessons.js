@@ -6,7 +6,7 @@ import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select';
 
 const PurchaseLessons = (propsFromUser) => {
-  const { lessonInfo, credit, students, userId } = propsFromUser;
+  const { lessonInfo, credit, students, userId, domain } = propsFromUser;
 
   const todaysDate = new Date();
   const [discountNotes, setDiscountNotes] = useState('');
@@ -17,7 +17,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
-  const [lessonType, setLessonType] = useState(0);
+  const [lessonType, setLessonType] = useState(1);
   const [lessonPrice, setLessonPrice] = useState(0);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
@@ -98,7 +98,23 @@ const PurchaseLessons = (propsFromUser) => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
     //do http request first
-    Axios.post(`${domain}/user/${userId}/purchase`);
+    const lessonDate = 1;
+    const partnerId1 = 2;
+    const partnerId2 = 4;
+    const partnerId3 = 6;
+    let creditAmount = payCredit;
+
+    Axios.post(`${domain}/user/${userId}/purchase`, {
+      lessonId: lessonType,
+      discountAmount: discountAmount,
+      discountNotes,
+      purchaseLessonDate: lessonDate,
+      partnerId1,
+      partnerId2,
+      partnerId3,
+      credit: creditAmount,
+      paidStatus: 1,
+    });
   };
 
   return (

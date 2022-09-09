@@ -98,6 +98,9 @@ const PurchaseLessons = (propsFromUser) => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
     //do http request first
+    if (purchaseLessonDates instanceof DateObject)
+      purchaseLessonDates = purchaseLessonDates.toDate();
+
     const lessonDate = purchaseLessonDates;
     const partnerId1 = 2;
     const partnerId2 = 4;

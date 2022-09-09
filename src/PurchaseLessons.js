@@ -99,7 +99,7 @@ const PurchaseLessons = (propsFromUser) => {
     //post purchases for partners if nessacary, make unpaid
     //do http request first
 
-    const lessonDate = purchaseLessonDates[0];
+    const lessonDate = purchaseLessonDates[0].toDate();
     const partnerId1 = 2;
     const partnerId2 = 4;
     const partnerId3 = 6;

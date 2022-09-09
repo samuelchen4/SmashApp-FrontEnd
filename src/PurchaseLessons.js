@@ -48,6 +48,9 @@ const PurchaseLessons = (propsFromUser) => {
   const renderLessons = () => {
     setLessonDropdown(
       lessonInfo.map((lesson) => {
+        // if (lesson.type_id == 1) {
+        //   setLessonPrice(lesson.price);
+        // }
         return <option value={lesson.type_id}>{lesson.type_name}</option>;
       })
     );
@@ -83,7 +86,7 @@ const PurchaseLessons = (propsFromUser) => {
   };
 
   const calculateSubtotal = () => {
-    const subTotal = math.round(
+    const subTotal = Math.round(
       quantity * lessonPrice * (1 - discountAmount / 100) - payCredit
     );
     console.log(subTotal);
@@ -94,6 +97,8 @@ const PurchaseLessons = (propsFromUser) => {
   const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
+    //do http request first
+    // Axios.post(`${domain}/`);
   };
 
   return (

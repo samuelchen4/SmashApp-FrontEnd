@@ -94,7 +94,7 @@ const PurchaseLessons = (propsFromUser) => {
     setPaymentTotal(subTotal);
   };
 
-  const submitPurchases = async () => {
+  const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
     //do http request first
@@ -107,9 +107,14 @@ const PurchaseLessons = (propsFromUser) => {
       addedStudents.forEach((partner, index) => {
         partners[index].partnerId = partner.value;
       });
-    }
 
-    
+      //   partners.forEach((partner, index)=>{
+      //     if(index>=1) {
+      //         id = partner[index].id
+      //     }
+
+      //   })
+    }
 
     let creditAmount = payCredit;
     const lessonAmount = Math.round((lessonPrice * discountAmount) / 100);
@@ -118,7 +123,7 @@ const PurchaseLessons = (propsFromUser) => {
     purchaseLessonDates.forEach((purchaseLessonDate, index) => {
       const lessonDate = purchaseLessonDate.toDate();
       if (creditAmount > lessonAmount) {
-        await Axios.post(`${domain}/user/${id}/purchase`, {
+        Axios.post(`${domain}/user/${id}/purchase`, {
           lessonId: lessonType,
           discountAmount: discountAmount,
           discountNotes,
@@ -135,7 +140,7 @@ const PurchaseLessons = (propsFromUser) => {
           })
           .catch((err) => console.log(err));
       } else {
-        await Axios.post(`${domain}/user/${id}/purchase`, {
+        Axios.post(`${domain}/user/${id}/purchase`, {
           lessonId: lessonType,
           discountAmount: discountAmount,
           discountNotes,

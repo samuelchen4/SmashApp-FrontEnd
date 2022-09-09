@@ -118,8 +118,10 @@ const PurchaseLessons = (propsFromUser) => {
     }
 
     let creditAmount = payCredit;
-    console.log(creditAmount);
+
     const lessonAmount = Math.round((lessonPrice * discountAmount) / 100);
+    console.log(creditAmount);
+    console.log(lessonAmount);
 
     //handles amount of lessons
     purchaseLessonDates.forEach((purchaseLessonDate, index) => {

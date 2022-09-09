@@ -115,7 +115,11 @@ const User = () => {
           <tr key={purchase.purchase_id}>
             <td>{purchase.purchase_id}</td>
             <td>{purchase.type_name}</td>
-            <td>{purchase.scheduleddate.slice(0, 10)}</td>
+            <td>
+              {purchase.scheduleddate
+                ? purchase.scheduleddate.slice(0, 10)
+                : 'N/A'}
+            </td>
             <td>{purchase.pay_method}</td>
             <td>{purchase.date ? purchase.date.slice(0, 10) : 'N/A'}</td>
             <td>{purchase.receptInitial_purchase}</td>
@@ -132,7 +136,9 @@ const User = () => {
           <tr key={sale.purchase_id}>
             <td>{sale.purchase_id}</td>
             <td>{sale.type_name}</td>
-            <td>{sale.scheduleddate.slice(0, 10)}</td>
+            <td>
+              {sale.scheduleddate ? sale.scheduleddate.slice(0, 10) : 'N/A'}
+            </td>
             <td>{sale.pay_method}</td>
             <td>{sale.date.slice(0, 10)}</td>
             <td>{sale.receptInitial_sale}</td>

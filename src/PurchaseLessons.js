@@ -17,7 +17,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
-  const [lessonType, setLessonType] = useState(1);
+  const [lessonType, setLessonType] = useState(0);
   const [lessonPrice, setLessonPrice] = useState(0);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
@@ -83,8 +83,9 @@ const PurchaseLessons = (propsFromUser) => {
   };
 
   const calculateSubtotal = () => {
-    const subTotal =
-      quantity * lessonPrice * (1 - discountAmount / 100) - payCredit;
+    const subTotal = math.round(
+      quantity * lessonPrice * (1 - discountAmount / 100) - payCredit
+    );
     console.log(subTotal);
 
     setPaymentTotal(subTotal);

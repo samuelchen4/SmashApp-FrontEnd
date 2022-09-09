@@ -158,19 +158,19 @@ const PurchaseLessons = (propsFromUser) => {
       }
     });
 
-    Axios.post(`${domain}/user/${id}/purchase`, {
-      lessonId: lessonType,
-      discountAmount: discountAmount,
-      discountNotes,
-      purchaseLessonDate: lessonDate,
-      partnerId1: partners[0].partnerId,
-      partnerId2: partners[1].partnerId,
-      partnerId3: partners[2].partnerId,
-      credit: creditAmount,
-      paidStatus: 1,
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    // Axios.post(`${domain}/user/${id}/purchase`, {
+    //   lessonId: lessonType,
+    //   discountAmount: discountAmount,
+    //   discountNotes,
+    //   purchaseLessonDate: lessonDate,
+    //   partnerId1: partners[0].partnerId,
+    //   partnerId2: partners[1].partnerId,
+    //   partnerId3: partners[2].partnerId,
+    //   credit: creditAmount,
+    //   paidStatus: 1,
+    // })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
   };
 
   return (

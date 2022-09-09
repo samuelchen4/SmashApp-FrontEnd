@@ -114,7 +114,9 @@ const PurchaseLessons = (propsFromUser) => {
       partnerId3,
       credit: creditAmount,
       paidStatus: 1,
-    });
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -162,7 +164,7 @@ const PurchaseLessons = (propsFromUser) => {
             <div className='datePicker'>
               <DatePicker
                 // format='YYYY/MM/DD'
-                format='YYYY-MM-DD'
+                // format='YYYY-MM-DD'
                 multiple
                 plugins={[<DatePanel />]}
                 // fixMainPosition={true}

@@ -136,9 +136,9 @@ const PurchaseLessons = (propsFromUser) => {
         })
           .then((res) => {
             console.log(res);
-            creditAmount -= lessonAmount;
           })
           .catch((err) => console.log(err));
+        creditAmount -= lessonAmount;
       } else {
         Axios.post(`${domain}/user/${id}/purchase`, {
           lessonId: lessonType,

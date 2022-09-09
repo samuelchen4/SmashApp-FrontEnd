@@ -22,7 +22,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
-  const [addedStudent, setAddedStudent] = useState([]);
+  const [addedStudents, setAddedStudents] = useState([]);
 
   useEffect(() => {
     renderLessons();
@@ -94,25 +94,73 @@ const PurchaseLessons = (propsFromUser) => {
     setPaymentTotal(subTotal);
   };
 
-  const submitPurchases = () => {
+  const submitPurchases = async () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
     //do http request first
 
-    const lessonDate = purchaseLessonDates[0].toDate();
-    const partnerId1 = 2;
-    const partnerId2 = 4;
-    const partnerId3 = 6;
-    let creditAmount = payCredit;
+    //handles partners
+    let id = userId;
+    let partners = [{ partnerId: 0 }, { partnerId: 0 }, { partnerId: 0 }];
 
-    Axios.post(`${domain}/user/${userId}/purchase`, {
+    if (addedStudents.length) {
+      addedStudents.forEach((partner, index) => {
+        partners[index].partnerId = partner.value;
+      });
+    }
+
+    
+
+    let creditAmount = payCredit;
+    const lessonAmount = Math.round((lessonPrice * discountAmount) / 100);
+
+    //handles amount of lessons
+    purchaseLessonDates.forEach((purchaseLessonDate, index) => {
+      const lessonDate = purchaseLessonDate.toDate();
+      if (creditAmount > lessonAmount) {
+        await Axios.post(`${domain}/user/${id}/purchase`, {
+          lessonId: lessonType,
+          discountAmount: discountAmount,
+          discountNotes,
+          purchaseLessonDate: lessonDate,
+          partnerId1: partners[0].partnerId,
+          partnerId2: partners[1].partnerId,
+          partnerId3: partners[2].partnerId,
+          credit: lessonAmount,
+          paidStatus: 1,
+        })
+          .then((res) => {
+            console.log(res);
+            creditAmount -= lessonAmount;
+          })
+          .catch((err) => console.log(err));
+      } else {
+        await Axios.post(`${domain}/user/${id}/purchase`, {
+          lessonId: lessonType,
+          discountAmount: discountAmount,
+          discountNotes,
+          purchaseLessonDate: lessonDate,
+          partnerId1: partners[0].partnerId,
+          partnerId2: partners[1].partnerId,
+          partnerId3: partners[2].partnerId,
+          credit: creditAmount,
+          paidStatus: 1,
+        })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err));
+      }
+    });
+
+    Axios.post(`${domain}/user/${id}/purchase`, {
       lessonId: lessonType,
       discountAmount: discountAmount,
       discountNotes,
       purchaseLessonDate: lessonDate,
-      partnerId1,
-      partnerId2,
-      partnerId3,
+      partnerId1: partners[0].partnerId,
+      partnerId2: partners[1].partnerId,
+      partnerId3: partners[2].partnerId,
       credit: creditAmount,
       paidStatus: 1,
     })
@@ -155,7 +203,7 @@ const PurchaseLessons = (propsFromUser) => {
             />
             <Select
               options={studentsDropdown}
-              onChange={setAddedStudent}
+              onChange={setAddedStudents}
               placeholder='Select Partners'
               isSearchable
               isMult

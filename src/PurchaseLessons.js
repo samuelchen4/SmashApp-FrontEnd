@@ -212,7 +212,7 @@ const PurchaseLessons = (propsFromUser) => {
               onChange={setAddedStudents}
               placeholder='Select Partners'
               isSearchable
-              isMult
+              isMulti
               isDisabled={!isSemiPrivate}
               noOptionsMessage={() => `Student not found`}
             />

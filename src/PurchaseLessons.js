@@ -98,7 +98,7 @@ const PurchaseLessons = (propsFromUser) => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
     //do http request first
-    // Axios.post(`${domain}/`);
+    Axios.post(`${domain}/user/${userId}/purchase`);
   };
 
   return (

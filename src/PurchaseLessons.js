@@ -101,21 +101,6 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(addedStudents);
 
     //handles partners
-    let id = userId;
-    let partners = [{ partnerId: 0 }, { partnerId: 0 }, { partnerId: 0 }];
-
-    if (addedStudents.length) {
-      addedStudents.forEach((partner, index) => {
-        partners[index].partnerId = partner.value;
-      });
-
-      //   partners.forEach((partner, index)=>{
-      //     if(index>=1) {
-      //         id = partner[index].id
-      //     }
-
-      //   })
-    }
 
     let creditAmount = payCredit;
 
@@ -127,14 +112,12 @@ const PurchaseLessons = (propsFromUser) => {
     purchaseLessonDates.forEach((purchaseLessonDate, index) => {
       const lessonDate = purchaseLessonDate.toDate();
       if (creditAmount > lessonAmount) {
-        Axios.post(`${domain}/user/${id}/purchase`, {
+        Axios.post(`${domain}/user/${userId}/purchase`, {
           lessonId: lessonType,
           discountAmount: discountAmount,
           discountNotes,
           purchaseLessonDate: lessonDate,
-          partnerId1: partners[0].partnerId,
-          partnerId2: partners[1].partnerId,
-          partnerId3: partners[2].partnerId,
+          partnerArr: addedStudents,
           credit: lessonAmount,
           paidStatus: 1,
         })
@@ -144,14 +127,12 @@ const PurchaseLessons = (propsFromUser) => {
           .catch((err) => console.log(err));
         creditAmount -= lessonAmount;
       } else {
-        Axios.post(`${domain}/user/${id}/purchase`, {
+        Axios.post(`${domain}/user/${userId}/purchase`, {
           lessonId: lessonType,
           discountAmount: discountAmount,
           discountNotes,
           purchaseLessonDate: lessonDate,
-          partnerId1: partners[0].partnerId,
-          partnerId2: partners[1].partnerId,
-          partnerId3: partners[2].partnerId,
+          partnerArr: addedStudents,
           credit: creditAmount,
           paidStatus: 1,
         })
@@ -160,7 +141,7 @@ const PurchaseLessons = (propsFromUser) => {
           })
           .catch((err) => console.log(err));
       }
-      creditAmount -= creditAmount;
+      creditAmount = 0;
     });
 
     // Axios.post(`${domain}/user/${id}/purchase`, {

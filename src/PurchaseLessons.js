@@ -17,7 +17,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
-  const [lessonType, setLessonType] = useState(1);
+  const [lessonType, setLessonType] = useState(0);
   const [lessonPrice, setLessonPrice] = useState(0);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
@@ -34,6 +34,7 @@ const PurchaseLessons = (propsFromUser) => {
 
   useEffect(() => {
     getLessonPrice();
+    checkIfSemi();
   }, [lessonType]);
 
   useEffect(() => {
@@ -94,6 +95,18 @@ const PurchaseLessons = (propsFromUser) => {
     setPaymentTotal(subTotal);
   };
 
+  const checkIfSemi = () => {
+    const lessonIfSemiArr = lessonInfo.filter((lesson) => {
+      if (lesson.type_name.toLowerCase().includes('semi')) {
+        setIsSemiPrivate(true);
+        return true;
+      } else {
+        setIsSemiPrivate(false);
+        return false;
+      }
+    });
+  };
+
   const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
@@ -143,20 +156,6 @@ const PurchaseLessons = (propsFromUser) => {
       }
       creditAmount = 0;
     });
-
-    // Axios.post(`${domain}/user/${id}/purchase`, {
-    //   lessonId: lessonType,
-    //   discountAmount: discountAmount,
-    //   discountNotes,
-    //   purchaseLessonDate: lessonDate,
-    //   partnerId1: partners[0].partnerId,
-    //   partnerId2: partners[1].partnerId,
-    //   partnerId3: partners[2].partnerId,
-    //   credit: creditAmount,
-    //   paidStatus: 1,
-    // })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
   };
 
   return (

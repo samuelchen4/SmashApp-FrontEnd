@@ -17,8 +17,12 @@ const PurchaseLessons = (propsFromUser) => {
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
-  const [lessonType, setLessonType] = useState(0);
-  const [lessonPrice, setLessonPrice] = useState(0);
+  const [lessonType, setLessonType] = useState(1);
+  const [lessonPrice, setLessonPrice] = useState(
+    lessonInfo
+      .filter((lesson) => lesson.type_id == 1)
+      .find((lesson) => lesson.price)
+  );
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
@@ -59,12 +63,14 @@ const PurchaseLessons = (propsFromUser) => {
 
   const setPartnerDropdownData = () => {
     setStudentsDropdown(
-      students.map((user) => {
-        return {
-          label: `${user.fn} ${user.ln}`,
-          value: user.user_id,
-        };
-      })
+      students
+        .filter((user) => user.user_id != userId)
+        .map((user) => {
+          return {
+            label: `${user.fn} ${user.ln}`,
+            value: user.user_id,
+          };
+        })
     );
   };
 
@@ -72,18 +78,22 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     console.log(lessonInfo);
     //callbackfn in filter has to return boolean value
+    // const lessonPriceArr = lessonInfo
+    //   .filter((lesson) => {
+    //     if (lesson.type_id == lessonType) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   })
+    //   .map((lesson) => lesson.price);
+
     const lessonPriceArr = lessonInfo
-      .filter((lesson) => {
-        if (lesson.type_id == lessonType) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .map((lesson) => lesson.price);
+      .filter((lesson) => lesson.type_id == lessonType)
+      .find((lesson) => lesson.price);
 
     // console.log(lessonPriceArr);
-    setLessonPrice(lessonPriceArr[0]);
+    setLessonPrice(lessonPriceArr);
   };
 
   const calculateSubtotal = () => {

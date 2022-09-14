@@ -18,7 +18,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
   const [lessonType, setLessonType] = useState(1);
-  const [lessonPrice, setLessonPrice] = useState(lessonInfo[0].price);
+  const [lessonPrice, setLessonPrice] = useState(0);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
@@ -26,6 +26,7 @@ const PurchaseLessons = (propsFromUser) => {
 
   useEffect(() => {
     renderLessons();
+    setLessonPrice(lessonInfo[0].price);
   }, [lessonInfo]);
 
   useEffect(() => {

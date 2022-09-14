@@ -18,11 +18,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
   const [lessonType, setLessonType] = useState(1);
-  const [lessonPrice, setLessonPrice] = useState(
-    lessonInfo
-      .filter((lesson) => lesson.type_id == 1)
-      .find((lesson) => lesson.price)
-  );
+  const [lessonPrice, setLessonPrice] = useState(lessonInfo[0].price);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
@@ -78,22 +74,22 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     console.log(lessonInfo);
     //callbackfn in filter has to return boolean value
-    // const lessonPriceArr = lessonInfo
-    //   .filter((lesson) => {
-    //     if (lesson.type_id == lessonType) {
-    //       return true;
-    //     } else {
-    //       return false;
-    //     }
-    //   })
-    //   .map((lesson) => lesson.price);
-
     const lessonPriceArr = lessonInfo
-      .filter((lesson) => lesson.type_id == lessonType)
-      .find((lesson) => lesson.price);
+      .filter((lesson) => {
+        if (lesson.type_id == lessonType) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .map((lesson) => lesson.price);
+
+    // const lessonPriceArr = lessonInfo
+    //   .filter((lesson) => lesson.type_id == lessonType)
+    //   .find((lesson) => lesson.price);
 
     // console.log(lessonPriceArr);
-    setLessonPrice(lessonPriceArr);
+    setLessonPrice(lessonPriceArr[0]);
   };
 
   const calculateSubtotal = () => {

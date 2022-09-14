@@ -26,7 +26,8 @@ const PurchaseLessons = (propsFromUser) => {
 
   useEffect(() => {
     renderLessons();
-    setLessonPrice(lessonInfo[0].price);
+    const result = lessonInfo.find((lesson) => lesson.type_id == 1);
+    setLessonPrice(result.price);
   }, [lessonInfo]);
 
   useEffect(() => {
@@ -75,22 +76,20 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     console.log(lessonInfo);
     //callbackfn in filter has to return boolean value
-    const lessonPriceArr = lessonInfo
-      .filter((lesson) => {
-        if (lesson.type_id == lessonType) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .map((lesson) => lesson.price);
-
     // const lessonPriceArr = lessonInfo
-    //   .filter((lesson) => lesson.type_id == lessonType)
-    //   .find((lesson) => lesson.price);
+    //   .filter((lesson) => {
+    //     if (lesson.type_id == lessonType) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   })
+    //   .map((lesson) => lesson.price);
+
+    const result = lessonInfo.find((lesson) => lesson.type_id == lessonType);
 
     // console.log(lessonPriceArr);
-    setLessonPrice(lessonPriceArr[0]);
+    setLessonPrice(result.price);
   };
 
   const calculateSubtotal = () => {

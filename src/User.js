@@ -1,4 +1,9 @@
-import React, { useState, useEffect, TextareaHTMLAttributes } from 'react';
+import React, {
+  useState,
+  useEffect,
+  TextareaHTMLAttributes,
+  Fragment,
+} from 'react';
 import Navbar from './Navbar';
 import Sidebar from './sidemenu/Sidebar';
 import SelectStudents from './SelectStudents';
@@ -11,12 +16,79 @@ import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 // import DatePicker from 'react-multi-date-picker';
 // import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select'; //accepts value and label properties
+import ReadOnlyUserData from './ReadOnlyUserData';
+import EditableUserData from './EditableUserData';
 
 const User = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { id } = useParams();
 
   const [userInfo, setUserInfo] = useState('');
+  const [addUserInfo, setAddUserInfo] = useState({
+    fn: '',
+    ln: '',
+    email: '',
+    dob: '',
+    phone: '',
+  });
+
+  const [editUserInfo, setEditUserInfo] = useState({
+    fn: '',
+    ln: '',
+    email: '',
+    dob: '',
+    phone: '',
+  });
+
+  const handleClickEdit = () => {
+    const currentUserValues = {
+      fn: userInfo.fn,
+      ln: userInfo.ln,
+      email: userInfo.email,
+      dob: userInfo.dob,
+      phone: userInfo.phone,
+    };
+
+    setEditUserInfo(currentUserValues);
+    setIsEditingUserInfo(true);
+  };
+
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute('name');
+    const fieldValue = event.target.value;
+
+    const newUserFormData = { ...editUserInfo };
+    newUserFormData[fieldName] = fieldValue;
+
+    setEditUserInfo(newUserFormData);
+  };
+
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+    const editedUserInfo = {
+      fn: editUserInfo.fn,
+      ln: editUserInfo.ln,
+      email: editUserInfo.email,
+      dob: editUserInfo.dob,
+      phone: editUserInfo.phone,
+    };
+
+    setUserInfo(editedUserInfo);
+    setIsEditingUserInfo(false);
+  };
+
+  const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
+
+  // const handleAddFormSubmit = (event) => {
+  //   event.preventDefault();
+
+  //   const newContact = {
+
+  //   }
+  // }
+
   const [purchaseInfo, setPurchaseInfo] = useState([]);
   const [saleInfo, setSaleInfo] = useState([]);
   const [lessonInfo, setLessonInfo] = useState([]);
@@ -25,27 +97,10 @@ const User = () => {
 
   const [purchaseTable, setPurchaseTable] = useState('');
   const [saleTable, setSaleTable] = useState('');
-  // const [lessonDropdown, setLessonDropdown] = useState('');
 
-  // const [lessonType, setLessonType] = useState(1);
-  // const [lessonPrice, setLessonPrice] = useState(0);
-  // const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
-
-  //purchase lesson states and hooks
-  // const [quantity, setQuantity] = useState(0);
-  // const [duration, setDuration] = useState(0);
-  // const [discountNotes, setDiscountNotes] = useState('');
-  // const [discountAmount, setDiscountAmount] = useState(0);
   const [students, setStudents] = useState([]);
-  // const [studentsDropdown, setStudentsDropdown] = useState([]);
-  // const [addedStudent, setAddedStudent] = useState([]);
-  // const [partnerId1, setPartnerId1] = useState(0);
-  // const [partnerId2, setPartnerId2] = useState(0);
-  // const [partnerId3, setPartnerId3] = useState(0);
+
   const [credit, setCredit] = useState(0);
-  // const [payCredit, setPayCredit] = useState(0);
-  // const [paymentTotal, setPaymentTotal] = useState(0);
-  // const [isSemiPrivate, setIsSemiPrivate] = useState(true);
 
   useEffect(() => {
     getUserData();
@@ -58,27 +113,6 @@ const User = () => {
   useEffect(() => {
     renderSalesLog();
   }, [purchaseInfo]);
-
-  // useEffect(() => {
-  //   renderLessons();
-  // }, [lessonInfo]);
-
-  // useEffect(() => {
-  //   renderLessonAmount();
-  // }, [lessonsAvailable]);
-
-  //get lesson price each time lesson type changes in Purchase Lessons
-  // useEffect(() => {
-  //   getLessonPrice();
-  // }, [lessonType]);
-
-  // useEffect(() => {
-  //   setPartnerDropdownData();
-  // }, [students]);
-
-  // useEffect(() => {
-  //   calculateSubtotal();
-  // }, [lessonPrice, discountAmount, payCredit, purchaseLessonDates]);
 
   //get userinfo, purchase and sales data in three seperate arrays
   const getUserData = () => {
@@ -148,121 +182,6 @@ const User = () => {
     );
   };
 
-  // const renderLessonAmount = () => {
-  //   setDisplayLessons(
-  //     lessonsAvailable.map((lessons) => {
-  //       return (
-  //         <p key={lessons.type_id} className='renderLessonAmount'>
-  //           <span className='bold600'>{lessons.type_name}: </span>
-  //           {lessons.lessonAmount}
-  //         </p>
-  //       );
-  //     })
-  //   );
-  // };
-
-  // const renderLessons = () => {
-  //   setLessonDropdown(
-  //     lessonInfo.map((lesson) => {
-  //       return <option value={lesson.type_id}>{lesson.type_name}</option>;
-  //     })
-  //   );
-  // };
-
-  //setlessonprice based on lessontype state
-  // const getLessonPrice = () => {
-  //   const lessonPriceArr = lessonInfo
-  //     .filter((lesson) => {
-  //       if (lesson.type_id === lessonType) {
-  //         return lesson;
-  //       }
-  //     })
-  //     .map((lesson) => lesson.price);
-
-  //   setLessonPrice(lessonPriceArr[0]);
-  // };
-
-  //change state of isSemiPrivate
-  // const checkIfSemi = () => {
-  //   const lessonNameArr = lessonInfo
-  //     .filter((lesson) => {
-  //       if (lesson.type_id === lessonType) {
-  //         return lesson;
-  //       }
-  //     })
-  //     .map((lesson) => lesson.type_name);
-
-  //   if (lessonNameArr[0].toLowerCase().includes('semi')) {
-  //     setIsSemiPrivate(true);
-  //   } else {
-  //     setIsSemiPrivate(false);
-  //   }
-  // };
-
-  // const calculateSubtotal = () => {
-  //   const quantity = purchaseLessonDates.length;
-  //   const subTotal = quantity * lessonPrice * discountAmount - payCredit;
-
-  //   setPaymentTotal(subTotal);
-  // };
-
-  // const submitPurchases = () => {
-  //   const userId = id;
-  //   //add a purchase for each value of the quantity
-  //   //post request, send lesson type, discount level
-  //   // console.log(id, lessonType, discountAmount, discountNotes, quantity);
-  //   let lessonCost = lessonPrice * (1 - discountAmount / 100);
-  //   let loopCredit = payCredit;
-
-  //   for (let i = 0; i < quantity; i++) {
-  //     if (loopCredit > lessonCost) {
-  //       Axios.post(`${domain}/user/:${userId}/purchase`, {
-  //         lessonId: lessonType,
-  //         discountAmount,
-  //         discountNotes,
-  //         purchaseLessonDates: purchaseLessonDates[i],
-  //         // partnerId1,
-  //         // partnerId2,
-  //         // partnerId3,
-  //         credit: lessonCost,
-  //       })
-  //         .then((res) => {
-  //           console.log(res);
-  //         })
-  //         .catch((err) => console.log(err));
-  //       loopCredit -= lessonCost;
-  //     } else if (loopCredit <= lessonCost) {
-  //       Axios.post(`${domain}/user/:${userId}/purchase`, {
-  //         userId: id,
-  //         lessonId: lessonType,
-  //         discountAmount,
-  //         discountNotes,
-  //         purchaseLessonDates: purchaseLessonDates[i],
-  //         // partnerId1,
-  //         // partnerId2,
-  //         // partnerId3,
-  //         credit: loopCredit,
-  //       })
-  //         .then((res) => {
-  //           console.log(res);
-  //           // getLessonAmounts();
-  //           // getCredits();
-  //           getUserData();
-  //           setPayCredit(0);
-  //           setQuantity(0);
-  //           setLessonType(1);
-  //         })
-  //         .catch((err) => console.log(err));
-  //       loopCredit = 0;
-  //     }
-  //   }
-  // };
-
-  // const submitPurchases = () => {
-  //   //post a puchase for this user, make puchase paid and deduct from the paymentTotal
-  //   //post purchases for partners if nessacary, make unpaid
-  // };
-
   return (
     <div className='meat'>
       <Sidebar />
@@ -275,76 +194,30 @@ const User = () => {
             transition={{ duration: 0.75 }}
             className='containerSolo'
           >
-            <h2>
-              <span className='title'>
-                {userInfo.fn} {userInfo.ln}
-              </span>
-            </h2>
-            <motion.div
-              whileHover={{ backgroundColor: '#fbfbfc' }}
-              className='top'
-            >
-              <section className='userInfo'>
-                <p>
-                  <span className='bold600'>Email:</span>
-                  <br /> {userInfo.email ? userInfo.email : `Not Available`}
-                </p>
-                <p>
-                  <span className='bold600'>Phone:</span> <br />
-                  {userInfo.phone ? userInfo.phone : `Not Available`}
-                </p>
-                {/* <p>
-                  <span className='bold600'>Birth Date:</span>
-                  <br />
-                  {userInfo.dob ? userInfo.dob.slice(0, 10) : `Not Available`}
-                </p> */}
-                <p>
-                  <span className='bold600'>Credit: </span>
+            {isEditingUserInfo ? (
+              <EditableUserData
+                purchaseTable={purchaseTable}
+                saleTable={saleTable}
+                userInfo={userInfo}
+                credit={credit}
+                editUserInfo={editUserInfo}
+                handleEditFormChange={handleEditFormChange}
+                handleEditFormSubmit={handleEditFormSubmit}
+                setIsEditingUserInfo={setIsEditingUserInfo}
+              />
+            ) : (
+              <ReadOnlyUserData
+                purchaseTable={purchaseTable}
+                saleTable={saleTable}
+                userInfo={userInfo}
+                credit={credit}
+                handleClickEdit={handleClickEdit}
+              />
+            )}
 
-                  {credit ? `$${credit}` : `$0`}
-                </p>
-                {/* {displayLessons} */}
-              </section>
-              <section className='tables'>
-                <div className='purchaseLog'>
-                  <h4>Purchases Log</h4>
-                  <div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>Purchase Id</td>
-                          <td>Lesson</td>
-                          <td>Lesson Date</td>
-                          <td>Pay Method</td>
-                          <td>Date Bought</td>
-                          <td>Initial</td>
-                        </tr>
-                      </thead>
-                      <tbody>{purchaseTable}</tbody>
-                    </table>
-                  </div>
-                </div>
-                <div className='salesLog'>
-                  <h4>Sales Log</h4>
-                  <div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>Sales Id</td>
-                          <td>Lesson</td>
-                          <td>Date Attended</td>
-                          <td>Initial</td>
-                        </tr>
-                      </thead>
-                      <tbody>{saleTable}</tbody>
-                    </table>
-                  </div>
-                </div>
-              </section>
-            </motion.div>
             <motion.div
               whileHover={{ backgroundColor: '#fbfbfc' }}
-              className='purchaseLesson'
+              className='purchaseLesson userSection'
             >
               <PurchaseLessons
                 lessonInfo={lessonInfo}

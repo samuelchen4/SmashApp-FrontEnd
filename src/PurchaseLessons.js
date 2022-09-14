@@ -18,7 +18,7 @@ const PurchaseLessons = (propsFromUser) => {
   const [paymentTotal, setPaymentTotal] = useState(0);
   const [isSemiPrivate, setIsSemiPrivate] = useState(true);
   const [lessonType, setLessonType] = useState(1);
-  const [lessonPrice, setLessonPrice] = useState(0);
+  const [lessonPrice, setLessonPrice] = useState(60);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
@@ -26,8 +26,9 @@ const PurchaseLessons = (propsFromUser) => {
 
   useEffect(() => {
     renderLessons();
-    const result = lessonInfo.find((lesson) => lesson.type_id == 1);
-    setLessonPrice(result.price);
+    console.log(lessonInfo);
+    // const result = lessonInfo.filter((lesson) => lesson.type_id == 1);
+    // setLessonPrice(result.price);
   }, [lessonInfo]);
 
   useEffect(() => {
@@ -76,20 +77,21 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(lessonType);
     console.log(lessonInfo);
     //callbackfn in filter has to return boolean value
-    // const lessonPriceArr = lessonInfo
-    //   .filter((lesson) => {
-    //     if (lesson.type_id == lessonType) {
-    //       return true;
-    //     } else {
-    //       return false;
-    //     }
-    //   })
-    //   .map((lesson) => lesson.price);
+    const lessonPriceArr = lessonInfo
+      .filter((lesson) => {
+        if (lesson.type_id == lessonType) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .map((lesson) => lesson.price);
 
-    const result = lessonInfo.find((lesson) => lesson.type_id == lessonType);
+    // const result = lessonInfo.find((lesson) => lesson.type_id == lessonType);
 
     // console.log(lessonPriceArr);
-    setLessonPrice(result.price);
+    // setLessonPrice(result.price);
+    setLessonPrice(lessonPriceArr[0]);
   };
 
   const calculateSubtotal = () => {
@@ -102,15 +104,17 @@ const PurchaseLessons = (propsFromUser) => {
   };
 
   const checkIfSemi = () => {
-    const lessonIfSemiArr = lessonInfo.filter((lesson) => {
-      if (lesson.type_name.toLowerCase().includes('semi')) {
-        setIsSemiPrivate(true);
-        return true;
-      } else {
-        setIsSemiPrivate(false);
-        return false;
-      }
-    });
+    const results = lessonInfo
+      .filter((lesson) => lesson.type_id == lessonType)
+      .map((lesson) => {
+        if (lesson.type_name.toLowerCase().includes('semi')) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+    setIsSemiPrivate(results[0]);
   };
 
   const submitPurchases = () => {

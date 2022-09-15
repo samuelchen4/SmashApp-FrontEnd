@@ -87,11 +87,9 @@ const PurchaseLessons = (propsFromUser) => {
       })
       .map((lesson) => lesson.price);
 
-    // const result = lessonInfo.find((lesson) => lesson.type_id == lessonType);
-
-    // console.log(lessonPriceArr);
-    // setLessonPrice(result.price);
-    setLessonPrice(lessonPriceArr[0]);
+    if (lessonPriceArr.length) {
+      setLessonPrice(lessonPriceArr[0]);
+    }
   };
 
   const calculateSubtotal = () => {
@@ -170,166 +168,153 @@ const PurchaseLessons = (propsFromUser) => {
 
   return (
     <>
-      <h3>Purchase Lessons</h3>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           submitPurchases();
         }}
       >
-        <div className='buyLesson'>
-          <div className='lessonDetails'>
-            {/* <div> */}
-            <select
-              name='lessonType'
-              value={lessonType}
-              onChange={(e) => {
-                setLessonType(e.target.value);
-              }}
-              className='lessonType'
-            >
-              {lessonDropdown}
-            </select>
-            <input
-              type='number'
-              min='0'
-              placeholder='duration...'
-              name='duration'
-              value={duration}
-              onChange={(e) => {
-                setDuration(e.target.value);
-              }}
-              className='duration'
-            />
-            <Select
-              options={studentsDropdown}
-              onChange={setAddedStudents}
-              placeholder='Select Partners'
-              isSearchable
-              isMulti
-              isDisabled={!isSemiPrivate}
-              noOptionsMessage={() => `Student not found`}
-            />
-            <div className='datePicker'>
-              <DatePicker
-                // format='YYYY/MM/DD'
-                // format='YYYY-MM-DD'
-                multiple
-                plugins={[<DatePanel />]}
-                // fixMainPosition={true}
-                // calendarPosition='top-right'
-                // relativeCalendarPosition='end'
-                // fixRelativePosition={true}
-                value={purchaseLessonDates}
-                onChange={setPurchaseLessonDates}
-                // minDate={todaysDate}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  boxSizing: 'border-box',
-                  // height: '26px',
+        <h3>Purchase Lessons</h3>
+        <div className='purchaseLessonBlock'>
+          <section className='purchaseLessonBlock__inputs purchaseLessonBlock__section'>
+            <section className='purchaseLessonBlock__inputs__lessonInfo'>
+              <h3>Lesson Info</h3>
+              <select
+                name='lessonType'
+                value={lessonType}
+                onChange={(e) => {
+                  setLessonType(e.target.value);
                 }}
-                containerStyle={{
-                  width: '100%',
-                  height: '100%',
-                }}
+                className='lessonType'
+              >
+                {lessonDropdown}
+              </select>
+              {/* <div className='selectPartner'> */}
+              <Select
+                options={studentsDropdown}
+                onChange={setAddedStudents}
+                placeholder='Select Partners'
+                isSearchable
+                isMulti
+                isDisabled={!isSemiPrivate}
+                noOptionsMessage={() => `Student not found`}
+                className='selectPartner'
               />
-            </div>
-            <button className='clearBtn'>clear</button>
-          </div>
+              {/* </div> */}
 
-          <div className='lessonCheckout'>
-            <div className='checkoutPayment'>
-              <div className='discount'>
-                {/* <label htmlFor='discount'>Discount</label> */}
-
-                <input
-                  name='discount'
-                  value={discountAmount}
-                  onChange={(e) => {
-                    setDiscountAmount(e.target.value);
+              <div className='datePicker'>
+                <DatePicker
+                  placeholder='Select Date'
+                  multiple
+                  plugins={[<DatePanel />]}
+                  value={purchaseLessonDates}
+                  onChange={setPurchaseLessonDates}
+                  // minDate={todaysDate}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    boxSizing: 'border-box',
+                    // height: '26px',
                   }}
-                  type='range'
-                  min='0'
-                  max='100'
-                  step='10'
-                  placeholder='amount...'
-                  list='tickmarks'
-                />
-                <datalist id='tickmarks'>
-                  <option value='0' label='0%'></option>
-                  <option value='10'></option>
-                  <option value='20'></option>
-                  <option value='30'></option>
-                  <option value='40'></option>
-                  <option value='50' label='50%'>
-                    50
-                  </option>
-                  <option value='60'></option>
-                  <option value='70'></option>
-                  <option value='80'></option>
-                  <option value='90'></option>
-                  <option value='100' label='100%'></option>
-                </datalist>
-              </div>
-              <div className='credit'>
-                {/* <label htmlFor='payWithCredit'>Credit Used</label> */}
-                <input
-                  name='payWithCredit'
-                  placeholder={`credit: ${credit}...`}
-                  type='number'
-                  min='0'
-                  max={
-                    lessonPrice * quantity * (1 - discountAmount / 100) >=
-                    credit
-                      ? credit
-                      : lessonPrice * quantity * (1 - discountAmount / 100)
-                  }
-                  value={payCredit}
-                  onChange={(e) => {
-                    setPayCredit(e.target.value);
+                  containerStyle={{
+                    width: '100%',
+                    height: '100%',
                   }}
                 />
               </div>
-              <div className='checkoutAmount'>
-                <div className='subtotal'>
-                  <div className='subtotal-line'>
-                    <p>Lesson Price:</p>
-                    <p> ${lessonPrice}</p>
-                  </div>
-                  <div className='subtotal-line'>
-                    <p>Quantity:</p>
-                    <p> {quantity}</p>
-                  </div>
-                  <div className='subtotal-line'>
-                    <p>Discount:</p>
-                    <p> -%{discountAmount}</p>
-                  </div>
-                  <div className='subtotal-line'>
-                    <p>Credit:</p>
-                    <p> -${payCredit}</p>
-                  </div>
-                </div>
-                <div className='total-line'>
-                  <p>Total:</p>
-                  <p>${paymentTotal}</p>
-                </div>
-              </div>
-            </div>
-            <div className='checkoutNotes'>
+            </section>
+            <section className='purchaseLessonBlock__inputs__discounts'>
+              <h3>Discount Info</h3>
+              <input
+                name='discount'
+                value={discountAmount}
+                onChange={(e) => {
+                  setDiscountAmount(e.target.value);
+                }}
+                type='range'
+                min='0'
+                max='100'
+                step='10'
+                placeholder='amount...'
+                list='tickmarks'
+              />
+              <datalist id='tickmarks'>
+                <option value='0' label='0%'></option>
+                <option value='10'></option>
+                <option value='20'></option>
+                <option value='30'></option>
+                <option value='40'></option>
+                <option value='50' label='50%'>
+                  50
+                </option>
+                <option value='60'></option>
+                <option value='70'></option>
+                <option value='80'></option>
+                <option value='90'></option>
+                <option value='100' label='100%'></option>
+              </datalist>
               <textarea
-                placeholder='discount notes...'
+                placeholder='Add Discount Notes'
                 value={discountNotes}
                 onChange={(e) => {
                   setDiscountNotes(e.target.value);
                   console.log(discountNotes);
                 }}
               />
+            </section>
+            <section className='purchaseLessonBlock__inputs__credit'>
+              <h3>Credit Info</h3>
+              <input
+                name='payWithCredit'
+                placeholder={`credit: ${credit}...`}
+                type='number'
+                min='0'
+                max={
+                  lessonPrice * quantity * (1 - discountAmount / 100) >= credit
+                    ? credit
+                    : lessonPrice * quantity * (1 - discountAmount / 100)
+                }
+                value={payCredit}
+                onChange={(e) => {
+                  setPayCredit(e.target.value);
+                }}
+              />
+            </section>
+            <section className='purchaseLessonBlock__inputs__clearOrSubmit'>
+              <button className='clearBtn'>clear</button>
+
               <button type='submit' className='submitBtn'>
                 Submit
               </button>
+            </section>
+          </section>
+
+          <section className='purchaseLessonBlock__subtotal purchaseLessonBlock__section'>
+            <div className='checkoutAmount'>
+              <div className='subtotal'>
+                <div className='subtotal-line'>
+                  <p>Lesson Price:</p>
+                  <p> ${lessonPrice}</p>
+                </div>
+                <div className='subtotal-line'>
+                  <p>Quantity:</p>
+                  <p> {quantity}</p>
+                </div>
+                <div className='subtotal-line'>
+                  <p>Discount:</p>
+                  <p> -%{discountAmount}</p>
+                </div>
+                <div className='subtotal-line'>
+                  <p>Credit:</p>
+                  <p> -${payCredit}</p>
+                </div>
+              </div>
+              <div className='total-line'>
+                <p>Total:</p>
+                <p>${paymentTotal}</p>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
       </form>
     </>

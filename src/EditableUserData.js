@@ -77,10 +77,10 @@ const EditableUserData = (propsFromUser) => {
             <span className='bold600'>Credit: </span>
 
             <input
-              type='text'
+              type='number'
               name='credit'
-              required='required'
-              placeholder='enter a last name...'
+              placeholder='enter credit...'
+              value={editUserInfo.credit}
               onChange={handleEditFormChange}
             />
           </p>

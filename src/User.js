@@ -23,14 +23,22 @@ const User = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { id } = useParams();
 
+  const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
+
+  const [purchaseInfo, setPurchaseInfo] = useState([]);
+  const [saleInfo, setSaleInfo] = useState([]);
+  const [lessonInfo, setLessonInfo] = useState([]);
+  const [lessonsAvailable, setLessonsAvailable] = useState([]);
+  // const [displayLessons, setDisplayLessons] = useState('');
+
+  const [purchaseTable, setPurchaseTable] = useState('');
+  const [saleTable, setSaleTable] = useState('');
+
+  const [students, setStudents] = useState([]);
+
+  const [credit, setCredit] = useState(0);
+
   const [userInfo, setUserInfo] = useState('');
-  const [addUserInfo, setAddUserInfo] = useState({
-    fn: '',
-    ln: '',
-    email: '',
-    dob: '',
-    phone: '',
-  });
 
   const [editUserInfo, setEditUserInfo] = useState({
     fn: '',
@@ -38,6 +46,7 @@ const User = () => {
     email: '',
     dob: '',
     phone: '',
+    credit: '',
   });
 
   const handleClickEdit = () => {
@@ -47,6 +56,7 @@ const User = () => {
       email: userInfo.email,
       dob: userInfo.dob,
       phone: userInfo.phone,
+      credit: credit,
     };
 
     setEditUserInfo(currentUserValues);
@@ -65,6 +75,19 @@ const User = () => {
     setEditUserInfo(newUserFormData);
   };
 
+  const calculateCreditChange = () => {
+    //calculates how much credit to add or subtract
+    //based on current credit value and the value inputted
+    //call this function in handleEditFormSubmit
+
+    const initialCredit = credit;
+    const changedCredit = Number(editUserInfo.credit);
+
+    const creditDifference = changedCredit - initialCredit;
+    console.log(initialCredit, changedCredit, creditDifference);
+    return creditDifference;
+  };
+
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
     const editedUserInfo = {
@@ -73,34 +96,29 @@ const User = () => {
       email: editUserInfo.email,
       dob: editUserInfo.dob,
       phone: editUserInfo.phone,
+      // credit: editUserInfo.credit,
     };
 
-    setUserInfo(editedUserInfo);
+    const editedCredit = editUserInfo.credit;
+
+    const putCredit = calculateCreditChange();
+    Axios.put(`${domain}/user/${id}`, {
+      fn: editUserInfo.fn,
+      ln: editUserInfo.ln,
+      email: editUserInfo.email,
+      dob: editUserInfo.dob,
+      phone: editUserInfo.phone,
+      creditChange: putCredit,
+    })
+      .then((res) => {
+        console.log(res);
+        setUserInfo(editedUserInfo);
+        setCredit(editedCredit);
+      })
+      .catch((err) => console.log(err));
+
     setIsEditingUserInfo(false);
   };
-
-  const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
-
-  // const handleAddFormSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   const newContact = {
-
-  //   }
-  // }
-
-  const [purchaseInfo, setPurchaseInfo] = useState([]);
-  const [saleInfo, setSaleInfo] = useState([]);
-  const [lessonInfo, setLessonInfo] = useState([]);
-  const [lessonsAvailable, setLessonsAvailable] = useState([]);
-  // const [displayLessons, setDisplayLessons] = useState('');
-
-  const [purchaseTable, setPurchaseTable] = useState('');
-  const [saleTable, setSaleTable] = useState('');
-
-  const [students, setStudents] = useState([]);
-
-  const [credit, setCredit] = useState(0);
 
   useEffect(() => {
     getUserData();
@@ -125,7 +143,7 @@ const User = () => {
         setSaleInfo(res.data.salesLog);
         setLessonInfo(res.data.lessonTypes);
         setLessonsAvailable(res.data.avaliableLessons);
-        setCredit(res.data.credits.credit);
+        setCredit(res.data.credits.credit ? res.data.credits.credit : 0);
         setStudents(res.data.users);
       })
       .catch((err) => console.log(err));

@@ -6,10 +6,34 @@ import NavAddLesson from './NavAddLesson.js';
 import './index.css';
 
 const Navbar = () => {
-  const domain = 'http//localhost:5000';
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isAddUser, setIsAddUser] = useState(false);
   const [isAddLesson, setIsAddLesson] = useState(false);
   const [isEditLesson, setIsEditLesson] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allLessons, setAllLessons] = useState([]);
+
+  const [addUserInfo, setAddUserInfo] = useState({
+    fn: '',
+    ln: '',
+    email: '',
+    phone: '',
+    dob: '',
+  });
+
+  const handleEditAddUserInfo = (event) => {
+    event.preventDefault();
+    const fieldName = event.target.getAttribute('name');
+    const fieldValue = event.target.value;
+
+    const newUserInfo = {
+      ...addUserInfo,
+    };
+
+    newUserInfo[fieldName] = fieldValue;
+
+    setAddUserInfo(newUserInfo);
+  };
 
   const [lessonTypes, setLessonTypes] = useState([]);
 
@@ -38,8 +62,6 @@ const Navbar = () => {
     setIsAddLesson(false);
     setIsEditLesson(!isEditLesson);
   };
-
-  // console.log(active(isAddUser));
 
   //Add Lesson stuff
   const [usersArr, setUsersArr] = useState([]);
@@ -71,32 +93,41 @@ const Navbar = () => {
   const addUserDB = (e) => {
     e.preventDefault();
     // console.log(e.target.fn.value);
-    Axios.post('http://localhost:5000/navbar/addUser', {
-      fn: e.target.fn.value,
-      ln: e.target.ln.value,
-      dob: e.target.dob.value,
-      phone: e.target.phone.value,
-      email: e.target.email.value,
-    }).then(() => {
-      console.log('success');
-      e.target.fn.value = '';
-      e.target.ln.value = '';
-      e.target.dob.value = '';
-      e.target.phone.value = '';
-      e.target.email.value = '';
-    });
+    const submitAddUserData = { ...addUserInfo };
+    Axios.post(`${domain}/navbar/addNewUser`, {
+      fn: submitAddUserData.fn,
+      ln: submitAddUserData.ln,
+      dob: submitAddUserData.dob,
+      phone: submitAddUserData.phone,
+      email: submitAddUserData.email,
+    })
+      .then(() => {
+        setAddUserInfo({ fn: '', ln: '', email: '', phone: '', dob: '' });
+        setIsAddUser(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAddLessonsInfo = () => {
+    Axios.get(`${domain}/navbar/addLesson/Info`)
+      .then((res) => {
+        console.log(res);
+        setAllUsers(res.data.allUsers);
+        setAllLessons(res.data.allLessons);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    Axios.get('http://localhost:5000/lessonType').then((res) => {
-      // console.log(res.data);
-      setLessonTypes(res.data.map((type) => type.type_name));
-    });
+    getAddLessonsInfo();
   }, []);
 
-  const addLessonDB = (e) => {
-    e.preventDefault();
-  };
+  // useEffect(() => {
+  //   Axios.get('http://localhost:5000/lessonType').then((res) => {
+  //     // console.log(res.data);
+  //     setLessonTypes(res.data.map((type) => type.type_name));
+  //   });
+  // }, []);
 
   return (
     <div className='navbar'>
@@ -107,7 +138,14 @@ const Navbar = () => {
         >
           <i className='bx bxs-user-plus'></i>
         </button>
-        {isAddUser && <NavAddUser />}
+        {isAddUser && (
+          <NavAddUser
+            addUserDB={addUserDB}
+            handleEditAddUserInfo={handleEditAddUserInfo}
+            addUserInfo={addUserInfo}
+            setAddUserInfo={setAddUserInfo}
+          />
+        )}
       </section>
       <section>
         <button
@@ -116,7 +154,13 @@ const Navbar = () => {
         >
           <i className='bx bx-cart-add'></i>
         </button>
-        {isAddLesson && <NavAddLesson />}
+        {isAddLesson && (
+          <NavAddLesson
+            allUsers={allUsers}
+            allLessons={allLessons}
+            domain={domain}
+          />
+        )}
       </section>
       <section>
         <button

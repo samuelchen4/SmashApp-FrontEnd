@@ -96,6 +96,19 @@ const Group = (groupInfo) => {
   const displayAddUser = (e) => {
     e.preventDefault();
     setIsOpenAddStudent(!isOpenAddStudent);
+    // if (isOpenClasslist && isOpenAddStudent) {
+    //   setIsOpenClasslist(0);
+    // } else if (isOpenClasslist && !isOpenAddStudent) {
+    //   setIsOpenClasslist(1);
+    // } else {
+    //   setIsOpenClasslist(1);
+    // }
+
+    if (isOpenClasslist && isOpenAddStudent) {
+      setIsOpenClasslist(0);
+    } else {
+      setIsOpenClasslist(1);
+    }
   };
 
   const undoSubmitAttendace = async () => {
@@ -174,28 +187,41 @@ const Group = (groupInfo) => {
                 setClasslist={setClasslist}
                 isChecked={isChecked}
                 setIsChecked={setIsChecked}
+                setIsOpenClasslist={setIsOpenClasslist}
               />
             )}
           </AnimatePresence>
           <AnimatePresence>
             {isOpenClasslist && (
-              <Classlist
-                lessonType={lessonType}
-                lessonName={lessonName}
-                lessonDate={lessonDate}
-                addStudentClicked={addStudentClicked}
-                setAddStudentClicked={setAddStudentClicked}
-                setAmountStudents={setAmountStudents}
-                users={users}
-                setUsers={setUsers}
-                classlist={classlist}
-                setClasslist={setClasslist}
-                isChecked={isChecked}
-                setIsChecked={setIsChecked}
-                setIsDisabled={setIsDisabled}
-                getPaytrackerUsers={getPaytrackerUsers}
-                setIsOpenClasslist={setIsOpenClasslist}
-              />
+              <motion.div
+                key='classlist'
+                animate={{ maxHeight: 2000, opacity: 1 }}
+                initial={{ maxHeight: 0, opacity: 0 }}
+                exit={{
+                  maxHeight: 0,
+                  opacity: 0,
+                  transition: { ease: 'linear', duration: 0.2 },
+                }}
+                transition={{ ease: 'linear', duration: 0.3 }}
+              >
+                <Classlist
+                  lessonType={lessonType}
+                  lessonName={lessonName}
+                  lessonDate={lessonDate}
+                  addStudentClicked={addStudentClicked}
+                  setAddStudentClicked={setAddStudentClicked}
+                  setAmountStudents={setAmountStudents}
+                  users={users}
+                  setUsers={setUsers}
+                  classlist={classlist}
+                  setClasslist={setClasslist}
+                  isChecked={isChecked}
+                  setIsChecked={setIsChecked}
+                  setIsDisabled={setIsDisabled}
+                  getPaytrackerUsers={getPaytrackerUsers}
+                  setIsOpenClasslist={setIsOpenClasslist}
+                />
+              </motion.div>
             )}
           </AnimatePresence>
         </div>

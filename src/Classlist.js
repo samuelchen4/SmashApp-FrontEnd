@@ -167,47 +167,40 @@ const Classlist = (classlistInfo) => {
   };
 
   return (
-    <motion.div
-      animate={{ maxHeight: 800, opacity: 1 }}
-      initial={{ maxHeight: 0, opacity: 0 }}
-      // exit={{ maxHeight: 0, opacity: 0 }}
-      // transition={{ ease: 'linear', duration: 0.5 }}
-    >
-      <div>
-        <table className='classlist' ref={componentRef}>
-          <thead className='classlist-titles'>
-            <tr>
-              <td>Name</td>
-              <td>
-                <button onClick={copyPhoneNumbers}>Phone</button>
-              </td>
-              <td>
-                <button onClick={copyEmails}>Email</button>
-              </td>
-              <td>Paid</td>
-              <td>Attended</td>
-            </tr>
-          </thead>
-          <tbody>{classlistTable}</tbody>
-        </table>
-        <ReactToPrint
-          trigger={() => <button className='classlist-btn'>print</button>}
-          content={() => componentRef.current}
-          documentTitle={`${lessonName} on ${lessonDate}`}
-          pageStyle='print'
-        />
-        <button
-          className='classlist-btn'
-          type='submit'
-          onClick={() => submitAttendance()}
-        >
-          submit
-        </button>
-        {/* <button className='undoBtn'>
+    <div>
+      <table className='classlist' ref={componentRef}>
+        <thead className='classlist-titles'>
+          <tr>
+            <td>Name</td>
+            <td>
+              <button onClick={copyPhoneNumbers}>Phone</button>
+            </td>
+            <td>
+              <button onClick={copyEmails}>Email</button>
+            </td>
+            <td>Paid</td>
+            <td>Attended</td>
+          </tr>
+        </thead>
+        <tbody>{classlistTable}</tbody>
+      </table>
+      <ReactToPrint
+        trigger={() => <button className='classlist-btn'>print</button>}
+        content={() => componentRef.current}
+        documentTitle={`${lessonName} on ${lessonDate}`}
+        pageStyle='print'
+      />
+      <button
+        className='classlist-btn'
+        type='submit'
+        onClick={() => submitAttendance()}
+      >
+        submit
+      </button>
+      {/* <button className='undoBtn'>
           <i class='bx bx-undo'></i>
         </button> */}
-      </div>
-    </motion.div>
+    </div>
   );
 };
 

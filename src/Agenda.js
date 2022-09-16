@@ -248,7 +248,10 @@ const Agenda = (propsFromMain) => {
       </header>
       <main className='agenda-main'>
         <h3>{selectedDate}</h3>
-        <motion.ul layout className='lesson-list'>
+        <motion.ul
+          // layout
+          className='lesson-list'
+        >
           {data
             .filter((lesson) => {
               if (sortBy === 'all') {
@@ -278,7 +281,7 @@ const Agenda = (propsFromMain) => {
               if (lesson.type_name.toString().toLowerCase().includes('semi')) {
                 return (
                   <motion.li
-                    layout
+                    // layout
                     key={lesson.purchase_id}
                     whileHover={{ scale: 1.03 }}
                     className='agenda-lessons'
@@ -295,7 +298,7 @@ const Agenda = (propsFromMain) => {
                 return (
                   <motion.li
                     layout
-                    key={lesson.purchase_id}
+                    // key={lesson.purchase_id}
                     whileHover={{ scale: 1.03 }}
                     className='agenda-lessons'
                   >
@@ -313,7 +316,7 @@ const Agenda = (propsFromMain) => {
               } else {
                 return (
                   <motion.li
-                    layout
+                    // layout
                     whileHover={{ scale: 1.03 }}
                     key={lesson.type_id}
                     className='agenda-lessons'

@@ -89,29 +89,6 @@ const Classlist = (classlistInfo) => {
     navigator.clipboard.writeText(copiedPhoneNumbers);
   };
 
-  // const handleCheckbox = (position) => {
-  //   const updatedCheckedState = isChecked.map((user, index) =>
-  //     index === position
-  //       ? {
-  //           userId: user.userId,
-  //           purchaseId: user.purchaseId,
-  //           paid: user.paid,
-  //           attended: !user.attended,
-  //           purchaseHandled: user.purchaseHandled,
-  //           priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-  //         }
-  //       : {
-  //           userId: user.userId,
-  //           purchaseId: user.purchaseId,
-  //           paid: user.paid,
-  //           attended: user.attended,
-  //           purchaseHandled: user.purchaseHandled,
-  //           priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-  //         }
-  //   );
-  //   setIsChecked(updatedCheckedState);
-  // };
-
   //change checked status based on purchaseId
   const handleCheckbox = (position) => {
     const updatedCheckedState = isChecked.map((user, index) =>

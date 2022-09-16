@@ -257,8 +257,8 @@ const Agenda = (propsFromMain) => {
               if (sortBy === 'all') {
                 return lesson;
               } else if (sortBy === 'group') {
-                return !lesson.type_name.toLowerCase().includes('private');
-              } else if (lesson.type_name.toLowerCase().includes(sortBy)) {
+                return !lesson.lessonName.toLowerCase().includes('private');
+              } else if (lesson.lessonName.toLowerCase().includes(sortBy)) {
                 return lesson;
               }
             })
@@ -278,7 +278,7 @@ const Agenda = (propsFromMain) => {
               }
             })
             .map((lesson) => {
-              if (lesson.type_name.toString().toLowerCase().includes('semi')) {
+              if (lesson.lessonName.toString().toLowerCase().includes('semi')) {
                 return (
                   <motion.li
                     // layout
@@ -294,7 +294,7 @@ const Agenda = (propsFromMain) => {
                     </AnimatePresence>
                   </motion.li>
                 );
-              } else if (lesson.type_name.toLowerCase().includes('private')) {
+              } else if (lesson.lessonName.toLowerCase().includes('private')) {
                 return (
                   <motion.li
                     layout

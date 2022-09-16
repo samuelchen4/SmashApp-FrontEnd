@@ -62,20 +62,7 @@ const Group = (groupInfo) => {
   const getClasslist = () => {
     Axios.get(`${domain}/agenda/group/classlist/${lessonType}/${lessonDate}`)
       .then((res) => {
-        // console.log(res.data);
         setClasslist(res.data);
-        // setIsChecked(
-        //   res.data.map((user) => {
-        //     return {
-        //       userId: user.user_id,
-        //       purchaseId: user.purchase_id,
-        //       paid: user.paid,
-        //       attended: user.attended,
-        //       purchaseHandled: user.purchaseHandled,
-        //       priceWithDiscountIncluded: user.priceWithDiscountIncluded,
-        //     };
-        //   })
-        // );
         setIsDisabled(res.data[0].purchaseHandled ? true : false);
       })
       .catch((err) => console.log(err));
@@ -83,7 +70,6 @@ const Group = (groupInfo) => {
 
   const getUsers = () => {
     Axios.get(`${domain}/users`).then((res) => {
-      // console.log(res.data);
       setUsers(res.data);
     });
   };
@@ -96,13 +82,6 @@ const Group = (groupInfo) => {
   const displayAddUser = (e) => {
     e.preventDefault();
     setIsOpenAddStudent(!isOpenAddStudent);
-    // if (isOpenClasslist && isOpenAddStudent) {
-    //   setIsOpenClasslist(0);
-    // } else if (isOpenClasslist && !isOpenAddStudent) {
-    //   setIsOpenClasslist(1);
-    // } else {
-    //   setIsOpenClasslist(1);
-    // }
 
     if (isOpenClasslist && isOpenAddStudent) {
       setIsOpenClasslist(0);
@@ -117,21 +96,14 @@ const Group = (groupInfo) => {
         const purchaseId = student.purchaseId;
         await Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale`).then(
           (res) => {
-            console.log(res);
+            getPaytrackerUsers();
+            setIsOpenClasslist(1);
+            setIsDisabled(false);
           }
         );
       })
-    ).then((res) => {
-      getPaytrackerUsers();
-      setIsOpenClasslist(1);
-      setIsDisabled(false);
-    });
-    // .then((res) => getPaytrackerUsers());
+    );
   };
-
-  // useEffect(() => {
-
-  // }, [isOpenClasslist]);
 
   return (
     <motion.section

@@ -10,6 +10,10 @@ const Private = (privateLessonInfo) => {
     type_name,
     fn,
     ln,
+    email,
+    phone,
+    dob,
+    contacted,
     scheduleddate,
     purchaseHandled,
     attended,
@@ -19,6 +23,10 @@ const Private = (privateLessonInfo) => {
     type_id,
     priceWithDiscountIncluded,
     duration,
+    getPaytrackerUsers,
+    // setPaytrackerData,
+    // editPaytrackerUser,
+    // getPaytrackerUsers,
     // duration,
   } = privateLessonInfo;
 
@@ -76,6 +84,7 @@ const Private = (privateLessonInfo) => {
     })
       .then((res) => {
         console.log(res);
+        getPaytrackerUsers();
         setIsDisabled(true);
       })
       .catch((err) => console.log(err));
@@ -85,24 +94,11 @@ const Private = (privateLessonInfo) => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
       .then((res) => {
         console.log(res);
+        getPaytrackerUsers();
         setIsDisabled(false);
       })
       .catch((err) => console.log(err));
   };
-
-  // const came = () => {
-  //   inputSale();
-  //   changePurchaseHandled();
-  // };
-
-  // const undo = () => {
-  //   undoSale();
-  //   changePurchaseHandled();
-  // };
-
-  // useEffect(() => {
-  //   getUserName();
-  // }, []);
 
   return (
     <motion.section
@@ -151,6 +147,7 @@ const Private = (privateLessonInfo) => {
                 paid={paid}
                 setIsNoShowOpen={setIsNoShowOpen}
                 setIsDisabled={setIsDisabled}
+                getPaytrackerUsers={getPaytrackerUsers}
               />
             </div>
           )}

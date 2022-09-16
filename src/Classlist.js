@@ -14,6 +14,8 @@ const Classlist = (classlistInfo) => {
     setIsDisabled,
     isChecked,
     setIsChecked,
+    getPaytrackerUsers,
+    setIsOpenClasslist,
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
@@ -134,34 +136,42 @@ const Classlist = (classlistInfo) => {
     setIsChecked(updatedCheckedState);
   };
 
-  const submitAttendance = () => {
+  const submitAttendance = async () => {
     //for new db change purchase to attended and handled
     // e.preventDefault();
-    isChecked.map((student) => {
-      const purchaseId = student.purchaseId;
+    await Promise.all(
+      isChecked.map(async (student) => {
+        const purchaseId = student.purchaseId;
 
-      const attended = student.attended;
-      const purchaseHandled = student.purchaseHandled;
-      const paid = student.paid;
-      const lessonPrice = student.priceWithDiscountIncluded;
-      Axios.put(`${domain}/agenda/group/classlist/${purchaseId}/submit`, {
-        attended,
-        purchaseHandled,
-        paid,
-        lessonPrice,
+        const attended = student.attended;
+        const purchaseHandled = student.purchaseHandled;
+        const paid = student.paid;
+        const lessonPrice = student.priceWithDiscountIncluded;
+        await Axios.put(
+          `${domain}/agenda/group/classlist/${purchaseId}/submit`,
+          {
+            attended,
+            purchaseHandled,
+            paid,
+            lessonPrice,
+          }
+        )
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
       })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+    ).then((res) => {
+      getPaytrackerUsers();
+      setIsOpenClasslist(0);
+      setIsDisabled(true);
     });
-    setIsDisabled(true);
   };
 
   return (
     <motion.div
       animate={{ maxHeight: 800, opacity: 1 }}
       initial={{ maxHeight: 0, opacity: 0 }}
-      exit={{ maxHeight: 0, opacity: 0 }}
-      transition={{ ease: 'linear', duration: 0.5 }}
+      // exit={{ maxHeight: 0, opacity: 0 }}
+      // transition={{ ease: 'linear', duration: 0.5 }}
     >
       <div>
         <table className='classlist' ref={componentRef}>

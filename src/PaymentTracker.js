@@ -5,9 +5,11 @@ import smashingIcon from './imgs/icon-badmintonplayer.png';
 import { motion, AnimatePresence } from 'framer-motion';
 // import { data } from './dummydata';
 
-const PaymentTracker = () => {
+const PaymentTracker = (propsFromMain) => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
-  const [data, setData] = useState([]);
+  const { paytrackerData, setPaytrackerData } = propsFromMain;
+  //set paytracker data to this
+  // const [data, setData] = useState([]);
   const [isOutstanding, setIsOutstanding] = useState(true);
 
   const [sortByValue, setSortByValue] = useState('all');
@@ -32,23 +34,18 @@ const PaymentTracker = () => {
     setSortByValue(e.target.value);
   };
 
-  const getUsers = () => {
-    //gets array of user_id and fn,ln for users with outstanding payments and does not duplicate
-    Axios.get(`${domain}/paytracker`)
+  const payForOwedLessons = (overdueLessonArr, userId) => {
+    Axios.put(`${domain}/paytracker/user/${userId}/payOwedLessons`, {
+      overdueLessonArr,
+    })
       .then((res) => {
-        console.log(res.data);
-        setData(res.data);
+        console.log(res);
+        const newData = paytrackerData.filter((user) => user.user_id != userId);
+        setPaytrackerData(newData);
       })
       .catch((err) => console.log(err));
   };
 
-  const getUserNames = () => {
-    Axios.get();
-  };
-  useEffect(() => {
-    getUsers();
-  }, []);
-  console.log(data);
   //get data based on payments owed
 
   //use effect to sort data based on sortByValue
@@ -85,7 +82,7 @@ const PaymentTracker = () => {
       </section>
       <main>
         <ul className='payment-main' onScroll={onScroll}>
-          {data
+          {paytrackerData
             .filter((student) => {
               if (search === '') {
                 return student;
@@ -105,7 +102,10 @@ const PaymentTracker = () => {
                 key={student.user_id}
               >
                 <AnimatePresence>
-                  <PaymentsOwed {...student} />
+                  <PaymentsOwed
+                    {...student}
+                    payForOwedLessons={payForOwedLessons}
+                  />
                 </AnimatePresence>
               </motion.li>
             ))}

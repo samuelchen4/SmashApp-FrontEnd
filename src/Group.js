@@ -8,7 +8,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PieChart from './PieChart';
 
 const Group = (groupInfo) => {
-  const { type_name, duration, type_id, scheduleddate, capacity } = groupInfo;
+  const {
+    type_name,
+    duration,
+    type_id,
+    scheduleddate,
+    capacity,
+    getPaytrackerUsers,
+  } = groupInfo;
   const lessonType = type_id;
   const lessonName = type_name;
   const lessonDate = scheduleddate;
@@ -91,17 +98,27 @@ const Group = (groupInfo) => {
     setIsOpenAddStudent(!isOpenAddStudent);
   };
 
-  const undoSubmitAttendace = () => {
-    isChecked.map((student) => {
-      const purchaseId = student.purchaseId;
-      Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale`).then(
-        (res) => {
-          console.log(res);
-          setIsDisabled(false);
-        }
-      );
+  const undoSubmitAttendace = async () => {
+    await Promise.all(
+      isChecked.map(async (student) => {
+        const purchaseId = student.purchaseId;
+        await Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale`).then(
+          (res) => {
+            console.log(res);
+          }
+        );
+      })
+    ).then((res) => {
+      getPaytrackerUsers();
+      setIsOpenClasslist(1);
+      setIsDisabled(false);
     });
+    // .then((res) => getPaytrackerUsers());
   };
+
+  // useEffect(() => {
+
+  // }, [isOpenClasslist]);
 
   return (
     <motion.section
@@ -176,6 +193,8 @@ const Group = (groupInfo) => {
                 isChecked={isChecked}
                 setIsChecked={setIsChecked}
                 setIsDisabled={setIsDisabled}
+                getPaytrackerUsers={getPaytrackerUsers}
+                setIsOpenClasslist={setIsOpenClasslist}
               />
             )}
           </AnimatePresence>

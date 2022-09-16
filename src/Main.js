@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './sidemenu/Sidebar';
 import PaymentTracker from './PaymentTracker';
 import Agenda from './Agenda';
@@ -7,6 +7,23 @@ import Axios from 'axios';
 import { motion } from 'framer-motion';
 
 const Main = () => {
+  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
+  const [paytrackerData, setPaytrackerData] = useState([]);
+
+  const getPaytrackerUsers = () => {
+    //get paytrackerData
+    Axios.get(`${domain}/paytracker`)
+      .then((res) => {
+        console.log(res.data);
+        setPaytrackerData(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getPaytrackerUsers();
+  }, []);
+
   return (
     <div className='meat'>
       <Sidebar />
@@ -18,8 +35,14 @@ const Main = () => {
           transition={{ duration: 0.75 }}
           className='main'
         >
-          <Agenda />
-          <PaymentTracker />
+          <Agenda
+            setPaytrackerData={setPaytrackerData}
+            getPaytrackerUsers={getPaytrackerUsers}
+          />
+          <PaymentTracker
+            paytrackerData={paytrackerData}
+            setPaytrackerData={setPaytrackerData}
+          />
         </motion.main>
       </div>
     </div>

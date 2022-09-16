@@ -9,7 +9,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   // return <section className='semiPrivate'>{studentComponents}</section>;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const {
-    type_name,
+    lessonName,
     fn,
     ln,
     email,
@@ -34,15 +34,10 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
 
   const userId = user_id;
   const purchaseId = purchase_id;
-  const typeName = type_name;
+  const typeName = lessonName;
   const partner1Id = partner1_id;
   const partner2Id = partner2_id;
   const partner3Id = partner3_id;
-  // const partnerArr = [
-  //   { partnerId: partner1_id, fn: '', ln: '' },
-  //   { partnerId: partner2_id, fn: '', ln: '' },
-  //   { partnerId: partner3_id, fn: '', ln: '' },
-  // ];
 
   // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);

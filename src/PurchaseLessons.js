@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select';
+import AddLesson from './AddLesson';
 
 const PurchaseLessons = (propsFromUser) => {
   const { lessonInfo, credit, students, userId, domain } = propsFromUser;
@@ -16,16 +17,17 @@ const PurchaseLessons = (propsFromUser) => {
   const [studentsDropdown, setStudentsDropdown] = useState([]);
   const [payCredit, setPayCredit] = useState(0);
   const [paymentTotal, setPaymentTotal] = useState(0);
-  const [isSemiPrivate, setIsSemiPrivate] = useState(true);
+  const [isSemiPrivate, setIsSemiPrivate] = useState(false);
   const [lessonType, setLessonType] = useState(1);
   const [lessonPrice, setLessonPrice] = useState(60);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
   const [addedStudents, setAddedStudents] = useState([]);
+  const [addedLesson, setAddedLesson] = useState({});
 
   useEffect(() => {
-    renderLessons();
+    setLessonDropdownData();
     console.log(lessonInfo);
     // const result = lessonInfo.filter((lesson) => lesson.type_id == 1);
     // setLessonPrice(result.price);
@@ -37,8 +39,11 @@ const PurchaseLessons = (propsFromUser) => {
 
   useEffect(() => {
     getLessonPrice();
-    checkIfSemi();
   }, [lessonType]);
+
+  useEffect(() => {
+    // checkIfSemi();
+  }, [addedLesson]);
 
   useEffect(() => {
     console.log(purchaseLessonDates);
@@ -49,13 +54,15 @@ const PurchaseLessons = (propsFromUser) => {
     calculateSubtotal();
   }, [lessonPrice, discountAmount, payCredit, quantity]);
 
-  const renderLessons = () => {
+  const setLessonDropdownData = () => {
     setLessonDropdown(
       lessonInfo.map((lesson) => {
-        // if (lesson.type_id == 1) {
-        //   setLessonPrice(lesson.price);
-        // }
-        return <option value={lesson.type_id}>{lesson.type_name}</option>;
+        return {
+          label: lesson.type_name,
+          value: lesson.type_id,
+          price: lesson.price,
+          Capacity: lesson.Capacity,
+        };
       })
     );
   };
@@ -101,19 +108,23 @@ const PurchaseLessons = (propsFromUser) => {
     setPaymentTotal(subTotal);
   };
 
-  const checkIfSemi = () => {
-    const results = lessonInfo
-      .filter((lesson) => lesson.type_id == lessonType)
-      .map((lesson) => {
-        if (lesson.type_name.toLowerCase().includes('semi')) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+  // const checkIfSemi = () => {
+  //   // const results = lessonInfo
+  //   //   .filter((lesson) => lesson.type_id == lessonType)
+  //   //   .map((lesson) => {
+  //   //     if (lesson.type_name.toLowerCase().includes('semi')) {
+  //   //       return true;
+  //   //     } else {
+  //   //       return false;
+  //   //     }
+  //   //   });
 
-    setIsSemiPrivate(results[0]);
-  };
+  //   if (addedLesson.type_name.toLowerCase().includes('semi')) {
+  //     setIsSemiPrivate(true);
+  //   } else {
+  //     setIsSemiPrivate(false);
+  //   }
+  // };
 
   const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
@@ -141,6 +152,8 @@ const PurchaseLessons = (propsFromUser) => {
           partnerArr: addedStudents,
           credit: lessonAmount,
           paidStatus: 1,
+          lessonName: addedLesson.label,
+          priceWithDiscountIncluded: lessonAmount,
         })
           .then((res) => {
             console.log(res);
@@ -156,6 +169,8 @@ const PurchaseLessons = (propsFromUser) => {
           partnerArr: addedStudents,
           credit: creditAmount,
           paidStatus: 1,
+          lessonName: addedLesson.label,
+          priceWithDiscountIncluded: lessonAmount,
         })
           .then((res) => {
             console.log(res);
@@ -179,7 +194,7 @@ const PurchaseLessons = (propsFromUser) => {
           <section className='purchaseLessonBlock__inputs purchaseLessonBlock__section'>
             <section className='purchaseLessonBlock__inputs__lessonInfo'>
               <h3>Lesson Info</h3>
-              <select
+              {/* <select
                 name='lessonType'
                 value={lessonType}
                 onChange={(e) => {
@@ -188,8 +203,16 @@ const PurchaseLessons = (propsFromUser) => {
                 className='lessonType'
               >
                 {lessonDropdown}
-              </select>
-              {/* <div className='selectPartner'> */}
+              </select> */}
+              <Select
+                options={lessonDropdown}
+                onChange={setAddedLesson}
+                placeholder='Select Lesson'
+                isSearchable
+                noOptionsMessage={() => `Lesson not found`}
+                className='lessonType'
+              />
+
               <Select
                 options={studentsDropdown}
                 onChange={setAddedStudents}

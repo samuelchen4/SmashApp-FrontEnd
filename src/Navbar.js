@@ -122,13 +122,6 @@ const Navbar = () => {
     getAddLessonsInfo();
   }, []);
 
-  // useEffect(() => {
-  //   Axios.get('http://localhost:5000/lessonType').then((res) => {
-  //     // console.log(res.data);
-  //     setLessonTypes(res.data.map((type) => type.type_name));
-  //   });
-  // }, []);
-
   return (
     <div className='navbar'>
       <section>

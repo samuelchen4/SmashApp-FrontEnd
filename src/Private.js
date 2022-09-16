@@ -8,6 +8,7 @@ const Private = (privateLessonInfo) => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const {
     type_name,
+    lessonName,
     fn,
     ln,
     email,
@@ -32,7 +33,7 @@ const Private = (privateLessonInfo) => {
 
   const userId = user_id;
   const purchaseId = purchase_id;
-  const typeName = type_name;
+  const typeName = lessonName;
 
   // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);

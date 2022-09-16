@@ -17,6 +17,7 @@ const AddStudent = (propsFromGroup) => {
     classlist,
     getClasslist,
     setClasslist,
+    setIsOpenClasslist,
   } = propsFromGroup;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   // const currentDate = format(new Date(), 'yyyy-MM-dd');

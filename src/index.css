@@ -97,10 +97,13 @@ button:hover {
   display: flex;
   justify-content: space-between;
   /* border: 1px solid black; */
-  max-width: 500px;
+  /* max-width: 500px; */
   /* distance from the right side, align with agenda right side */
   margin-right: 2rem;
+  /* min-height: 3vh; */
+  /* min-height: 5vh; */
   height: 5vh;
+  /* max-height: 5vh; */
 }
 
 .navbar section {
@@ -969,7 +972,7 @@ font-size: 16px;
   margin-bottom: 0.25em;
 }
 
-.creditForm form button {
+.credit button {
   padding: 0.5em 0.7em;
   margin-right: 0.5em;
   border-radius: 5px;

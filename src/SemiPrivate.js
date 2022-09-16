@@ -100,21 +100,21 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       .catch((err) => console.log(err));
   };
 
-  const submitDidNotAttend = async (event) => {
-    event.preventDefault();
-    //send post request
-    await Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
-      attended: 0,
-      lessonPrice: creditValue,
-    })
-      .then((res) => {
-        console.log(res);
-        getPaytrackerUsers();
-        setIsDisabled(true);
-        setIsNoShowOpen(false);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const submitDidNotAttend = async (event) => {
+  //   event.preventDefault();
+  //   //send post request
+  //   await Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
+  //     attended: 0,
+  //     lessonPrice: creditValue,
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       getPaytrackerUsers();
+  //       setIsDisabled(true);
+  //       setIsNoShowOpen(false);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   useEffect(() => {
     getPartnerNames();
@@ -156,6 +156,9 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
           <p className='lesson-time'>
             <span className='bold600'>Duration:</span> {duration}
           </p>
+          <p className='lesson-time'>
+            <span className='bold600'>Paid:</span> {paid ? 'Yes' : 'No'}
+          </p>
         </div>
 
         <div className='agenda-main-action'>
@@ -177,21 +180,17 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
         </div>
         <AnimatePresence>
           {isNoShowOpen && (
-            <motion.form
-              className='creditForm'
-              onSubmit={(event) => submitDidNotAttend(event)}
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0 }}
-              // initial={{ y: 0, opacity: 0, scale: 1 }}
-              // animate={{ y: 0, opacity: 1, scale: 1 }}
+            <motion.div
+              key='credit'
+              animate={{ maxHeight: 200, opacity: 1 }}
+              initial={{ maxHeight: 0, opacity: 0 }}
               exit={{
+                maxHeight: 0,
                 opacity: 0,
-                // transition: { ease: 'linear', duration: 0.2 },
+                transition: { ease: 'linear', duration: 0.2 },
               }}
-              transition={{ ease: 'linear', duration: 0.5 }}
-              // exit={{ maxHeight: 0, opacity: 0 }}
+              transition={{ ease: 'linear', duration: 0.2 }}
             >
-              {/* <div className='creditForm'> */}
               <Credit
                 userId={userId}
                 purchaseId={purchaseId}
@@ -201,8 +200,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
                 setIsDisabled={setIsDisabled}
                 getPaytrackerUsers={getPaytrackerUsers}
               />
-              {/* </div> */}
-            </motion.form>
+            </motion.div>
           )}
         </AnimatePresence>
       </section>

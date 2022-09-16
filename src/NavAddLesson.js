@@ -2,81 +2,85 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import AgendaDatePicker from './AgendaDatePicker.js';
 import { format } from 'date-fns';
-import SelectStudents from './SelectStudents';
+import Select from 'react-select';
+import DatePicker from 'react-multi-date-picker';
 
-const NavAddLesson = () => {
-  const domain = 'http://localhost:5000';
-  const [usersArr, setUsersArr] = useState([]);
+const NavAddLesson = (propsFromNavbar) => {
+  const { allUsers, allLessons, domain } = propsFromNavbar;
+
+  const [user, setUser] = useState({});
+  const [lesson, setLesson] = useState({});
   const [usersDropdown, setUsersDropdown] = useState([]);
   const [usersDropdownValue, setUsersDropdownValue] = useState(1);
 
-  const [lessonsArr, setLessonsArr] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [lessonsDropdown, setLessonsDropdown] = useState([]);
   const [lessonsDropdownValue, setLessonsDropdownValue] = useState(1);
 
+  const [purchaseLessonDate, setPurchaseLessonDate] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), 'yyyy-MM-dd')
   );
 
-  const [partnerId1, setPartnerId1] = useState(0);
-  const [partnerId2, setPartnerId2] = useState(0);
-  const [partnerId3, setPartnerId3] = useState(0);
+  // const [partnerId1, setPartnerId1] = useState(0);
+  // const [partnerId2, setPartnerId2] = useState(0);
+  // const [partnerId3, setPartnerId3] = useState(0);
 
   useEffect(() => {
-    getUsers();
-    getLessons();
-  }, []);
+    renderUsersDropdown();
+  }, [allUsers]);
 
-  const getUsers = () => {
-    Axios.get(`${domain}/navbar/addLesson/users`).then((res) => {
-      //   console.log(res);
-      setUsersArr(res.data);
-    });
-  };
+  useEffect(() => {
+    renderLessonsDropdown();
+  }, [allLessons]);
 
   const renderUsersDropdown = () => {
     setUsersDropdown(
-      usersArr.map((user) => {
-        return (
-          <option value={user.user_id}>
-            {user.fn} {user.ln}
-          </option>
-        );
+      allUsers.map((user) => {
+        return {
+          label: `${user.fn} ${user.ln}`,
+          value: user.user_id,
+        };
       })
     );
-  };
-
-  const getLessons = () => {
-    Axios.get(`${domain}/navbar/addLesson/lessons`).then((res) => {
-      //   console.log(res);
-      setLessonsArr(res.data);
-    });
   };
 
   const renderLessonsDropdown = () => {
     setLessonsDropdown(
-      lessonsArr.map((lesson) => {
-        return <option value={lesson.type_id}>{lesson.type_name}</option>;
+      allLessons.map((lesson) => {
+        return {
+          label: lesson.type_name,
+          value: lesson.type_id,
+          price: lesson.price,
+        };
       })
     );
   };
 
-  useEffect(() => {
-    renderUsersDropdown();
-    renderLessonsDropdown();
-  }, [usersArr, lessonsArr]);
-
   const purchase = () => {
     Axios.post(`${domain}/navbar/addLesson/purchase`, {
-      userId: usersDropdownValue,
+      userId: user,
       typeId: lessonsDropdownValue,
       lessonDate: selectedDate,
-      partnerId1,
-      partnerId2,
-      partnerId3,
     }).then((res) => console.log(res));
   };
+
+  useEffect(() => {
+    console.log(partners);
+  }, [partners]);
+
+  useEffect(() => {
+    console.log(purchaseLessonDate.toDate());
+  }, [purchaseLessonDate]);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <section className='drop-down'>
@@ -88,34 +92,44 @@ const NavAddLesson = () => {
           purchase();
         }}
       >
-        <label htmlFor='user'>User:</label>
-        <select
-          name='user'
-          value={usersDropdownValue}
-          onChange={(e) => {
-            setUsersDropdownValue(e.target.value);
-          }}
-          placeholder='names...'
-        >
-          {usersDropdown}
-        </select>
-        <label htmlFor='lesson'>Lesson:</label>
-        <select
-          name='lesson'
-          id='lesson-type'
-          value={lessonsDropdownValue}
-          onChange={(e) => {
-            setLessonsDropdownValue(e.target.value);
-          }}
-          placeholder='lessons...'
-        >
-          {lessonsDropdown}
-        </select>
-        <AgendaDatePicker
-          wrapperClassName='datePicker'
-          setSelectedDate={setSelectedDate}
+        <Select
+          options={usersDropdown}
+          onChange={setUser}
+          placeholder='Select User'
+          isSearchable
+          noOptionsMessage={() => `Student not found`}
         />
-        <div className='partners'>
+        <Select
+          options={lessonsDropdown}
+          onChange={setLesson}
+          placeholder='Select Lesson'
+          isSearchable
+          noOptionsMessage={() => `Student not found`}
+        />
+        <DatePicker
+          placeholder='Select Date'
+          value={purchaseLessonDate}
+          onChange={setPurchaseLessonDate}
+          style={{
+            width: '100%',
+            height: '100%',
+            boxSizing: 'border-box',
+            // height: '26px',
+          }}
+          // containerStyle={{
+          //   width: '100%',
+          //   height: '100%',
+          // }}
+        />
+        <Select
+          options={usersDropdown}
+          onChange={setPartners}
+          placeholder='Select User'
+          isSearchable
+          isMulti
+          noOptionsMessage={() => `Student not found`}
+        />
+        {/* <div className='partners'>
           <SelectStudents
             users={usersArr}
             partnerId={partnerId1}
@@ -131,7 +145,7 @@ const NavAddLesson = () => {
             partnerId={partnerId3}
             setPartnerId={setPartnerId3}
           />
-        </div>
+        </div> */}
         <button className='dropDownSubmit' type='submit'>
           Purchase
         </button>

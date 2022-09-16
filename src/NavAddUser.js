@@ -2,77 +2,55 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { format } from 'date-fns';
 
-const NavAddUser = () => {
-  const domain = 'http://localhost:5000';
+const NavAddUser = (propsFromNavbar) => {
+  const { addUserDB, handleEditAddUserInfo, addUserInfo, setAddUserInfo } =
+    propsFromNavbar;
   const [fn, setFn] = useState('');
   const [ln, setLn] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  const onSubmit = () => {
-    Axios.post(`${domain}/navbar/addUser`, {
-      fn,
-      ln,
-      phone,
-      email,
-    }).then((res) => {
-      console.log(res);
-      setFn('');
-      setLn('');
-      setEmail('');
-      setPhone('');
-    });
-  };
-
-  const handleChange = () => {};
-
   return (
     <section className='drop-down'>
       <h3>Add User</h3>
-      <form
-        className='add-user'
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
-        }}
-      >
+      <form className='add-user' onSubmit={addUserDB}>
         <div className='name'>
           <input
             placeholder='First Name'
             name='fn'
             type='text'
-            value={fn}
-            onChange={(e) => {
-              const result = e.target.value.replace(/[^a-z]/gi, '');
-              setFn(result);
-            }}
+            value={addUserInfo.fn}
+            onChange={handleEditAddUserInfo}
           />
           <input
             placeholder='Last Name'
             name='ln'
             type='text'
-            value={ln}
-            onChange={(e) => {
-              const result = e.target.value.replace(/[^a-z]/gi, '');
-              setLn(result);
-            }}
+            value={addUserInfo.ln}
+            onChange={handleEditAddUserInfo}
           />
         </div>
-        {/* <input placeholder='date of birth' name='dob' type='text' /> */}
+        <input
+          placeholder='date of birth'
+          name='dob'
+          type='date'
+          value={addUserInfo.dob}
+          onChange={handleEditAddUserInfo}
+        />
         <input
           placeholder='Phone Number'
           name='phone'
           type='tel'
           pattern='[0-9]{10}'
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          value={addUserInfo.phone}
+          onChange={handleEditAddUserInfo}
         />
         <input
           placeholder='Email...'
           name='email'
           type='email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={addUserInfo.email}
+          onChange={handleEditAddUserInfo}
         />
         <button className='dropDownSubmit' type='submit'>
           Submit

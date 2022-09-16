@@ -5,7 +5,8 @@ import LessonsTable from './LessonsTable';
 import Axios from 'axios';
 
 const PaymentsOwed = (student) => {
-  const { user_id, fn, ln, email, phone, dob, contacted } = student;
+  const { user_id, fn, ln, email, phone, dob, contacted, payForOwedLessons } =
+    student;
   const userId = user_id;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isExpanded, setIsExpanded] = useState(false);
@@ -13,6 +14,7 @@ const PaymentsOwed = (student) => {
   const [lessonsInfo, setLessonsInfo] = useState([]);
   const [amountOwed, setAmountOwed] = useState(0);
   const [credit, setCredit] = useState(0);
+  const [everyOverdueLesson, setEveryOverdueLesson] = useState([]);
   const [didContact, setDidContact] = useState(contacted);
   // const [overdueLessonsInfo, setOverdueLessonsInfo] = useState([]);
 
@@ -34,31 +36,13 @@ const PaymentsOwed = (student) => {
     }).then(setDidContact(!contacted));
   };
 
-  // const calcAmountOwed = () =>
-  //   lessonsInfo.reduce((totalOwed, lesson) => {
-  //     return totalOwed + lesson.price * lesson.lessonAmount * -1;
-  //   }, 0);
-
-  //   const getCredits = () => {
-  //     Axios.get(`${domain}/tracker/user/credits`, {
-  //       params: {
-  //         userId: user_id,
-  //       },
-  //     })
-  //       .then((res) => {
-  //         console.log(res);
-  //         setCredit(res.data.credits);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   };
-
   // get User info from user_id
   const getUserInfo = () => {
-    const userId = user_id;
     Axios.get(`${domain}/paytracker/user/${userId}`)
       .then((res) => {
         console.log(res.data);
         // setUserInfo(res.data.userInfo);
+        setEveryOverdueLesson(res.data.everyOverdueLesson);
         setLessonsInfo(res.data.lessonInfo); //amount of lessons owe per type of lesson
         setCredit(res.data.credits.credit); //credits avaliable
         setAmountOwed(res.data.amountOwed.amountOwed); //amount Owed
@@ -105,7 +89,7 @@ const PaymentsOwed = (student) => {
           <button onClick={changeContactedStatus}>
             <i class='bx bx-check'></i>
           </button>
-          <button onCLick={changeContactedStatus}>
+          <button onClick={() => payForOwedLessons(everyOverdueLesson, userId)}>
             <i class='bx bx-purchase-tag-alt'></i>
           </button>
           <button onClick={toggleExpand}>

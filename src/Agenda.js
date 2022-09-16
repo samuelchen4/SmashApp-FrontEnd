@@ -19,8 +19,8 @@ import { DatasetController } from 'chart.js';
 // change listed values depending on the calendar date
 // show outstanding
 
-const Agenda = () => {
-  // console.log(data);
+const Agenda = (propsFromMain) => {
+  const { setPaytrackerData, getPaytrackerUsers } = propsFromMain;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isOutstanding, setIsOutstanding] = useState(true);
   const [selectedDate, setSelectedDate] = useState(
@@ -28,6 +28,15 @@ const Agenda = () => {
   );
 
   const idArr = [];
+  const [editPaytrackerUser, setEditPaytrackerUser] = useState({
+    user_id: '',
+    fn: '',
+    ln: '',
+    email: '',
+    phone: '',
+    dob: '',
+    contacted: '',
+  });
 
   // console.log(format(new Date()), 'yyyy-MM-dd');
   const [search, setSearch] = useState('');
@@ -275,7 +284,10 @@ const Agenda = () => {
                     className='agenda-lessons'
                   >
                     <AnimatePresence>
-                      <SemiPrivate {...lesson} />
+                      <SemiPrivate
+                        {...lesson}
+                        getPaytrackerUsers={getPaytrackerUsers}
+                      />
                     </AnimatePresence>
                   </motion.li>
                 );
@@ -288,7 +300,13 @@ const Agenda = () => {
                     className='agenda-lessons'
                   >
                     <AnimatePresence>
-                      <Private {...lesson} />
+                      <Private
+                        {...lesson}
+                        // setPaytrackerData={setPaytrackerData}
+                        // setEditPaytrackerUser={setEditPaytrackerUser}
+                        // editPaytrackerUser={editPaytrackerUser}
+                        getPaytrackerUsers={getPaytrackerUsers}
+                      />
                     </AnimatePresence>
                   </motion.li>
                 );
@@ -301,7 +319,10 @@ const Agenda = () => {
                     className='agenda-lessons'
                   >
                     <AnimatePresence>
-                      <Group {...lesson} />
+                      <Group
+                        {...lesson}
+                        getPaytrackerUsers={getPaytrackerUsers}
+                      />
                     </AnimatePresence>
                   </motion.li>
                 );

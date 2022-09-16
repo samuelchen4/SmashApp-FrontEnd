@@ -2,16 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const ReadOnlyUserData = (propsFromUser) => {
-  const {
-    purchaseTable,
-    saleTable,
-    userInfo,
-    credit,
-    setIsEditingUserInfo,
-    handleEditFormChange,
-    editUserInfo,
-    handleClickEdit,
-  } = propsFromUser;
+  const { purchaseTable, saleTable, userInfo, credit, handleClickEdit } =
+    propsFromUser;
 
   return (
     <>

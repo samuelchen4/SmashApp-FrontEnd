@@ -39,14 +39,14 @@ const Lessons = () => {
             className={`containerSolo allowScroll`}
           >
             <h2>Lessons</h2>
-            <motion.div className='top'>
+            <motion.div className='top userSection'>
               <AddLesson
                 setLessons={setLessons}
                 lessons={lessons}
                 domain={domain}
               />
             </motion.div>
-            <motion.div className='lessonModule'>
+            <motion.div className='lessonModule userSection'>
               <LessonStatistics lessons={lessons} domain={domain} />
             </motion.div>
           </motion.main>

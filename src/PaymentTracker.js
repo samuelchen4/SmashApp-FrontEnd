@@ -105,6 +105,7 @@ const PaymentTracker = (propsFromMain) => {
                   <PaymentsOwed
                     {...student}
                     payForOwedLessons={payForOwedLessons}
+                    paytrackerData={paytrackerData}
                   />
                 </AnimatePresence>
               </motion.li>

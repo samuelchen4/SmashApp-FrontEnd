@@ -5,8 +5,17 @@ import LessonsTable from './LessonsTable';
 import Axios from 'axios';
 
 const PaymentsOwed = (student) => {
-  const { user_id, fn, ln, email, phone, dob, contacted, payForOwedLessons } =
-    student;
+  const {
+    user_id,
+    fn,
+    ln,
+    email,
+    phone,
+    dob,
+    contacted,
+    payForOwedLessons,
+    paytrackerData,
+  } = student;
   const userId = user_id;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isExpanded, setIsExpanded] = useState(false);

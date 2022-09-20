@@ -7,7 +7,6 @@ import Credit from './Credit';
 const Private = (privateLessonInfo) => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const {
-    type_name,
     lessonName,
     fn,
     ln,
@@ -79,6 +78,9 @@ const Private = (privateLessonInfo) => {
       <div className='lesson-info' disabled={isDisabled}>
         <p>
           <span className='bold600'>Lesson Type:</span> {typeName}
+        </p>
+        <p>
+          <span className='bold600'>Partners:</span> N/A
         </p>
         <p className='lesson-time'>
           <span className='bold600'>Duration:</span> {duration}

@@ -9,7 +9,7 @@ import PieChart from './PieChart';
 
 const Group = (groupInfo) => {
   const {
-    type_name,
+    lessonName,
     duration,
     type_id,
     scheduleddate,
@@ -17,7 +17,7 @@ const Group = (groupInfo) => {
     getPaytrackerUsers,
   } = groupInfo;
   const lessonType = type_id;
-  const lessonName = type_name;
+  // const lessonName = type_name;
   const lessonDate = scheduleddate;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
 

@@ -5,9 +5,12 @@ import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select';
 import AddLesson from './AddLesson';
+import Modal from './Modal';
 
 const PurchaseLessons = (propsFromUser) => {
   const { lessonInfo, credit, students, userId, domain } = propsFromUser;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const todaysDate = new Date();
   const [discountNotes, setDiscountNotes] = useState('');
@@ -15,35 +18,30 @@ const PurchaseLessons = (propsFromUser) => {
   const [quantity, setQuantity] = useState(0);
   const [duration, setDuration] = useState(0);
   const [studentsDropdown, setStudentsDropdown] = useState([]);
-  const [payCredit, setPayCredit] = useState(0);
+  const [payCredit, setPayCredit] = useState('');
   const [paymentTotal, setPaymentTotal] = useState(0);
-  const [isSemiPrivate, setIsSemiPrivate] = useState(false);
   const [lessonType, setLessonType] = useState(1);
-  const [lessonPrice, setLessonPrice] = useState(60);
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
   const [lessonDropdown, setLessonDropdown] = useState('');
   const [displayLessons, setDisplayLessons] = useState('');
   const [addedStudents, setAddedStudents] = useState([]);
-  const [addedLesson, setAddedLesson] = useState({});
+  const [addedLesson, setAddedLesson] = useState({
+    label: '',
+    value: '',
+    price: 0,
+    Capacity: '',
+    isSemi: '',
+  });
 
   useEffect(() => {
     setLessonDropdownData();
     console.log(lessonInfo);
     // const result = lessonInfo.filter((lesson) => lesson.type_id == 1);
-    // setLessonPrice(result.price);
   }, [lessonInfo]);
 
   useEffect(() => {
     setPartnerDropdownData();
   }, [students]);
-
-  useEffect(() => {
-    getLessonPrice();
-  }, [lessonType]);
-
-  useEffect(() => {
-    // checkIfSemi();
-  }, [addedLesson]);
 
   useEffect(() => {
     console.log(purchaseLessonDates);
@@ -52,16 +50,18 @@ const PurchaseLessons = (propsFromUser) => {
 
   useEffect(() => {
     calculateSubtotal();
-  }, [lessonPrice, discountAmount, payCredit, quantity]);
+  }, [addedLesson.price, discountAmount, payCredit, quantity]);
 
   const setLessonDropdownData = () => {
     setLessonDropdown(
       lessonInfo.map((lesson) => {
+        const isSemiPrivate = lesson.type_name.toLowerCase().includes('semi');
         return {
           label: lesson.type_name,
           value: lesson.type_id,
           price: lesson.price,
           Capacity: lesson.Capacity,
+          isSemi: isSemiPrivate,
         };
       })
     );
@@ -80,51 +80,14 @@ const PurchaseLessons = (propsFromUser) => {
     );
   };
 
-  const getLessonPrice = () => {
-    console.log(lessonType);
-    console.log(lessonInfo);
-    //callbackfn in filter has to return boolean value
-    const lessonPriceArr = lessonInfo
-      .filter((lesson) => {
-        if (lesson.type_id == lessonType) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .map((lesson) => lesson.price);
-
-    if (lessonPriceArr.length) {
-      setLessonPrice(lessonPriceArr[0]);
-    }
-  };
-
   const calculateSubtotal = () => {
     const subTotal = Math.round(
-      quantity * lessonPrice * (1 - discountAmount / 100) - payCredit
+      quantity * addedLesson.price * (1 - discountAmount / 100) - payCredit
     );
     console.log(subTotal);
 
     setPaymentTotal(subTotal);
   };
-
-  // const checkIfSemi = () => {
-  //   // const results = lessonInfo
-  //   //   .filter((lesson) => lesson.type_id == lessonType)
-  //   //   .map((lesson) => {
-  //   //     if (lesson.type_name.toLowerCase().includes('semi')) {
-  //   //       return true;
-  //   //     } else {
-  //   //       return false;
-  //   //     }
-  //   //   });
-
-  //   if (addedLesson.type_name.toLowerCase().includes('semi')) {
-  //     setIsSemiPrivate(true);
-  //   } else {
-  //     setIsSemiPrivate(false);
-  //   }
-  // };
 
   const submitPurchases = () => {
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
@@ -136,48 +99,67 @@ const PurchaseLessons = (propsFromUser) => {
 
     let creditAmount = payCredit;
 
-    const lessonAmount = Math.round(lessonPrice * (1 - discountAmount / 100));
+    const lessonAmount = Math.round(
+      addedLesson.price * (1 - discountAmount / 100)
+    );
     console.log(creditAmount);
     console.log(lessonAmount);
 
     //handles amount of lessons
-    purchaseLessonDates.forEach((purchaseLessonDate, index) => {
-      const lessonDate = purchaseLessonDate.toDate();
-      if (creditAmount > lessonAmount) {
-        Axios.post(`${domain}/user/${userId}/purchase`, {
-          lessonId: lessonType,
-          discountAmount: discountAmount,
-          discountNotes,
-          purchaseLessonDate: lessonDate,
-          partnerArr: addedStudents,
-          credit: lessonAmount,
-          paidStatus: 1,
-          lessonName: addedLesson.label,
-          priceWithDiscountIncluded: lessonAmount,
-        })
-          .then((res) => {
-            console.log(res);
+    Promise.all(
+      purchaseLessonDates.map(async (purchaseLessonDate) => {
+        const lessonDate = purchaseLessonDate.toDate();
+        if (creditAmount > lessonAmount) {
+          Axios.post(`${domain}/user/${userId}/purchase`, {
+            lessonId: lessonType,
+            discountAmount: discountAmount,
+            discountNotes,
+            purchaseLessonDate: lessonDate,
+            partnerArr: addedStudents,
+            credit: lessonAmount,
+            paidStatus: 1,
+            lessonName: addedLesson.label,
+            priceWithDiscountIncluded: lessonAmount,
           })
-          .catch((err) => console.log(err));
-        creditAmount -= lessonAmount;
-      } else {
-        Axios.post(`${domain}/user/${userId}/purchase`, {
-          lessonId: lessonType,
-          discountAmount: discountAmount,
-          discountNotes,
-          purchaseLessonDate: lessonDate,
-          partnerArr: addedStudents,
-          credit: creditAmount,
-          paidStatus: 1,
-          lessonName: addedLesson.label,
-          priceWithDiscountIncluded: lessonAmount,
-        })
-          .then((res) => {
-            console.log(res);
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => console.log(err));
+          creditAmount -= lessonAmount;
+        } else {
+          Axios.post(`${domain}/user/${userId}/purchase`, {
+            lessonId: lessonType,
+            discountAmount: discountAmount,
+            discountNotes,
+            purchaseLessonDate: lessonDate,
+            partnerArr: addedStudents,
+            credit: creditAmount,
+            paidStatus: 1,
+            lessonName: addedLesson.label,
+            priceWithDiscountIncluded: lessonAmount,
           })
-          .catch((err) => console.log(err));
-      }
-      creditAmount = 0;
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => console.log(err));
+        }
+        creditAmount = 0;
+      })
+    ).then((res) => {
+      console.log(res);
+      setAddedLesson({
+        label: '',
+        value: '',
+        price: 0,
+        Capacity: '',
+        isSemi: '',
+      });
+      setAddedStudents([]);
+      setPurchaseLessonDates([]);
+      setDiscountAmount(0);
+      setDiscountNotes('');
+      setPayCredit(0);
+      setPaymentTotal(0);
     });
   };
 
@@ -186,7 +168,8 @@ const PurchaseLessons = (propsFromUser) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          submitPurchases();
+          // submitPurchases();
+          setIsModalOpen(true);
         }}
       >
         <h3>Purchase Lessons</h3>
@@ -194,45 +177,44 @@ const PurchaseLessons = (propsFromUser) => {
           <section className='purchaseLessonBlock__inputs purchaseLessonBlock__section'>
             <section className='purchaseLessonBlock__inputs__lessonInfo'>
               <h3>Lesson Info</h3>
-              {/* <select
-                name='lessonType'
-                value={lessonType}
-                onChange={(e) => {
-                  setLessonType(e.target.value);
-                }}
-                className='lessonType'
-              >
-                {lessonDropdown}
-              </select> */}
-              <Select
-                options={lessonDropdown}
-                onChange={setAddedLesson}
-                placeholder='Select Lesson'
-                isSearchable
-                noOptionsMessage={() => `Lesson not found`}
-                className='lessonType'
-              />
+              <div className='inputGroup'>
+                <label htmlFor='lessons'>Lesson</label>
+                <Select
+                  name='lessons'
+                  options={lessonDropdown}
+                  onChange={setAddedLesson}
+                  placeholder='Select Lesson'
+                  isSearchable
+                  noOptionsMessage={() => `Lesson not found`}
+                  className='lessonType'
+                />
+              </div>
 
-              <Select
-                options={studentsDropdown}
-                onChange={setAddedStudents}
-                placeholder='Select Partners'
-                isSearchable
-                isMulti
-                isDisabled={!isSemiPrivate}
-                noOptionsMessage={() => `Student not found`}
-                className='selectPartner'
-              />
-              {/* </div> */}
+              <div className='inputGroup'>
+                <label htmlFor='partners'>Partners</label>
+                <Select
+                  name='partners'
+                  options={studentsDropdown}
+                  onChange={setAddedStudents}
+                  placeholder='Select Partners'
+                  isSearchable
+                  isMulti
+                  isDisabled={!addedLesson.isSemi}
+                  noOptionsMessage={() => `Student not found`}
+                  className='selectPartner'
+                />
+              </div>
 
-              <div className='datePicker'>
+              <div className='datePicker inputGroup'>
+                <label htmlFor='dates'>Dates</label>
                 <DatePicker
+                  name='dates'
                   placeholder='Select Date'
                   multiple
                   plugins={[<DatePanel />]}
                   value={purchaseLessonDates}
                   onChange={setPurchaseLessonDates}
-                  // minDate={todaysDate}
+                  minDate={todaysDate}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -248,60 +230,73 @@ const PurchaseLessons = (propsFromUser) => {
             </section>
             <section className='purchaseLessonBlock__inputs__discounts'>
               <h3>Discount Info</h3>
-              <input
-                name='discount'
-                value={discountAmount}
-                onChange={(e) => {
-                  setDiscountAmount(e.target.value);
-                }}
-                type='range'
-                min='0'
-                max='100'
-                step='10'
-                placeholder='amount...'
-                list='tickmarks'
-              />
-              <datalist id='tickmarks'>
-                <option value='0' label='0%'></option>
-                <option value='10'></option>
-                <option value='20'></option>
-                <option value='30'></option>
-                <option value='40'></option>
-                <option value='50' label='50%'>
-                  50
-                </option>
-                <option value='60'></option>
-                <option value='70'></option>
-                <option value='80'></option>
-                <option value='90'></option>
-                <option value='100' label='100%'></option>
-              </datalist>
-              <textarea
-                placeholder='Add Discount Notes'
-                value={discountNotes}
-                onChange={(e) => {
-                  setDiscountNotes(e.target.value);
-                  console.log(discountNotes);
-                }}
-              />
+              <div className='inputGroup'>
+                <label htmlFor='discount'>Discount</label>
+                <input
+                  name='discount'
+                  value={discountAmount}
+                  onChange={(e) => {
+                    setDiscountAmount(e.target.value);
+                  }}
+                  type='range'
+                  min='0'
+                  max='100'
+                  step='10'
+                  placeholder='amount...'
+                  list='tickmarks'
+                />
+                <datalist id='tickmarks'>
+                  <option value='0' label='0%'></option>
+                  <option value='10'></option>
+                  <option value='20'></option>
+                  <option value='30'></option>
+                  <option value='40'></option>
+                  <option value='50' label='50%'>
+                    50
+                  </option>
+                  <option value='60'></option>
+                  <option value='70'></option>
+                  <option value='80'></option>
+                  <option value='90'></option>
+                  <option value='100' label='100%'></option>
+                </datalist>
+              </div>
+              <div className='inputGroup'>
+                <label htmlFor='discountNotes'>Discount Notes</label>
+                <textarea
+                  name='discountNotes'
+                  placeholder='Add Discount Notes'
+                  value={discountNotes}
+                  onChange={(e) => {
+                    setDiscountNotes(e.target.value);
+                    console.log(discountNotes);
+                  }}
+                />
+              </div>
             </section>
             <section className='purchaseLessonBlock__inputs__credit'>
               <h3>Credit Info</h3>
-              <input
-                name='payWithCredit'
-                placeholder={`credit: ${credit}...`}
-                type='number'
-                min='0'
-                max={
-                  lessonPrice * quantity * (1 - discountAmount / 100) >= credit
-                    ? credit
-                    : lessonPrice * quantity * (1 - discountAmount / 100)
-                }
-                value={payCredit}
-                onChange={(e) => {
-                  setPayCredit(e.target.value);
-                }}
-              />
+              <div className='inputGroup'>
+                <label htmlFor='payWithCredit'>Credit</label>
+                <input
+                  name='payWithCredit'
+                  placeholder={`credit: ${credit}...`}
+                  type='number'
+                  min='0'
+                  max={
+                    addedLesson.price * quantity * (1 - discountAmount / 100) >=
+                    credit
+                      ? credit
+                      : addedLesson.price *
+                        quantity *
+                        (1 - discountAmount / 100)
+                  }
+                  value={payCredit}
+                  onChange={(e) => {
+                    setPayCredit(e.target.value);
+                  }}
+                />
+              </div>
             </section>
             <section className='purchaseLessonBlock__inputs__clearOrSubmit'>
               <button className='clearBtn'>clear</button>
@@ -317,7 +312,7 @@ const PurchaseLessons = (propsFromUser) => {
               <div className='subtotal'>
                 <div className='subtotal-line'>
                   <p>Lesson Price:</p>
-                  <p> ${lessonPrice}</p>
+                  <p>${addedLesson.price}</p>
                 </div>
                 <div className='subtotal-line'>
                   <p>Quantity:</p>
@@ -329,7 +324,7 @@ const PurchaseLessons = (propsFromUser) => {
                 </div>
                 <div className='subtotal-line'>
                   <p>Credit:</p>
-                  <p> -${payCredit}</p>
+                  <p> -${payCredit ? payCredit : 0}</p>
                 </div>
               </div>
               <div className='total-line'>
@@ -340,6 +335,8 @@ const PurchaseLessons = (propsFromUser) => {
           </section>
         </div>
       </form>
+
+      <Modal open={isModalOpen} setIsModalOpen={setIsModalOpen}></Modal>
     </>
   );
 };

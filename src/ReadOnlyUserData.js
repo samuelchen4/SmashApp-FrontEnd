@@ -71,6 +71,8 @@ const ReadOnlyUserData = (propsFromUser) => {
                     <td>Sales Id</td>
                     <td>Lesson</td>
                     <td>Date Attended</td>
+                    <td>Pay Method</td>
+                    <td>Date Bought</td>
                     <td>Initial</td>
                   </tr>
                 </thead>

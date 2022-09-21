@@ -96,7 +96,9 @@ const PaytrackerPurchaseModal = (props) => {
               <button
                 className='purchaseButton'
                 type='button'
-                onClick={() => payForOwedLessons(everyOverdueLesson, userId)}
+                onClick={() =>
+                  payForOwedLessons(everyOverdueLesson, userId, payCreditToDb)
+                }
               >
                 CONFIRM
               </button>

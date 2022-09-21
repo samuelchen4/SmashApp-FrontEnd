@@ -33,6 +33,10 @@ const PurchaseLessons = (propsFromUser) => {
     isSemi: '',
   });
 
+  //properties for modal, if falsey dont open modal
+  const [lessonAmountToDb, setLessonAmountToDb] = useState(0);
+  let creditAmount = 0;
+
   useEffect(() => {
     setLessonDropdownData();
     console.log(lessonInfo);
@@ -90,45 +94,47 @@ const PurchaseLessons = (propsFromUser) => {
   };
 
   const submitPurchases = () => {
+    setLessonAmountToDb(
+      Math.round(addedLesson.price * (1 - discountAmount / 100))
+    );
+    setIsModalOpen(true);
+  };
+
+  const confirmPurchases = (e) => {
+    e.preventDefault();
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
     //do http request first
-    console.log(addedStudents);
-
-    //handles partners
-
     let creditAmount = payCredit;
 
-    const lessonAmount = Math.round(
-      addedLesson.price * (1 - discountAmount / 100)
-    );
+    console.log(addedStudents);
     console.log(creditAmount);
-    console.log(lessonAmount);
+    console.log(lessonAmountToDb);
 
     //handles amount of lessons
     Promise.all(
       purchaseLessonDates.map(async (purchaseLessonDate) => {
         const lessonDate = purchaseLessonDate.toDate();
-        if (creditAmount > lessonAmount) {
+        if (creditAmount > lessonAmountToDb) {
           Axios.post(`${domain}/user/${userId}/purchase`, {
-            lessonId: lessonType,
+            lessonId: addedLesson.value,
             discountAmount: discountAmount,
             discountNotes,
             purchaseLessonDate: lessonDate,
             partnerArr: addedStudents,
-            credit: lessonAmount,
+            credit: lessonAmountToDb,
             paidStatus: 1,
             lessonName: addedLesson.label,
-            priceWithDiscountIncluded: lessonAmount,
+            priceWithDiscountIncluded: lessonAmountToDb,
           })
             .then((res) => {
               console.log(res);
             })
             .catch((err) => console.log(err));
-          creditAmount -= lessonAmount;
+          creditAmount -= lessonAmountToDb;
         } else {
           Axios.post(`${domain}/user/${userId}/purchase`, {
-            lessonId: lessonType,
+            lessonId: addedLesson.value,
             discountAmount: discountAmount,
             discountNotes,
             purchaseLessonDate: lessonDate,
@@ -136,7 +142,7 @@ const PurchaseLessons = (propsFromUser) => {
             credit: creditAmount,
             paidStatus: 1,
             lessonName: addedLesson.label,
-            priceWithDiscountIncluded: lessonAmount,
+            priceWithDiscountIncluded: lessonAmountToDb,
           })
             .then((res) => {
               console.log(res);
@@ -145,22 +151,41 @@ const PurchaseLessons = (propsFromUser) => {
         }
         creditAmount = 0;
       })
-    ).then((res) => {
-      console.log(res);
-      setAddedLesson({
-        label: '',
-        value: '',
-        price: 0,
-        Capacity: '',
-        isSemi: '',
-      });
-      setAddedStudents([]);
-      setPurchaseLessonDates([]);
-      setDiscountAmount(0);
-      setDiscountNotes('');
-      setPayCredit(0);
-      setPaymentTotal(0);
+    )
+      .then((res) => {
+        console.log(res);
+        setAddedLesson({
+          label: '',
+          value: '',
+          price: 0,
+          Capacity: '',
+          isSemi: '',
+        });
+        setAddedStudents([]);
+        setPurchaseLessonDates([]);
+        setDiscountAmount(0);
+        setDiscountNotes('');
+        setPayCredit(0);
+        setPaymentTotal(0);
+      })
+      .then((res) => setIsModalOpen(false));
+  };
+
+  const clearSelections = (e) => {
+    e.preventDefault();
+    setAddedLesson({
+      label: '',
+      value: '',
+      price: 0,
+      Capacity: '',
+      isSemi: '',
     });
+    setAddedStudents([]);
+    setPurchaseLessonDates([]);
+    setDiscountAmount(0);
+    setDiscountNotes('');
+    setPayCredit(0);
+    setPaymentTotal(0);
   };
 
   return (
@@ -168,15 +193,15 @@ const PurchaseLessons = (propsFromUser) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          // submitPurchases();
-          setIsModalOpen(true);
+          // setIsModalOpen(true);
+          submitPurchases();
         }}
       >
         <h3>Purchase Lessons</h3>
         <div className='purchaseLessonBlock'>
           <section className='purchaseLessonBlock__inputs purchaseLessonBlock__section'>
             <section className='purchaseLessonBlock__inputs__lessonInfo'>
-              <h3>Lesson Info</h3>
+              {/* <h3>Lesson Info</h3> */}
               <div className='inputGroup'>
                 <label htmlFor='lessons'>Lesson</label>
                 <Select
@@ -186,7 +211,7 @@ const PurchaseLessons = (propsFromUser) => {
                   placeholder='Select Lesson'
                   isSearchable
                   noOptionsMessage={() => `Lesson not found`}
-                  className='lessonType'
+                  className='react-select-container lessonType'
                 />
               </div>
 
@@ -201,7 +226,7 @@ const PurchaseLessons = (propsFromUser) => {
                   isMulti
                   isDisabled={!addedLesson.isSemi}
                   noOptionsMessage={() => `Student not found`}
-                  className='selectPartner'
+                  className='react-select-container selectPartner'
                 />
               </div>
 
@@ -209,6 +234,7 @@ const PurchaseLessons = (propsFromUser) => {
                 <label htmlFor='dates'>Dates</label>
                 <DatePicker
                   name='dates'
+                  format='YYYY/MM/DD'
                   placeholder='Select Date'
                   multiple
                   plugins={[<DatePanel />]}
@@ -229,7 +255,7 @@ const PurchaseLessons = (propsFromUser) => {
               </div>
             </section>
             <section className='purchaseLessonBlock__inputs__discounts'>
-              <h3>Discount Info</h3>
+              {/* <h3>Discount Info</h3> */}
               <div className='inputGroup'>
                 <label htmlFor='discount'>Discount</label>
                 <input
@@ -275,7 +301,7 @@ const PurchaseLessons = (propsFromUser) => {
               </div>
             </section>
             <section className='purchaseLessonBlock__inputs__credit'>
-              <h3>Credit Info</h3>
+              {/* <h3>Credit Info</h3> */}
               <div className='inputGroup'>
                 <label htmlFor='payWithCredit'>Credit</label>
                 <input
@@ -299,10 +325,12 @@ const PurchaseLessons = (propsFromUser) => {
               </div>
             </section>
             <section className='purchaseLessonBlock__inputs__clearOrSubmit'>
-              <button className='clearBtn'>clear</button>
+              <button className='cancelButton' onClick={clearSelections}>
+                clear
+              </button>
 
-              <button type='submit' className='submitBtn'>
-                Submit
+              <button type='submit' className='purchaseButton'>
+                BUY
               </button>
             </section>
           </section>
@@ -320,7 +348,7 @@ const PurchaseLessons = (propsFromUser) => {
                 </div>
                 <div className='subtotal-line'>
                   <p>Discount:</p>
-                  <p> -%{discountAmount}</p>
+                  <p> -{discountAmount}%</p>
                 </div>
                 <div className='subtotal-line'>
                   <p>Credit:</p>
@@ -336,7 +364,18 @@ const PurchaseLessons = (propsFromUser) => {
         </div>
       </form>
 
-      <Modal open={isModalOpen} setIsModalOpen={setIsModalOpen}></Modal>
+      <Modal
+        open={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        addedLesson={addedLesson}
+        lessonAmountToDb={lessonAmountToDb}
+        addedStudents={addedStudents}
+        purchaseLessonDates={purchaseLessonDates}
+        discountAmount={discountAmount}
+        discountNotes={discountNotes}
+        creditAmount={payCredit}
+        confirmPurchases={confirmPurchases}
+      ></Modal>
     </>
   );
 };

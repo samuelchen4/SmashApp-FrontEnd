@@ -225,7 +225,7 @@ button:hover {
 } */
 
 
-.containerSolo .userSection {
+.userSection {
     /* userSection are the boxes surrounding the info and purchase Lessons */
     /* min-height: 500px; */
     box-sizing: border-box;
@@ -235,6 +235,7 @@ button:hover {
     /* background: var(--lightgrey); */
     
     padding: 1em;
+    padding-bottom: 0;
     /* border: 2px solid #d8dadd; */
     border: 2px solid var(--borderTop);
     border-radius: 10px;
@@ -320,19 +321,37 @@ button:hover {
 }
 
 
-.tables table {
+/* .tables table {
     
+    height: 100%;
+    
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+   
+    
+    
+} */
+.paytrackerTable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 400px;
+}
+
+
+ table {
+
     height: 100%;
     /* width: 400px; */
     table-layout: fixed;
     text-align: center;
     border-collapse: collapse;
     /* border: 1px green solid; */
-    
-    
+
+
 }
 
-.tables table thead tr {
+table thead tr {
     position: sticky;
     font-weight: 600;
     font-size: 1rem;
@@ -343,19 +362,23 @@ button:hover {
 
 
 
-.tables table td {
+table td {
     padding: 4px 8px;
     text-align: center;
     min-width: 5rem;
     /* border: 1px solid black; */
 }
 
-.tables table tbody tr {
+.paytrackerTable table td {
+    padding: 4px 20px;
+}
+
+table tbody tr {
     font-size: 0.9rem;
     height: 80px;
 }
 
-.tables table tbody td {
+table tbody td {
     /* font-size: 0.75rem; */
     background: var(--lightgrey);
 }
@@ -414,6 +437,8 @@ button:hover {
     border-radius: 3px;
     margin: 0 1em;
     padding: 1.5em 2.5em;
+    font-weight: 400;
+    font-size: 1rem;
     
 }
 
@@ -458,10 +483,9 @@ button:hover {
 
 .purchaseLessonBlock__inputs .inputGroup label {
     display: inline-block;
-    margin-left: 0.1rem;
-    margin-bottom: 0.2rem;
-
-    font-weight: 700;
+    /* margin-left: 0.1rem; */
+    margin-bottom: 0.4rem;
+    font-weight: inherit;
 }
 
 .purchaseLessonBlock__inputs .purchaseLessonBlock__inputs__lessonInfo {
@@ -588,6 +612,7 @@ button:hover {
 
 .purchaseLessonBlock__inputs select,
 .purchaseLessonBlock__inputs input {
+    /* box-shadow: var(--shortShadow); */
     padding: 15px 10px 15px 10px;
     color: #525252;
     font-size: 16px;
@@ -599,17 +624,12 @@ button:hover {
     outline: none;
 }
 
-.purchaseLessonBlock__inputs button {
-    padding: 0.5em 0.7em;
-    margin-right: 0.5em;
-    border-radius: 5px;
-    border: 1px solid black;
-    border: 1px solid var(--buttonBorderColor);
-    font-weight: 800;
-    font-size: 0.75rem;
-    color: inherit;
-    letter-spacing: 1px;
+.react-select-container,
+textarea {
+    box-shadow: var(--shadow4);
 }
+
+
 
 /* CHECKOUT SIDE */
 .purchaseLessonBlock__subtotal {
@@ -721,6 +741,8 @@ button:hover {
  .lessonCheckout .checkoutNotes textarea {
     height: 50%;
  }
+
+
 
 
 

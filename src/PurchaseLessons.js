@@ -114,7 +114,7 @@ const PurchaseLessons = (propsFromUser) => {
     //handles amount of lessons
     Promise.all(
       purchaseLessonDates.map(async (purchaseLessonDate) => {
-        const lessonDate = purchaseLessonDate.toDate();
+        const lessonDate = purchaseLessonDate.format();
         if (creditAmount > lessonAmountToDb) {
           Axios.post(`${domain}/user/${userId}/purchase`, {
             lessonId: addedLesson.value,

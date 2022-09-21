@@ -22,9 +22,7 @@ const Modal = (props) => {
 
   let lessonDates = [];
   if (purchaseLessonDates.length) {
-    lessonDates = purchaseLessonDates.map((date) =>
-      date.toDate().toISOString().substring(0, 10)
-    );
+    lessonDates = purchaseLessonDates.map((date) => date.format());
     console.log(lessonDates);
   }
 

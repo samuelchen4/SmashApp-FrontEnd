@@ -83,6 +83,58 @@ button:hover {
   font-size: 1em;
 }
 
+.frontPageButton {
+  outline: none;
+  text-align: center;
+  border: 2px solid var(--darkblue);
+  color: black;
+  text-shadow: 0;
+  transition: all 0.25s ease;
+}
+
+.frontPageButton:hover {
+  background: var(--darkblue);
+  color: #fff;
+}
+
+.purchaseButton {
+  outline: none;
+  height: 2.5rem;
+  /* height: 40px; */
+  text-align: center;
+  width: 8.125rem;
+  border-radius: 40px;
+  background: #fff;
+  border: 2px solid var(--darkblue);
+  box-shadow: var(--shortShadow);
+  color: var(--darkblue);
+  letter-spacing: 1px;
+  text-shadow: 0;
+  transition: all 0.25s ease;
+}
+
+.purchaseButton:hover {
+  color: #fff;
+  background: var(--darkblue)
+}
+
+.cancelButton {
+  letter-spacing: 1px;
+  text-shadow: 0;
+  color: var(--darkblue);
+  background: inherit;
+  border: none;
+  font-size: 1.1rem;
+  padding-left:0;
+  /* transition: all 0.25s ease; */
+}
+
+.cancelButton:hover {
+  /* border: 2px solid var(--darkblue); */
+}
+
+
+
 /* -------NAVBAR--------- */
 /* -------RELATED--------- */
 /* -------STYLES--------- */
@@ -710,14 +762,38 @@ font-size: 16px;
   max-height: 73.2vh;
 }
 
-.agenda-main .btn:hover:not([disabled]) {
+/* .agenda-main .btn:hover:not([disabled]) {
   background: #b3c2cf;
+  
+} */
+.btn {
+  padding: 0.5em 0.7em;
+  margin-right: 0.5em;
+  border-radius: 5px;
+  /* border: none; */
+  border: 1px solid black;
+  border: 1px solid var(--buttonBorderColor);
+
+  font-weight: 800;
+  font-size: 0.75rem;
+  flex-grow: 1;
+  letter-spacing: 1.5px;
+  transition: all 0.25s ease;
+}
+
+ .btn:not([disabled]) {
+  /* background: var(--buttonColor); */
+  background: var(--buttonColor);
+  /* background-color: none; */
   
 }
 
-.agenda-main .btn:not([disabled]) {
-  background: var(--buttonColor);
-  
+
+
+.btn:not([disabled]):hover {
+  background: var(--darkblue);
+  /* color: var(--buttonBorderColor); */
+  color: #fff;
 }
 
 
@@ -784,6 +860,7 @@ font-size: 16px;
 
 .agenda-lessons .btn:not([disabled]) {
   cursor: pointer;
+
 }
 
 
@@ -796,6 +873,7 @@ font-size: 16px;
   font-size: 1rem;
   opacity: 0.4;
   cursor: default;
+  transition: all 0.25s ease;
 
 }
 
@@ -806,9 +884,8 @@ font-size: 16px;
 }
 
 .undoBtn:hover:not([disabled]) {
-  background: #ebb3b3;
-
-
+  background: #b32400;
+  color: #fff;
 }
 
 .private > *,
@@ -893,17 +970,9 @@ font-size: 16px;
   justify-content: space-between;
 }
 
-.btn{
-  padding: 0.5em 0.7em;
-  margin-right: 0.5em;
-  border-radius: 5px;
-  border: none;
-  /* background: #F9E29C; */
-  font-weight: 900;
-  flex-grow: 1;
-}
 
-.agenda-main-action .btn {
+/* .agenda-main-action .btn {
+  flex-grow: 1;
   padding: 0.5em 0.7em;
   margin-right: 0.5em;
   border-radius: 5px;
@@ -913,7 +982,7 @@ font-size: 16px;
   font-size: 0.75rem;
   color: inherit;
   letter-spacing: 1px;
-}
+} */
 
 .agenda-main-action .btn:last-of-type {
   margin-right: 0;
@@ -1050,15 +1119,76 @@ font-size: 16px;
 
 /* MODAL STYLES */
 .modal {
+  
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  padding: 50px;
+  /* padding: 5rem; */
   background-color: #fff;
-
+  min-width: 400px;
+  
 }
+
+
+
+.modal .modalSection {
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  margin-bottom: 1rem;
+  
+}
+
+
+.modal .modalSection img {
+  margin-right: 2rem;
+}
+
+.modal .modalSection > * {
+  margin: 0;
+  
+}
+
+.modal .modalSection > *:last-child {
+  margin-bottom: 0;
+}
+
+.modal .modalData {
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
+  /* border: 1px solid black; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal .modalData > *:last-child {
+  margin-left: 3rem;
+}
+
+
+/* .modalData button {
+  border: 1px solid green;
+  margin-bottom: 0;
+} */
+
+.modal .modalData > * {
+  
+  margin: 0;
+}
+
+.modal .infoSection {
+  flex-direction: column;
+}
+
+.modal .modalSection .modalData {
+  display: flex;
+}
+
 
 .overLay {
   position: fixed;
@@ -1068,4 +1198,15 @@ font-size: 16px;
   bottom: 0;
   background-color:rgba(0, 0, 0, 0.7);
   z-index: 1000;
+}
+
+
+/* PAYTACKER MODAL */
+.paytrackerModalCredits {
+  display: flex;
+  justify-content: space-between;
+}
+
+.paytrackerModalCredit__input {
+  max-width: 6.25rem;
 }

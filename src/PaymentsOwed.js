@@ -3,6 +3,8 @@ import Lessons from './Lessons';
 import { motion, AnimatePresence } from 'framer-motion';
 import LessonsTable from './LessonsTable';
 import Axios from 'axios';
+import { set } from 'date-fns/esm';
+import PaytrackerPurchaseModal from './PaytrackerPurchaseModal';
 
 const PaymentsOwed = (student) => {
   const {
@@ -25,8 +27,7 @@ const PaymentsOwed = (student) => {
   const [credit, setCredit] = useState(0);
   const [everyOverdueLesson, setEveryOverdueLesson] = useState([]);
   const [didContact, setDidContact] = useState(contacted);
-  // const [overdueLessonsInfo, setOverdueLessonsInfo] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //changes opacity of lessons based on action
   // const [isExecuted, setIsExecuted] = useState(false);
   let actionExecuted = didContact ? 'good' : '';
@@ -42,7 +43,12 @@ const PaymentsOwed = (student) => {
   const changeContactedStatus = () => {
     Axios.put(`${domain}/paytracker/user/${userId}/changeContacted`, {
       contactedStatus: !contacted,
-    }).then(setDidContact(!contacted));
+    })
+      .then((res) => {
+        console.log(res);
+        setDidContact(!didContact);
+      })
+      .catch((err) => console.log(err));
   };
 
   // get User info from user_id
@@ -51,7 +57,7 @@ const PaymentsOwed = (student) => {
       .then((res) => {
         console.log(res.data);
         // setUserInfo(res.data.userInfo);
-        setEveryOverdueLesson(res.data.everyOverdueLesson);
+        setEveryOverdueLesson(res.data.everyOverdueLesson); //purchase ids of owed lessons
         setLessonsInfo(res.data.lessonInfo); //amount of lessons owe per type of lesson
         setCredit(res.data.credits.credit); //credits avaliable
         setAmountOwed(res.data.amountOwed.amountOwed); //amount Owed
@@ -66,16 +72,6 @@ const PaymentsOwed = (student) => {
     //     getCredits();
   }, []);
 
-  // useEffect(() => {
-  //   setAmountOwed(
-  //     lessonsInfo.reduce((totalOwed, lesson) => {
-  //       return totalOwed + lesson.price * lesson.lessonAmount * -1;
-  //     }, 0)
-  //   );
-  // }, [lessonsInfo]);
-
-  // console.log(lessonsInfo);
-  // console.log(amountOwed);
   return (
     <motion.article
       // layout
@@ -95,13 +91,17 @@ const PaymentsOwed = (student) => {
         <p>Amount Owed: ${amountOwed}</p>
         {credit ? <p>Credit: ${credit}</p> : <p>Credit: $0</p>}
         <div className='action-buttons'>
-          <button onClick={changeContactedStatus}>
-            <i class='bx bx-check'></i>
+          <button className='frontPageButton' onClick={changeContactedStatus}>
+            <i class='bx bx-envelope'></i>
           </button>
-          <button onClick={() => payForOwedLessons(everyOverdueLesson, userId)}>
-            <i class='bx bx-purchase-tag-alt'></i>
+          <button
+            className='frontPageButton'
+            // onClick={() => payForOwedLessons(everyOverdueLesson, userId)}
+            onClick={() => setIsModalOpen(true)}
+          >
+            <i class='bx bx-dollar'></i>
           </button>
-          <button onClick={toggleExpand}>
+          <button className='frontPageButton' onClick={toggleExpand}>
             <i class='bx bx-chevron-down'></i>
           </button>
         </div>
@@ -109,6 +109,14 @@ const PaymentsOwed = (student) => {
       <AnimatePresence>
         {isExpanded && <LessonsTable lessonsInfo={lessonsInfo} />}
       </AnimatePresence>
+      <PaytrackerPurchaseModal
+        open={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        userId={userId}
+        everyOverdueLesson={everyOverdueLesson}
+        payForOwedLessons={payForOwedLessons}
+        credit={credit}
+      />
     </motion.article>
   );
 };

@@ -47,7 +47,7 @@ const ReadOnlyUserData = (propsFromUser) => {
           <div className='purchaseLog'>
             <h4>Purchases Log</h4>
             <div>
-              <table>
+              <table className='table'>
                 <thead>
                   <tr>
                     <td>Purchase Id</td>
@@ -65,7 +65,7 @@ const ReadOnlyUserData = (propsFromUser) => {
           <div className='salesLog'>
             <h4>Sales Log</h4>
             <div>
-              <table>
+              <table className='table'>
                 <thead>
                   <tr>
                     <td>Sales Id</td>

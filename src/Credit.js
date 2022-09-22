@@ -83,7 +83,9 @@ const Credit = (privateLessonInfo) => {
         </datalist>
         <p>${creditValue}</p>
       </div>
-      <button type='submit'>Credit</button>
+      <button type='submit' className='frontPageButton'>
+        Credit
+      </button>
     </form>
   );
 };

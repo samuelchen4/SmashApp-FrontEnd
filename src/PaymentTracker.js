@@ -37,7 +37,7 @@ const PaymentTracker = (propsFromMain) => {
   const payForOwedLessons = (overdueLessonArr, userId, creditsUsed) => {
     Axios.put(`${domain}/paytracker/user/${userId}/payOwedLessons`, {
       overdueLessonArr,
-      creditsUsed,
+      creditsUsed: creditsUsed,
     })
       .then((res) => {
         console.log(res);

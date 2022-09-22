@@ -157,7 +157,9 @@ button:hover {
     /* border: 1px solid black; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
-    grid-auto-rows: 150px;
+    /* grid-auto-rows: 175px; */
+    grid-auto-rows: minmax(150px, 175px);
+    /* grid-auto-rows: 1fr; */
     grid-gap: 1em;
     justify-content: center;
     overflow-y: auto;
@@ -339,7 +341,7 @@ button:hover {
 }
 
 
- table {
+ .table {
 
     height: 100%;
     /* width: 400px; */
@@ -351,7 +353,7 @@ button:hover {
 
 }
 
-table thead tr {
+.table thead tr {
     position: sticky;
     font-weight: 600;
     font-size: 1rem;
@@ -362,7 +364,7 @@ table thead tr {
 
 
 
-table td {
+.table td {
     padding: 4px 8px;
     text-align: center;
     min-width: 5rem;
@@ -373,12 +375,12 @@ table td {
     padding: 4px 20px;
 }
 
-table tbody tr {
+.table tbody tr {
     font-size: 0.9rem;
     height: 80px;
 }
 
-table tbody td {
+.table tbody td {
     /* font-size: 0.75rem; */
     background: var(--lightgrey);
 }

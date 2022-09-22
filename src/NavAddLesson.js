@@ -4,36 +4,48 @@ import AgendaDatePicker from './AgendaDatePicker.js';
 import { format } from 'date-fns';
 import Select from 'react-select';
 import DatePicker from 'react-multi-date-picker';
+import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 
 const NavAddLesson = (propsFromNavbar) => {
-  const { allUsers, allLessons, domain } = propsFromNavbar;
+  const { allUsers, allLessons, domain, setIsAddLesson } = propsFromNavbar;
 
-  const [user, setUser] = useState({});
-  const [lesson, setLesson] = useState({});
+  const [user, setUser] = useState({
+    label: '',
+    value: 0,
+  });
+  const [lesson, setLesson] = useState({
+    label: '',
+    value: 0,
+    price: 0,
+    isSemi: false,
+  });
   const [usersDropdown, setUsersDropdown] = useState([]);
-  const [usersDropdownValue, setUsersDropdownValue] = useState(1);
+  // const [usersDropdownValue, setUsersDropdownValue] = useState(1);
 
   const [partners, setPartners] = useState([]);
+  const [partnersDropdown, setPartnersDropdown] = useState([]);
   const [lessonsDropdown, setLessonsDropdown] = useState([]);
-  const [lessonsDropdownValue, setLessonsDropdownValue] = useState(1);
+  // const [lessonsDropdownValue, setLessonsDropdownValue] = useState(1);
 
-  const [purchaseLessonDate, setPurchaseLessonDate] = useState({});
-  const [quantity, setQuantity] = useState(1);
-  const [selectedDate, setSelectedDate] = useState(
-    format(new Date(), 'yyyy-MM-dd')
-  );
-
-  // const [partnerId1, setPartnerId1] = useState(0);
-  // const [partnerId2, setPartnerId2] = useState(0);
-  // const [partnerId3, setPartnerId3] = useState(0);
+  const todaysDate = new Date();
+  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
+  // const [quantity, setQuantity] = useState(1);
+  // const [selectedDate, setSelectedDate] = useState(
+  //   format(new Date(), 'yyyy-MM-dd')
+  // );
 
   useEffect(() => {
+    console.log(allUsers);
     renderUsersDropdown();
   }, [allUsers]);
 
   useEffect(() => {
     renderLessonsDropdown();
   }, [allLessons]);
+
+  useEffect(() => {
+    renderPartnerDropdown();
+  }, [user.value]);
 
   const renderUsersDropdown = () => {
     setUsersDropdown(
@@ -46,24 +58,55 @@ const NavAddLesson = (propsFromNavbar) => {
     );
   };
 
+  const renderPartnerDropdown = () => {
+    setPartnersDropdown(
+      allUsers
+        .filter((partner) => partner.user_id != user.value)
+        .map((user) => {
+          return {
+            label: `${user.fn} ${user.ln}`,
+            value: user.user_id,
+          };
+        })
+    );
+  };
+
   const renderLessonsDropdown = () => {
     setLessonsDropdown(
       allLessons.map((lesson) => {
+        const isSemi = lesson.type_name.toLowerCase().includes('semi');
         return {
           label: lesson.type_name,
           value: lesson.type_id,
           price: lesson.price,
+          isSemi,
         };
       })
     );
   };
 
-  const purchase = () => {
-    Axios.post(`${domain}/navbar/addLesson/purchase`, {
-      userId: user,
-      typeId: lessonsDropdownValue,
-      lessonDate: selectedDate,
-    }).then((res) => console.log(res));
+  const purchase = async (e) => {
+    e.preventDefault();
+    Promise.all(
+      purchaseLessonDates.map(async (purchaseLessonDate) => {
+        const lessonDate = purchaseLessonDate.format();
+        Axios.post(`${domain}/navbar/addLesson/purchase/user/${user.value}`, {
+          lessonId: lesson.value,
+          lessonName: lesson.label,
+          lessonPrice: lesson.price,
+          partnerArr: partners,
+          purchaseLessonDate: lessonDate,
+        }).then((res) => console.log(res));
+      })
+    )
+      .then((res) => {
+        setUser({ label: '', value: 0 });
+        setLesson({ label: '', value: 0, price: 0, isSemi: false });
+        setPartners([]);
+        setPurchaseLessonDates([]);
+        setIsAddLesson(false);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -71,27 +114,13 @@ const NavAddLesson = (propsFromNavbar) => {
   }, [partners]);
 
   useEffect(() => {
-    console.log(purchaseLessonDate.toDate());
-  }, [purchaseLessonDate]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+    // console.log(purchaseLessonDate.toDate());
+  }, [purchaseLessonDates]);
 
   return (
     <section className='drop-down'>
-      <h3>Add Lesson</h3>
-      <form
-        className='add-lesson'
-        onSubmit={(e) => {
-          e.preventDefault();
-          purchase();
-        }}
-      >
+      <h3 className='add-lesson-title'>Add Lesson</h3>
+      <form className='add-lesson' onSubmit={purchase}>
         <Select
           options={usersDropdown}
           onChange={setUser}
@@ -106,47 +135,45 @@ const NavAddLesson = (propsFromNavbar) => {
           isSearchable
           noOptionsMessage={() => `Student not found`}
         />
+        {lesson.isSemi ? (
+          <Select
+            options={partnersDropdown}
+            onChange={setPartners}
+            placeholder='Select User'
+            isDisabled={!lesson.isSemi}
+            isSearchable
+            isMulti
+            noOptionsMessage={() => `Student not found`}
+          />
+        ) : (
+          ''
+        )}
         <DatePicker
+          name='dates'
+          format='YYYY/MM/DD'
           placeholder='Select Date'
-          value={purchaseLessonDate}
-          onChange={setPurchaseLessonDate}
+          multiple
+          plugins={[<DatePanel />]}
+          value={purchaseLessonDates}
+          onChange={setPurchaseLessonDates}
+          minDate={todaysDate}
           style={{
             width: '100%',
             height: '100%',
             boxSizing: 'border-box',
-            // height: '26px',
+            margin: '0',
+            border: '1px solid grey',
           }}
-          // containerStyle={{
-          //   width: '100%',
-          //   height: '100%',
-          // }}
+          containerStyle={{
+            // width: '100%',
+            height: '100%',
+          }}
         />
-        <Select
-          options={usersDropdown}
-          onChange={setPartners}
-          placeholder='Select User'
-          isSearchable
-          isMulti
-          noOptionsMessage={() => `Student not found`}
-        />
-        {/* <div className='partners'>
-          <SelectStudents
-            users={usersArr}
-            partnerId={partnerId1}
-            setPartnerId={setPartnerId1}
-          />
-          <SelectStudents
-            users={usersArr}
-            partnerId={partnerId2}
-            setPartnerId={setPartnerId2}
-          />
-          <SelectStudents
-            users={usersArr}
-            partnerId={partnerId3}
-            setPartnerId={setPartnerId3}
-          />
-        </div> */}
-        <button className='dropDownSubmit' type='submit'>
+        <button
+          className='dropDownSubmit'
+          // className='frontPageButton'
+          type='submit'
+        >
           Purchase
         </button>
       </form>

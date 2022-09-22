@@ -116,6 +116,8 @@ const PaymentsOwed = (student) => {
         everyOverdueLesson={everyOverdueLesson}
         payForOwedLessons={payForOwedLessons}
         credit={credit}
+        getUserInfo={getUserInfo}
+        amountOwed={amountOwed}
       />
     </motion.article>
   );

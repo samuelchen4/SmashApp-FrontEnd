@@ -80,6 +80,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       .then((res) => {
         console.log(res);
         getPaytrackerUsers();
+        setIsNoShowOpen(false);
         setIsDisabled(true);
       })
       .catch((err) => console.log(err));
@@ -95,22 +96,6 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
       .catch((err) => console.log(err));
   };
 
-  // const submitDidNotAttend = async (event) => {
-  //   event.preventDefault();
-  //   //send post request
-  //   await Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
-  //     attended: 0,
-  //     lessonPrice: creditValue,
-  //   })
-  //     .then((res) => {
-  //       console.log(res);
-  //       getPaytrackerUsers();
-  //       setIsDisabled(true);
-  //       setIsNoShowOpen(false);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
   useEffect(() => {
     getPartnerNames();
   }, []);
@@ -121,22 +106,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
   }, [partnerNameArr]);
 
   return (
-    // <AnimatePresence>
-    <motion.section
-    // animate={{ opacity: 1 }}
-    // initial={{ opacity: 0 }}
-    // exit={{ opacity: 0 }}
-    // transition={{ ease: 'linear', duration: 0.4 }}
-    // initial={{ y: 0, opacity: 0, scale: 1 }}
-    // animate={{ y: 0, opacity: 1, scale: 1 }}
-    // exit={{
-    //   y: 0,
-    //   opacity: 0,
-    //   scale: 1,
-    //   transition: { ease: 'linear', duration: 0.3 },
-    // }}
-    // transition={{ ease: 'linear', duration: 0.3 }}
-    >
+    <motion.section>
       <section className='semiPrivate'>
         <h5 disabled={isDisabled}>
           {fn} {ln}

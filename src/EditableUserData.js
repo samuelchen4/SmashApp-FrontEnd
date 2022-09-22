@@ -89,7 +89,7 @@ const EditableUserData = (propsFromUser) => {
           <div className='purchaseLog'>
             <h4>Purchases Log</h4>
             <div>
-              <table>
+              <table className='table'>
                 <thead>
                   <tr>
                     <td>Purchase Id</td>
@@ -107,12 +107,14 @@ const EditableUserData = (propsFromUser) => {
           <div className='salesLog'>
             <h4>Sales Log</h4>
             <div>
-              <table>
+              <table className='table'>
                 <thead>
                   <tr>
                     <td>Sales Id</td>
                     <td>Lesson</td>
                     <td>Date Attended</td>
+                    <td>Pay Method</td>
+                    <td>Date Bought</td>
                     <td>Initial</td>
                   </tr>
                 </thead>

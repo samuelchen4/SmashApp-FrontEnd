@@ -8,7 +8,8 @@ import AddLesson from './AddLesson';
 import Modal from './Modal';
 
 const PurchaseLessons = (propsFromUser) => {
-  const { lessonInfo, credit, students, userId, domain } = propsFromUser;
+  const { lessonInfo, credit, setCredit, students, userId, domain } =
+    propsFromUser;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -100,7 +101,7 @@ const PurchaseLessons = (propsFromUser) => {
     setIsModalOpen(true);
   };
 
-  const confirmPurchases = (e) => {
+  const confirmPurchases = async (e) => {
     e.preventDefault();
     //post a puchase for this user, make puchase paid and deduct from the paymentTotal
     //post purchases for partners if nessacary, make unpaid
@@ -161,6 +162,7 @@ const PurchaseLessons = (propsFromUser) => {
           Capacity: '',
           isSemi: '',
         });
+        setCredit(credit - payCredit);
         setAddedStudents([]);
         setPurchaseLessonDates([]);
         setDiscountAmount(0);
@@ -255,7 +257,6 @@ const PurchaseLessons = (propsFromUser) => {
               </div>
             </section>
             <section className='purchaseLessonBlock__inputs__discounts'>
-              {/* <h3>Discount Info</h3> */}
               <div className='inputGroup'>
                 <label htmlFor='discount'>Discount</label>
                 <input
@@ -301,7 +302,6 @@ const PurchaseLessons = (propsFromUser) => {
               </div>
             </section>
             <section className='purchaseLessonBlock__inputs__credit'>
-              {/* <h3>Credit Info</h3> */}
               <div className='inputGroup'>
                 <label htmlFor='payWithCredit'>Credit</label>
                 <input
@@ -375,6 +375,7 @@ const PurchaseLessons = (propsFromUser) => {
         discountNotes={discountNotes}
         creditAmount={payCredit}
         confirmPurchases={confirmPurchases}
+        paymentTotal={paymentTotal}
       ></Modal>
     </>
   );

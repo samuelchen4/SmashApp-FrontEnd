@@ -12,17 +12,41 @@ const PaytrackerPurchaseModal = (props) => {
     everyOverdueLesson,
     payForOwedLessons,
     credit,
+    getUserInfo,
+    amountOwed,
   } = props;
 
-  console.log(credit);
   const isCreditDisabled = credit ? false : true;
 
   const [lessonTable, setLessonTable] = useState([]);
   const [payCreditToDb, setPayCreditToDb] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  //on open update the credits and lessonAmounts
+  useEffect(() => {
+    if (open) {
+      getUserInfo();
+    }
+    console.log(credit);
+    console.log(amountOwed);
+  }, [open]);
 
   useEffect(() => {
-    setPayCreditToDb(credit);
+    if (credit) {
+      setPayCreditToDb(credit);
+    }
   }, [credit]);
+
+  useEffect(() => {
+    if (payCreditToDb || amountOwed) {
+      console.log(payCreditToDb);
+      calculateTotal();
+    }
+  }, [payCreditToDb, amountOwed]);
+
+  const calculateTotal = () => {
+    setTotal(amountOwed - payCreditToDb);
+  };
 
   useEffect(() => {
     setLessonTable(
@@ -50,7 +74,7 @@ const PaytrackerPurchaseModal = (props) => {
             <h3>Confirm your purchase</h3>
           </div>
           <div className='modalSection infoSection paytrackerTable'>
-            <table>
+            <table className='table'>
               <thead>
                 <tr>
                   <td>Type</td>
@@ -68,11 +92,11 @@ const PaytrackerPurchaseModal = (props) => {
                   <label htmlFor='payWithCredit'>Credits:</label>
                 </p>
                 <p>
+                  $
                   <input
                     className='paytrackerModalCredit__input'
                     name='payWithCredit'
                     placeholder='Enter Credit'
-                    disabled={isCreditDisabled}
                     type='number'
                     min='0'
                     max={credit}
@@ -84,6 +108,12 @@ const PaytrackerPurchaseModal = (props) => {
                 </p>
               </div>
             )}
+            <div className='paytrackerModalCredits borderTop'>
+              <p>
+                <label htmlFor='payWithCredit'>Total:</label>
+              </p>
+              <p>${total}</p>
+            </div>
           </div>
           <div className='modalSection'>
             <div className='modalData'>
@@ -95,7 +125,7 @@ const PaytrackerPurchaseModal = (props) => {
               </button>
               <button
                 className='purchaseButton'
-                type='button'
+                type='submit'
                 onClick={() =>
                   payForOwedLessons(everyOverdueLesson, userId, payCreditToDb)
                 }

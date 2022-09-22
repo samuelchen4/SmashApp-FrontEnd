@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import NavAddUser from './NavAddUser';
 import NavAddLesson from './NavAddLesson.js';
 import './index.css';
+import NavChangeLessonDate from './NavChangeLessonDate';
 
 const Navbar = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
@@ -74,21 +75,21 @@ const Navbar = () => {
     });
   };
 
-  const renderUsersDropdown = () => {
-    setUsersDropdown(
-      usersArr.map((user) => {
-        return (
-          <option value={user.user_id}>
-            {user.fn} {user.ln}
-          </option>
-        );
-      })
-    );
-  };
+  // const renderUsersDropdown = () => {
+  //   setUsersDropdown(
+  //     usersArr.map((user) => {
+  //       return (
+  //         <option value={user.user_id}>
+  //           {user.fn} {user.ln}
+  //         </option>
+  //       );
+  //     })
+  //   );
+  // };
 
-  useEffect(() => {
-    renderUsersDropdown();
-  }, [usersArr]);
+  // useEffect(() => {
+  //   renderUsersDropdown();
+  // }, [usersArr]);
 
   const addUserDB = (e) => {
     e.preventDefault();
@@ -102,6 +103,7 @@ const Navbar = () => {
       email: submitAddUserData.email,
     })
       .then(() => {
+        setAllUsers([...allUsers, submitAddUserData]);
         setAddUserInfo({ fn: '', ln: '', email: '', phone: '', dob: '' });
         setIsAddUser(false);
       })
@@ -141,10 +143,7 @@ const Navbar = () => {
         )}
       </section>
       <section>
-        <button
-          className={`add-lesson ${active(isAddLesson)}`}
-          onClick={clickAddLesson}
-        >
+        <button className={` ${active(isAddLesson)}`} onClick={clickAddLesson}>
           <i className='bx bx-cart-add'></i>
         </button>
         {isAddLesson && (
@@ -152,6 +151,7 @@ const Navbar = () => {
             allUsers={allUsers}
             allLessons={allLessons}
             domain={domain}
+            setIsAddLesson={setIsAddLesson}
           />
         )}
       </section>
@@ -163,18 +163,23 @@ const Navbar = () => {
           <i className='bx bxs-edit'></i>
         </button>
         {isEditLesson && (
-          <section className='drop-down'>
-            <h3>Edit Lesson</h3>
-            <form className='add-user'>
-              <div className='name'>
-                <input placeholder='First Name' name='first-name' type='text' />
-                <input placeholder='Last Name' name='last-name' type='text' />
-              </div>
-              <input placeholder='Phone Number' name='phone' type='text' />
-              <input placeholder='Email...' name='email' type='text' />
-              <button className='dropDownSubmit'>Submit</button>
-            </form>
-          </section>
+          <NavChangeLessonDate
+            allUsers={allUsers}
+            allLessons={allLessons}
+            domain={domain}
+          />
+          // <section className='drop-down'>
+          //   <h3>Edit Lesson</h3>
+          //   <form className='add-user'>
+          //     <div className='name'>
+          //       <input placeholder='First Name' name='first-name' type='text' />
+          //       <input placeholder='Last Name' name='last-name' type='text' />
+          //     </div>
+          //     <input placeholder='Phone Number' name='phone' type='text' />
+          //     <input placeholder='Email...' name='email' type='text' />
+          //     <button className='dropDownSubmit'>Submit</button>
+          //   </form>
+          // </section>
         )}
       </section>
     </div>

@@ -243,6 +243,7 @@ const User = () => {
                 students={students}
                 domain={domain}
                 userId={id}
+                setCredit={setCredit}
               />
             </motion.div>
           </motion.main>

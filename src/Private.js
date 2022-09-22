@@ -49,6 +49,7 @@ const Private = (privateLessonInfo) => {
       .then((res) => {
         console.log(res);
         setIsDisabled(true);
+        setIsNoShowOpen(false);
         getPaytrackerUsers();
       })
       .catch((err) => console.log(err));
@@ -65,12 +66,6 @@ const Private = (privateLessonInfo) => {
   };
 
   return (
-    // <motion.section
-    //   animate={{ opacity: 1 }}
-    //   initial={{ opacity: 0 }}
-    //   exit={{ opacity: 0 }}
-    //   className={`agenda-lessons`}
-    // >
     <section className='private'>
       <h5 disabled={isDisabled}>
         {fn} {ln}

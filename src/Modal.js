@@ -14,6 +14,7 @@ const Modal = (props) => {
     discountNotes,
     creditAmount,
     confirmPurchases,
+    paymentTotal,
   } = props;
 
   // const [confirmDisabled, setConfirmDisabled] = useState(0);
@@ -30,15 +31,6 @@ const Modal = (props) => {
   if (addedStudents.length) {
     partners = addedStudents.map((partner) => partner.label);
   }
-
-  // if (purchaseLessonDates.length && addedLesson.value) {
-  //   if (
-  //     !addedLesson.label.toLowerCase().includes('semi') &&
-  //     !addedStudents.length
-  //   ) {
-  //     setConfirmDisabled(false);
-  //   }
-  // }
 
   return (
     <>
@@ -74,8 +66,20 @@ const Modal = (props) => {
               <p>{discountNotes ? discountNotes : 'N/A'}</p>
             </div>
             <div className='modalData'>
+              <p>Subtotal:</p>
+              <p>
+                {lessonAmountToDb || lessonDates.length
+                  ? `$${lessonAmountToDb * lessonDates.length}`
+                  : 'N/A'}
+              </p>
+            </div>
+            <div className='modalData'>
               <p>Credit:</p>
-              <p>{creditAmount ? creditAmount : 0}</p>
+              <p>${creditAmount ? creditAmount : 0}</p>
+            </div>
+            <div className='modalData'>
+              <p>Total:</p>
+              <p>{paymentTotal}</p>
             </div>
           </div>
           <div className='modalSection'>

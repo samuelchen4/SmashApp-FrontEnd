@@ -6,7 +6,9 @@ const PrivateRoute = ({ children }) => {
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
+    console.log(isAuthenticated);
     if (isAuthenticated == false) {
+      console.log(isAuthenticated);
       <Navigate to='/login' />;
     }
   }, [isAuthenticated]);

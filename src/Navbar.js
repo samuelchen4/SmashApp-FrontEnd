@@ -5,6 +5,7 @@ import NavAddUser from './NavAddUser';
 import NavAddLesson from './NavAddLesson.js';
 import './index.css';
 import NavChangeLessonDate from './NavChangeLessonDate';
+import LogoutButton from './LogoutButton';
 
 const Navbar = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
@@ -168,19 +169,10 @@ const Navbar = () => {
             allLessons={allLessons}
             domain={domain}
           />
-          // <section className='drop-down'>
-          //   <h3>Edit Lesson</h3>
-          //   <form className='add-user'>
-          //     <div className='name'>
-          //       <input placeholder='First Name' name='first-name' type='text' />
-          //       <input placeholder='Last Name' name='last-name' type='text' />
-          //     </div>
-          //     <input placeholder='Phone Number' name='phone' type='text' />
-          //     <input placeholder='Email...' name='email' type='text' />
-          //     <button className='dropDownSubmit'>Submit</button>
-          //   </form>
-          // </section>
         )}
+      </section>
+      <section>
+        <LogoutButton />
       </section>
     </div>
   );

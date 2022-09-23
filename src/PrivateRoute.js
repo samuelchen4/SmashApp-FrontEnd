@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
 const PrivateRoute = ({ children }) => {
   const { user, isAuthenticated } = useAuth0();
 
-  useEffect(() => {
-    console.log(isAuthenticated);
-    // if (isAuthenticated == false) {
-    //   console.log(isAuthenticated);
-    //   <Navigate to='/login' />;
-    // }
-  }, [isAuthenticated]);
+  const navigate = useNavigate();
+  const routeChange = () => {
+    const path = '/login';
+    navigate(path);
+  };
 
-  return isAuthenticated ? children : <Navigate to='/login' />;
+  if (!isAuthenticated) {
+    return (
+      <>
+        <div>
+          <h4>Redirect to login:</h4>
+          <button onClick={routeChange}>Redirect</button>
+        </div>
+      </>
+    );
+  } else {
+    return children;
+  }
+  //   setTimeout(() => {
+  //     return isAuthenticated ? children : <Navigate to='/login' />;
+  //   }, '1000');
 };
 
 export default PrivateRoute;

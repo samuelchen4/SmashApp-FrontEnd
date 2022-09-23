@@ -36,6 +36,7 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
+    console.log(isAuthenticated);
     if (isAuthenticated == false) {
       <Navigate to='/login' />;
     }

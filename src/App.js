@@ -6,7 +6,6 @@ import {
   Routes,
   Switch,
 } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
 
 //Routes
 import Main from './Main';
@@ -18,7 +17,6 @@ import PrivateRoute from './PrivateRoute';
 import Private from './Private';
 
 // import Calendar from './AgendaCalendar';
-const { user, isAuthenticated } = useAuth0();
 
 function App() {
   return (
@@ -27,7 +25,7 @@ function App() {
         <Route
           path='/'
           element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
+            <PrivateRoute>
               <Main />
             </PrivateRoute>
           }
@@ -36,7 +34,7 @@ function App() {
         <Route
           path='/users'
           element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
+            <PrivateRoute>
               <Users />
             </PrivateRoute>
           }
@@ -45,7 +43,7 @@ function App() {
         <Route
           path='/lessons'
           element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
+            <PrivateRoute>
               <Lessons />
             </PrivateRoute>
           }
@@ -53,7 +51,7 @@ function App() {
         <Route
           path='/user/:id'
           element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
+            <PrivateRoute>
               <User />
             </PrivateRoute>
           }

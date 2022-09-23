@@ -35,12 +35,12 @@ const Main = () => {
     getPaytrackerUsers();
   }, []);
 
-  useEffect(() => {
-    console.log(isAuthenticated);
-    if (isAuthenticated == false) {
-      <Navigate to='/login' />;
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   console.log(isAuthenticated);
+  //   if (isAuthenticated == false) {
+  //     <Navigate to='/login' />;
+  //   }
+  // }, [isAuthenticated]);
 
   return (
     <div className='meat'>

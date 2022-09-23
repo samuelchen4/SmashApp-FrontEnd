@@ -203,7 +203,7 @@ button:hover {
  border: 0.5px solid #c0c2c4;
  position: fixed;
  z-index: 1;
- right: 10px;
+ right: 47px;
  background: #f2f3f6;
 box-shadow: var(--bigShadow);
 animation: growDown 400ms ease-in-out forwards;
@@ -1234,4 +1234,36 @@ font-size: 16px;
 
 .borderTop {
   border-top: 1.5px solid black;
+}
+
+
+/* LOGIN PAGE */
+.loginOverlay {
+  position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+
+.loginPage {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  /* min-height: 20vh; */
+}
+
+.loginWords {
+  margin-left: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.loginWords button {
+  align-self: flex-end;
+  width: 30%;
 }

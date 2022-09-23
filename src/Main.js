@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import Sidebar from './sidemenu/Sidebar';
 import PaymentTracker from './PaymentTracker';
 import Agenda from './Agenda';
 import Navbar from './Navbar';
 import Axios from 'axios';
 import { motion } from 'framer-motion';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Main = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [paytrackerData, setPaytrackerData] = useState([]);
+
+  const { user, isAuthenticated } = useAuth0();
+
+  let receptionInitials = '';
+
+  if (isAuthenticated) {
+    // receptionInitials = user.user_metadata.initials;
+    console.log(isAuthenticated);
+  }
 
   const getPaytrackerUsers = () => {
     //get paytrackerData
@@ -23,6 +34,12 @@ const Main = () => {
   useEffect(() => {
     getPaytrackerUsers();
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      <Navigate to='/login' />;
+    }
+  }, [isAuthenticated]);
 
   return (
     <div className='meat'>

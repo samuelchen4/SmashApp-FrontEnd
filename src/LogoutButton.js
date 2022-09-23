@@ -8,8 +8,7 @@ const LogoutButton = () => {
     <button
       onClick={() =>
         logout({
-          returnTo:
-            'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com/login',
+          returnTo: 'https://master.d2itr8wow24jd5.amplifyapp.com/login',
         })
       }
     >

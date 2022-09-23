@@ -11,7 +11,7 @@ root.render(
   <Auth0Provider
     domain='dev-t83j6kje.us.auth0.com'
     clientId='F6qPzgi8Z4an0WbeYlNYSOPCo4wnIDVS'
-    redirectUri={'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com'}
+    redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com/'}
   >
     <React.StrictMode>
       <App />

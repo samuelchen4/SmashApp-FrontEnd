@@ -7,7 +7,8 @@ import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 
 const NavAddLesson = (propsFromNavbar) => {
-  const { allUsers, allLessons, domain, setIsAddLesson } = propsFromNavbar;
+  const { allUsers, allLessons, domain, setIsAddLesson, receptInfo } =
+    propsFromNavbar;
 
   const [user, setUser] = useState({
     label: '',
@@ -96,6 +97,7 @@ const NavAddLesson = (propsFromNavbar) => {
           lessonPrice: lesson.price,
           partnerArr: partners,
           purchaseLessonDate: lessonDate,
+          receptInitials: receptInfo.userInitials,
         }).then((res) => console.log(res));
       })
     )

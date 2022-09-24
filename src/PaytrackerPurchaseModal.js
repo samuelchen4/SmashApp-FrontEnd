@@ -4,6 +4,8 @@ import DatePicker from 'react-multi-date-picker';
 import ReactDom from 'react-dom';
 import { set } from 'date-fns/esm';
 
+import smashlogo from './imgs/smashLogo.jpg';
+
 const PaytrackerPurchaseModal = (props) => {
   const {
     open,
@@ -14,6 +16,7 @@ const PaytrackerPurchaseModal = (props) => {
     credit,
     getUserInfo,
     amountOwed,
+    receptInfo,
   } = props;
 
   const isCreditDisabled = credit ? false : true;
@@ -70,7 +73,7 @@ const PaytrackerPurchaseModal = (props) => {
       <div className='overLay'>
         <div className=' userSection modal'>
           <div className='modalSection'>
-            <img src={logo} alt='smashcity logo' width='50px' />
+            <img src={smashlogo} alt='smashcity logo' width='50px' />
             <h3>Confirm your purchase</h3>
           </div>
           <div className='modalSection infoSection paytrackerTable'>

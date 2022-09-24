@@ -56,10 +56,12 @@ const Main = () => {
           <Agenda
             setPaytrackerData={setPaytrackerData}
             getPaytrackerUsers={getPaytrackerUsers}
+            receptInfo={user}
           />
           <PaymentTracker
             paytrackerData={paytrackerData}
             setPaytrackerData={setPaytrackerData}
+            receptInfo={user}
           />
         </motion.main>
       </div>

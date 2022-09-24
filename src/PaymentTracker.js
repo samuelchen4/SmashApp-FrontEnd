@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const PaymentTracker = (propsFromMain) => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
-  const { paytrackerData, setPaytrackerData } = propsFromMain;
+  const { paytrackerData, setPaytrackerData, receptInfo } = propsFromMain;
   //set paytracker data to this
   // const [data, setData] = useState([]);
   const [isOutstanding, setIsOutstanding] = useState(true);
@@ -38,6 +38,7 @@ const PaymentTracker = (propsFromMain) => {
     Axios.put(`${domain}/paytracker/user/${userId}/payOwedLessons`, {
       overdueLessonArr,
       creditsUsed: creditsUsed,
+      receptInitials: receptInfo.userInitials,
     })
       .then((res) => {
         console.log(res);

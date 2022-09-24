@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import NavAddUser from './NavAddUser';
 import NavAddLesson from './NavAddLesson.js';
@@ -9,11 +10,18 @@ import LogoutButton from './LogoutButton';
 
 const Navbar = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
+  const { user, isLoading } = useAuth0();
   const [isAddUser, setIsAddUser] = useState(false);
   const [isAddLesson, setIsAddLesson] = useState(false);
   const [isEditLesson, setIsEditLesson] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [allLessons, setAllLessons] = useState([]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      console.log(user);
+    }
+  }, [isLoading]);
 
   const [addUserInfo, setAddUserInfo] = useState({
     fn: '',
@@ -153,6 +161,7 @@ const Navbar = () => {
             allLessons={allLessons}
             domain={domain}
             setIsAddLesson={setIsAddLesson}
+            receptInfo={user}
           />
         )}
       </section>

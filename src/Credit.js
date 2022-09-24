@@ -10,6 +10,7 @@ const Credit = (privateLessonInfo) => {
     paid,
     setIsNoShowOpen,
     setIsDisabled,
+    receptInfo,
     // setEditPaytrackerUser,
     getPaytrackerUsers,
   } = privateLessonInfo;
@@ -30,6 +31,7 @@ const Credit = (privateLessonInfo) => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
       attended: 0,
       lessonPrice: creditValue,
+      receptInitials: receptInfo.userInitials,
     })
       .then((res) => {
         console.log(res);

@@ -8,8 +8,15 @@ import AddLesson from './AddLesson';
 import Modal from './Modal';
 
 const PurchaseLessons = (propsFromUser) => {
-  const { lessonInfo, credit, setCredit, students, userId, domain } =
-    propsFromUser;
+  const {
+    lessonInfo,
+    credit,
+    setCredit,
+    students,
+    userId,
+    domain,
+    receptInfo,
+  } = propsFromUser;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -127,6 +134,7 @@ const PurchaseLessons = (propsFromUser) => {
             paidStatus: 1,
             lessonName: addedLesson.label,
             priceWithDiscountIncluded: lessonAmountToDb,
+            receptInitials: receptInfo.userInitials,
           })
             .then((res) => {
               console.log(res);
@@ -144,6 +152,7 @@ const PurchaseLessons = (propsFromUser) => {
             paidStatus: 1,
             lessonName: addedLesson.label,
             priceWithDiscountIncluded: lessonAmountToDb,
+            receptInitials: receptInfo.userInitials,
           })
             .then((res) => {
               console.log(res);

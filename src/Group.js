@@ -15,6 +15,7 @@ const Group = (groupInfo) => {
     scheduleddate,
     capacity,
     getPaytrackerUsers,
+    receptInfo,
   } = groupInfo;
   const lessonType = type_id;
   // const lessonName = type_name;
@@ -192,6 +193,7 @@ const Group = (groupInfo) => {
                   setIsDisabled={setIsDisabled}
                   getPaytrackerUsers={getPaytrackerUsers}
                   setIsOpenClasslist={setIsOpenClasslist}
+                  receptInfo={receptInfo}
                 />
               </motion.div>
             )}

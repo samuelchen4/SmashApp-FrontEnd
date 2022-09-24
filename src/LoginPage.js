@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginButton from './LoginButton';
 import logo from './imgs/smashcity logo.webp';
+import smashlogo from './imgs/smashLogo.jpg';
 
 const LoginPage = () => {
   return (

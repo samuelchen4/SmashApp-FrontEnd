@@ -29,7 +29,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     priceWithDiscountIncluded,
     duration,
     getPaytrackerUsers,
-    // duration,
+    receptInfo,
   } = semiPrivateLessonInfo;
 
   const userId = user_id;
@@ -76,6 +76,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
       attended: 1,
       lessonPrice: priceWithDiscountIncluded,
+      receptInitials: receptInfo.userInitials,
     })
       .then((res) => {
         console.log(res);
@@ -164,6 +165,7 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
                 setIsNoShowOpen={setIsNoShowOpen}
                 setIsDisabled={setIsDisabled}
                 getPaytrackerUsers={getPaytrackerUsers}
+                receptInfo={receptInfo}
               />
             </motion.div>
           )}

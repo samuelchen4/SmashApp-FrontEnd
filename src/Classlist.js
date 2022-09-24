@@ -16,6 +16,7 @@ const Classlist = (classlistInfo) => {
     setIsChecked,
     getPaytrackerUsers,
     setIsOpenClasslist,
+    receptInfo,
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
@@ -131,6 +132,7 @@ const Classlist = (classlistInfo) => {
             purchaseHandled,
             paid,
             lessonPrice,
+            receptInitials: receptInfo.userInitials,
           }
         )
           .then((res) => console.log(res))

@@ -24,6 +24,7 @@ const Private = (privateLessonInfo) => {
     priceWithDiscountIncluded,
     duration,
     getPaytrackerUsers,
+    receptInfo,
     // setPaytrackerData,
     // editPaytrackerUser,
     // getPaytrackerUsers,
@@ -45,6 +46,7 @@ const Private = (privateLessonInfo) => {
     Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
       attended: 1,
       lessonPrice: priceWithDiscountIncluded,
+      receptInitials: receptInfo.userInitials,
     })
       .then((res) => {
         console.log(res);
@@ -122,6 +124,7 @@ const Private = (privateLessonInfo) => {
               setIsNoShowOpen={setIsNoShowOpen}
               setIsDisabled={setIsDisabled}
               getPaytrackerUsers={getPaytrackerUsers}
+              receptInfo={receptInfo}
             />
           </motion.div>
         )}

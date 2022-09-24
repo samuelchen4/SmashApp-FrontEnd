@@ -18,10 +18,13 @@ import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import Select from 'react-select'; //accepts value and label properties
 import ReadOnlyUserData from './ReadOnlyUserData';
 import EditableUserData from './EditableUserData';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const User = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { id } = useParams();
+
+  const { user, isAuthenticated } = useAuth0();
 
   const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
 
@@ -244,6 +247,7 @@ const User = () => {
                 domain={domain}
                 userId={id}
                 setCredit={setCredit}
+                receptInfo={user}
               />
             </motion.div>
           </motion.main>

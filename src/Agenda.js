@@ -20,7 +20,7 @@ import { DatasetController } from 'chart.js';
 // show outstanding
 
 const Agenda = (propsFromMain) => {
-  const { setPaytrackerData, getPaytrackerUsers } = propsFromMain;
+  const { setPaytrackerData, getPaytrackerUsers, receptInfo } = propsFromMain;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [isOutstanding, setIsOutstanding] = useState(true);
   const [selectedDate, setSelectedDate] = useState(
@@ -290,6 +290,7 @@ const Agenda = (propsFromMain) => {
                       <SemiPrivate
                         {...lesson}
                         getPaytrackerUsers={getPaytrackerUsers}
+                        receptInfo={receptInfo}
                       />
                     </AnimatePresence>
                   </motion.li>
@@ -309,6 +310,7 @@ const Agenda = (propsFromMain) => {
                         // setEditPaytrackerUser={setEditPaytrackerUser}
                         // editPaytrackerUser={editPaytrackerUser}
                         getPaytrackerUsers={getPaytrackerUsers}
+                        receptInfo={receptInfo}
                       />
                     </AnimatePresence>
                   </motion.li>
@@ -325,6 +327,7 @@ const Agenda = (propsFromMain) => {
                       <Group
                         {...lesson}
                         getPaytrackerUsers={getPaytrackerUsers}
+                        receptInfo={receptInfo}
                       />
                     </AnimatePresence>
                   </motion.li>

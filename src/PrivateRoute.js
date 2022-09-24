@@ -9,11 +9,10 @@ const PrivateRoute = ({ children }) => {
   //   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    //loading screen
-    console.log(isLoading);
-    console.log(isAuthenticated);
-    console.log(`changed authenticated`);
-  }, [isAuthenticated]);
+    if (!isLoading) {
+      console.log(user);
+    }
+  }, [isLoading]);
 
   //   const changeLoading = setTimeout(setIsLoading(false), '1000');
 

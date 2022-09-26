@@ -37,15 +37,15 @@ const LoginPage = () => {
                 </a>
                 <LoginButton />
               </div>
+              {/* <img
+                src={logo}
+                alt='smashcity logo'
+                height='100px'
+                className='loginLogo'
+              /> */}
             </div>
           </div>
         </div>
-        {/* <img
-          src={logo}
-          alt='smashcity logo'
-          height='100px'
-          // className='margin-right'
-        /> */}
       </div>
     </div>
   );

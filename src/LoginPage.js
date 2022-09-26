@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginButton from './LoginButton';
-import logo from './imgs/smashcity logo.webp';
+import logo from './imgs/Gao-logo-1.png';
 import backgroundImg from './imgs/loginBackgroundPhoto.jpg';
 import smashlogo from './imgs/smashLogo.jpg';
 import backgroundVideo from './imgs/Badminton Smash (man)_Trim.mp4';
@@ -26,13 +26,6 @@ const LoginPage = () => {
             {/* <img src={logo} alt='smashcity logo' width='150px' /> */}
             <div className='loginWords'>
               <div className='loginWordsTitle'>
-                <img
-                  src={logo}
-                  alt='smashcity logo'
-                  height='100px'
-                  className='margin-right'
-                />
-
                 <h1>SmashCity Application</h1>
               </div>
               <p>Management and Database System</p>
@@ -47,6 +40,12 @@ const LoginPage = () => {
             </div>
           </div>
         </div>
+        {/* <img
+          src={logo}
+          alt='smashcity logo'
+          height='100px'
+          // className='margin-right'
+        /> */}
       </div>
     </div>
   );

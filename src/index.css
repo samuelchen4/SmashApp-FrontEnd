@@ -1193,12 +1193,20 @@ font-size: 16px;
   justify-content: space-between;
   /* align-items: center; */
   margin-bottom: 1rem;
+ 
   
+}
+
+.modal .modalSection .modalTitle {
+  font-size: 1.5rem;
 }
 
 
 .modal .modalSection img {
   margin-right: 2rem;
+  /* border: 1px solid black; */
+  display: inline-block;
+  padding: 0;
 }
 
 .modal .modalSection > * {
@@ -1222,6 +1230,10 @@ font-size: 16px;
 
 .modal .modalData > *:last-child {
   margin-left: 3rem;
+}
+
+.modalHeader {
+  margin-bottom: 1rem;
 }
 
 

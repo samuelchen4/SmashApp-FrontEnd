@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const PrivateRoute = ({ children }) => {
@@ -11,6 +11,7 @@ const PrivateRoute = ({ children }) => {
   useEffect(() => {
     if (!isLoading) {
       console.log(user);
+      Axios.get('')
     }
   }, [isLoading]);
 

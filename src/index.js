@@ -14,8 +14,8 @@ root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
-    // redirectUri={'http://localhost:3000/'}
-    redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com'}
+    redirectUri={'http://localhost:3000/'}
+    // redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com'}
   >
     <React.StrictMode>
       <App />

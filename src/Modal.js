@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logo from './imgs/smashcity logo.webp';
+import logo from './imgs/GaoLogoNoBorder.png';
 import DatePicker from 'react-multi-date-picker';
 
 const Modal = (props) => {
@@ -37,8 +37,8 @@ const Modal = (props) => {
       <div className='overLay'>
         <div className=' userSection modal'>
           <div className='modalSection'>
-            <img src={logo} alt='smashcity logo' width='50px' />
-            <h3>Confirm your purchase</h3>
+            <img src={logo} alt='smashcity logo' width='90px' />
+            <h3 className='modalTitle'>Confirm your purchase</h3>
           </div>
           <div className='modalSection infoSection'>
             <div className='modalData'>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logo from './imgs/smashcity logo.webp';
+import logo from './imgs/GaoLogoNoBorder.png';
 import DatePicker from 'react-multi-date-picker';
 import ReactDom from 'react-dom';
 import { set } from 'date-fns/esm';
@@ -36,7 +36,11 @@ const PaytrackerPurchaseModal = (props) => {
 
   useEffect(() => {
     if (credit) {
-      setPayCreditToDb(credit);
+      if (credit > amountOwed) {
+        setPayCreditToDb(amountOwed);
+      } else {
+        setPayCreditToDb(credit);
+      }
     }
   }, [credit]);
 
@@ -72,71 +76,79 @@ const PaytrackerPurchaseModal = (props) => {
     <>
       <div className='overLay'>
         <div className=' userSection modal'>
-          <div className='modalSection'>
-            <img src={smashlogo} alt='smashcity logo' width='50px' />
-            <h3>Confirm your purchase</h3>
-          </div>
-          <div className='modalSection infoSection paytrackerTable'>
-            <table className='table'>
-              <thead>
-                <tr>
-                  <td>Type</td>
-                  <td>Date</td>
-                  <td>Price</td>
-                </tr>
-              </thead>
-              <tbody>{lessonTable}</tbody>
-            </table>
-            {isCreditDisabled ? (
-              ''
-            ) : (
-              <div className='paytrackerModalCredits'>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              payForOwedLessons(everyOverdueLesson, userId, payCreditToDb);
+            }}
+          >
+            <div className='modalSection'>
+              <img src={logo} alt='smashcity logo' width='100px' />
+              <h3 className='modalTitle'>Confirm your purchase</h3>
+            </div>
+            <div className='modalSection infoSection paytrackerTable'>
+              <table className='table'>
+                <thead>
+                  <tr>
+                    <td>Type</td>
+                    <td>Date</td>
+                    <td>Price</td>
+                  </tr>
+                </thead>
+                <tbody>{lessonTable}</tbody>
+              </table>
+
+              {isCreditDisabled ? (
+                ''
+              ) : (
+                <div className='paytrackerModalCredits'>
+                  <p>
+                    <label htmlFor='payWithCredit'>Credits:</label>
+                  </p>
+                  <p>
+                    $
+                    <input
+                      className='paytrackerModalCredit__input'
+                      name='payWithCredit'
+                      placeholder='Enter Credit'
+                      type='number'
+                      min='0'
+                      max={credit >= amountOwed ? amountOwed : credit}
+                      value={payCreditToDb}
+                      onChange={(e) => {
+                        setPayCreditToDb(e.target.value);
+                      }}
+                    />
+                  </p>
+                </div>
+              )}
+              <div className='paytrackerModalCredits borderTop'>
                 <p>
-                  <label htmlFor='payWithCredit'>Credits:</label>
+                  <label htmlFor='payWithCredit'>Total:</label>
                 </p>
-                <p>
-                  $
-                  <input
-                    className='paytrackerModalCredit__input'
-                    name='payWithCredit'
-                    placeholder='Enter Credit'
-                    type='number'
-                    min='0'
-                    max={credit}
-                    value={payCreditToDb}
-                    onChange={(e) => {
-                      setPayCreditToDb(e.target.value);
-                    }}
-                  />
-                </p>
+                <p>${total}</p>
               </div>
-            )}
-            <div className='paytrackerModalCredits borderTop'>
-              <p>
-                <label htmlFor='payWithCredit'>Total:</label>
-              </p>
-              <p>${total}</p>
             </div>
-          </div>
-          <div className='modalSection'>
-            <div className='modalData'>
-              <button
-                className='cancelButton'
-                onClick={() => setIsModalOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className='purchaseButton'
-                type='submit'
-                onClick={() =>
-                  payForOwedLessons(everyOverdueLesson, userId, payCreditToDb)
-                }
-              >
-                CONFIRM
-              </button>
+            <div className='modalSection'>
+              <div className='modalData'>
+                <button
+                  className='cancelButton'
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className='purchaseButton'
+                  type='submit'
+                  // onClick={() =>
+                  //   payForOwedLessons(everyOverdueLesson, userId, payCreditToDb)
+                  // }
+                >
+                  CONFIRM
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </>,

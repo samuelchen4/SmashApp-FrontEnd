@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginButton from './LoginButton';
-import logo from './imgs/Gao-logo-1.png';
+import logo from './imgs/GaoLogoNoBorder.png';
 import backgroundImg from './imgs/loginBackgroundPhoto.jpg';
 import smashlogo from './imgs/smashLogo.jpg';
 import backgroundVideo from './imgs/Badminton Smash (man)_Trim.mp4';

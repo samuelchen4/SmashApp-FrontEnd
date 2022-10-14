@@ -1,9 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import LessonHistory from './LessonHistory';
 
 const ReadOnlyUserData = (propsFromUser) => {
-  const { purchaseTable, saleTable, userInfo, credit, handleClickEdit } =
-    propsFromUser;
+  const {
+    purchaseTable,
+    saleTable,
+    lessonHistory,
+    userInfo,
+    credit,
+    handleClickEdit,
+  } = propsFromUser;
 
   return (
     <>
@@ -44,7 +51,7 @@ const ReadOnlyUserData = (propsFromUser) => {
           {/* {displayLessons} */}
         </section>
         <section className='tables'>
-          <div className='purchaseLog'>
+          {/* <div className='purchaseLog'>
             <h4>Purchases Log</h4>
             <div>
               <table className='table'>
@@ -79,7 +86,8 @@ const ReadOnlyUserData = (propsFromUser) => {
                 <tbody>{saleTable}</tbody>
               </table>
             </div>
-          </div>
+          </div> */}
+          <LessonHistory lessonHistory={lessonHistory} />
         </section>
       </motion.div>
     </>

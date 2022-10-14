@@ -666,6 +666,7 @@ width: 25rem;
 
 .payment-block .lessons-table {
   width: 100%;
+  
 }
 
 .payment-block .lessons-table td {
@@ -675,6 +676,7 @@ width: 25rem;
 .payment-block .lessons-table thead {
   font-weight: 600;
   background: #e0e6ec;
+  
 }
 
 .payment-block .lessons-table thead td {
@@ -1182,7 +1184,6 @@ font-size: 16px;
   /* padding: 5rem; */
   background-color: #fff;
   min-width: 400px;
-  
 }
 
 
@@ -1269,10 +1270,26 @@ font-size: 16px;
 .paytrackerModalCredits {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  /* border: 1px black solid; */
+  
+}
+
+
+/* .paytrackerModalCredits > p {
+  font-size: 1.1rem;
+} */
+
+.payTrackerModal-container {
+  width: 150px;
 }
 
 .paytrackerModalCredit__input {
   max-width: 3rem;
+  padding: 5px 10px 5px 10px;
+  font-size: 1rem;
+  margin-left: 0.25rem;
+  
   
 }
 

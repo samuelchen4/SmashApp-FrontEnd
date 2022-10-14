@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './imgs/GaoLogoNoBorder.png';
 import DatePicker from 'react-multi-date-picker';
 import ReactDom from 'react-dom';
-import { set } from 'date-fns/esm';
+import Select from 'react-select';
 
 import smashlogo from './imgs/smashLogo.jpg';
 
@@ -24,6 +24,14 @@ const PaytrackerPurchaseModal = (props) => {
   const [lessonTable, setLessonTable] = useState([]);
   const [payCreditToDb, setPayCreditToDb] = useState(0);
   const [total, setTotal] = useState(0);
+  const [payMethod, setPayMethod] = useState({ label: 'Visa', value: 'Visa' });
+
+  const payMethods = [
+    { label: 'Visa', value: 'Visa' },
+    { label: 'Etransfer', value: 'Etransfer' },
+    { label: 'Cash', value: 'Cash' },
+    { label: 'Credit', value: 'Credit' },
+  ];
 
   //on open update the credits and lessonAmounts
   useEffect(() => {
@@ -79,33 +87,54 @@ const PaytrackerPurchaseModal = (props) => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              payForOwedLessons(everyOverdueLesson, userId, payCreditToDb);
+              payForOwedLessons(
+                everyOverdueLesson,
+                userId,
+                payCreditToDb,
+                payMethod.value
+              );
             }}
           >
             <div className='modalSection'>
               <img src={logo} alt='smashcity logo' width='100px' />
               <h3 className='modalTitle'>Confirm your purchase</h3>
             </div>
-            <div className='modalSection infoSection paytrackerTable'>
-              <table className='table'>
-                <thead>
-                  <tr>
-                    <td>Type</td>
-                    <td>Date</td>
-                    <td>Price</td>
-                  </tr>
-                </thead>
-                <tbody>{lessonTable}</tbody>
-              </table>
+            <div className='modalSection infoSection'>
+              <div className='paytrackerTable'>
+                <table className='table'>
+                  <thead>
+                    <tr>
+                      <td>Type</td>
+                      <td>Date</td>
+                      <td>Price</td>
+                    </tr>
+                  </thead>
+                  <tbody>{lessonTable}</tbody>
+                </table>
+              </div>
 
+              <div className='paytrackerModalCredits'>
+                <p>
+                  <label htmlFor='payMethod'>Pay Method:</label>
+                </p>
+                <p>
+                  <Select
+                    name='payMethod'
+                    options={payMethods}
+                    onChange={setPayMethod}
+                    placeholder='Visa'
+                    className='payTrackerModal-container'
+                  />
+                </p>
+              </div>
               {isCreditDisabled ? (
-                ''
+                <></>
               ) : (
                 <div className='paytrackerModalCredits'>
                   <p>
                     <label htmlFor='payWithCredit'>Credits:</label>
                   </p>
-                  <p>
+                  <p style={{ fontSize: '1.1rem' }}>
                     $
                     <input
                       className='paytrackerModalCredit__input'

@@ -11,13 +11,16 @@ import makeAnimated from 'react-select/animated';
 const AddStudent = (propsFromGroup) => {
   const {
     lessonType,
+    lessonName,
     lessonDate,
+    lessonPrice,
     users,
     setUsers,
     classlist,
     getClasslist,
     setClasslist,
     setIsOpenClasslist,
+    receptInfo,
   } = propsFromGroup;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   // const currentDate = format(new Date(), 'yyyy-MM-dd');
@@ -90,6 +93,9 @@ const AddStudent = (propsFromGroup) => {
         `${domain}/agenda/group/classlist/${lessonType}/${lessonDate}/add`,
         {
           userId,
+          lessonPrice,
+          lessonName,
+          receptInitials: receptInfo.userInitials,
         }
       )
         .then((res) => {

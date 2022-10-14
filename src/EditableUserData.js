@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
 import { motion } from 'framer-motion';
+import LessonHistory from './LessonHistory';
 
 const EditableUserData = (propsFromUser) => {
   const {
     purchaseTable,
     saleTable,
+    lessonHistory,
     userInfo,
     credit,
     editUserInfo,
@@ -86,7 +88,7 @@ const EditableUserData = (propsFromUser) => {
           </p>
         </section>
         <section className='tables'>
-          <div className='purchaseLog'>
+          {/* <div className='purchaseLog'>
             <h4>Purchases Log</h4>
             <div>
               <table className='table'>
@@ -121,7 +123,8 @@ const EditableUserData = (propsFromUser) => {
                 <tbody>{saleTable}</tbody>
               </table>
             </div>
-          </div>
+          </div> */}
+          <LessonHistory lessonHistory={lessonHistory} />
         </section>
       </motion.div>
     </>

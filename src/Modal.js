@@ -15,6 +15,7 @@ const Modal = (props) => {
     creditAmount,
     confirmPurchases,
     paymentTotal,
+    payMethod,
   } = props;
 
   // const [confirmDisabled, setConfirmDisabled] = useState(0);
@@ -78,8 +79,12 @@ const Modal = (props) => {
               <p>${creditAmount ? creditAmount : 0}</p>
             </div>
             <div className='modalData'>
+              <p>Pay Method:</p>
+              <p>{payMethod.label}</p>
+            </div>
+            <div className='modalData'>
               <p>Total:</p>
-              <p>{paymentTotal}</p>
+              <p>${paymentTotal}</p>
             </div>
           </div>
           <div className='modalSection'>

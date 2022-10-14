@@ -16,6 +16,7 @@ const Group = (groupInfo) => {
     capacity,
     getPaytrackerUsers,
     receptInfo,
+    price,
   } = groupInfo;
   const lessonType = type_id;
   // const lessonName = type_name;
@@ -151,7 +152,9 @@ const Group = (groupInfo) => {
             {isOpenAddStudent && (
               <AddStudent
                 lessonType={lessonType}
+                lessonName={lessonName}
                 lessonDate={lessonDate}
+                lessonPrice={price}
                 users={users}
                 setUsers={setUsers}
                 classlist={classlist}
@@ -161,6 +164,7 @@ const Group = (groupInfo) => {
                 isChecked={isChecked}
                 setIsChecked={setIsChecked}
                 setIsOpenClasslist={setIsOpenClasslist}
+                receptInfo={receptInfo}
               />
             )}
           </AnimatePresence>
@@ -194,6 +198,7 @@ const Group = (groupInfo) => {
                   getPaytrackerUsers={getPaytrackerUsers}
                   setIsOpenClasslist={setIsOpenClasslist}
                   receptInfo={receptInfo}
+                  setIsOpenAddStudent={setIsOpenAddStudent}
                 />
               </motion.div>
             )}

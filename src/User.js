@@ -30,6 +30,7 @@ const User = () => {
 
   const [purchaseInfo, setPurchaseInfo] = useState([]);
   const [saleInfo, setSaleInfo] = useState([]);
+  const [lessonHistory, setLessonHistory] = useState([]);
   const [lessonInfo, setLessonInfo] = useState([]);
   const [lessonsAvailable, setLessonsAvailable] = useState([]);
   // const [displayLessons, setDisplayLessons] = useState('');
@@ -144,6 +145,7 @@ const User = () => {
         setUserInfo(res.data.userInfo);
         setPurchaseInfo(res.data.purchaseLog);
         setSaleInfo(res.data.salesLog);
+        setLessonHistory(res.data.lessonHistory);
         setLessonInfo(res.data.lessonTypes);
         setLessonsAvailable(res.data.avaliableLessons);
         setCredit(res.data.credits.credit ? res.data.credits.credit : 0);
@@ -219,6 +221,7 @@ const User = () => {
               <EditableUserData
                 purchaseTable={purchaseTable}
                 saleTable={saleTable}
+                lessonHistory={lessonHistory}
                 userInfo={userInfo}
                 credit={credit}
                 editUserInfo={editUserInfo}
@@ -230,6 +233,7 @@ const User = () => {
               <ReadOnlyUserData
                 purchaseTable={purchaseTable}
                 saleTable={saleTable}
+                lessonHistory={lessonHistory}
                 userInfo={userInfo}
                 credit={credit}
                 handleClickEdit={handleClickEdit}
@@ -248,6 +252,9 @@ const User = () => {
                 userId={id}
                 setCredit={setCredit}
                 receptInfo={user}
+                lessonHistory={lessonHistory}
+                setLessonHistory={setLessonHistory}
+                getUserData={getUserData}
               />
             </motion.div>
           </motion.main>

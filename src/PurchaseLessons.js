@@ -16,6 +16,9 @@ const PurchaseLessons = (propsFromUser) => {
     userId,
     domain,
     receptInfo,
+    lessonHistory,
+    setLessonHistory,
+    getUserData,
   } = propsFromUser;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,6 +43,14 @@ const PurchaseLessons = (propsFromUser) => {
     Capacity: '',
     isSemi: '',
   });
+
+  const [payMethod, setPayMethod] = useState({ label: 'Visa', value: 'Visa' });
+  const payMethods = [
+    { label: 'Visa', value: 'Visa' },
+    { label: 'Etransfer', value: 'Etransfer' },
+    { label: 'Cash', value: 'Cash' },
+    { label: 'Credit', value: 'Credit' },
+  ];
 
   //properties for modal, if falsey dont open modal
   const [lessonAmountToDb, setLessonAmountToDb] = useState(0);
@@ -135,9 +146,27 @@ const PurchaseLessons = (propsFromUser) => {
             lessonName: addedLesson.label,
             priceWithDiscountIncluded: lessonAmountToDb,
             receptInitials: receptInfo.userInitials,
+            payMethod: payMethod.value,
           })
             .then((res) => {
               console.log(res);
+              setLessonHistory([
+                ...lessonHistory,
+                {
+                  purchase_id: res.data.purchaseId,
+                  lessonName: addedLesson.label,
+                  date: res.data.purchase.datePurchased,
+                  lessonPrice: lessonAmountToDb,
+                  amount: discountAmount / 100,
+                  description: discountNotes,
+                  pay_method: payMethod.value,
+                  scheduleddate: res.data.scheduledDate.lessonDate,
+                  credit: lessonAmountToDb,
+                  receptInitial_purchase: receptInfo.userInitials,
+                  attended: 0,
+                  receptInitial_sale: '',
+                },
+              ]);
             })
             .catch((err) => console.log(err));
           creditAmount -= lessonAmountToDb;
@@ -153,9 +182,27 @@ const PurchaseLessons = (propsFromUser) => {
             lessonName: addedLesson.label,
             priceWithDiscountIncluded: lessonAmountToDb,
             receptInitials: receptInfo.userInitials,
+            payMethod: payMethod.value,
           })
             .then((res) => {
               console.log(res);
+              setLessonHistory([
+                ...lessonHistory,
+                {
+                  purchase_id: res.data.purchaseId,
+                  lessonName: addedLesson.label,
+                  date: res.data.purchase.datePurchased,
+                  lessonPrice: lessonAmountToDb,
+                  amount: discountAmount / 100,
+                  description: discountNotes,
+                  pay_method: payMethod.value,
+                  scheduleddate: res.data.scheduledDate.lessonDate,
+                  credit: creditAmount,
+                  receptInitial_purchase: receptInfo.userInitials,
+                  attended: 0,
+                  receptInitial_sale: '',
+                },
+              ]);
             })
             .catch((err) => console.log(err));
         }
@@ -179,7 +226,9 @@ const PurchaseLessons = (propsFromUser) => {
         setPayCredit(0);
         setPaymentTotal(0);
       })
-      .then((res) => setIsModalOpen(false));
+      .then((res) => {
+        setIsModalOpen(false);
+      });
   };
 
   const clearSelections = (e) => {
@@ -332,6 +381,16 @@ const PurchaseLessons = (propsFromUser) => {
                   }}
                 />
               </div>
+              <div className='inputGroup'>
+                <label htmlFor='payMethod'>Pay Method</label>
+                <Select
+                  name='payMethod'
+                  options={payMethods}
+                  onChange={setPayMethod}
+                  placeholder='Visa'
+                  className='react-select-container payTrackerModal-container'
+                />
+              </div>
             </section>
             <section className='purchaseLessonBlock__inputs__clearOrSubmit'>
               <button className='cancelButton' onClick={clearSelections}>
@@ -383,6 +442,7 @@ const PurchaseLessons = (propsFromUser) => {
         discountAmount={discountAmount}
         discountNotes={discountNotes}
         creditAmount={payCredit}
+        payMethod={payMethod}
         confirmPurchases={confirmPurchases}
         paymentTotal={paymentTotal}
       ></Modal>

@@ -17,6 +17,7 @@ const Classlist = (classlistInfo) => {
     getPaytrackerUsers,
     setIsOpenClasslist,
     receptInfo,
+    setIsOpenAddStudent,
   } = classlistInfo;
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const [classlistTable, setClasslistTable] = useState([]);
@@ -142,6 +143,7 @@ const Classlist = (classlistInfo) => {
       getPaytrackerUsers();
       setIsOpenClasslist(0);
       setIsDisabled(true);
+      setIsOpenAddStudent(0);
     });
   };
 

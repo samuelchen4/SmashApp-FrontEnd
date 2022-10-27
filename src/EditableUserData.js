@@ -84,7 +84,7 @@ const EditableUserData = (propsFromUser) => {
             <Select
               name='cgStatus'
               options={cgStatusDropdown}
-              // value={isCg.value}
+              value={editUserInfo.cgStatus}
               onChange={(e) => {
                 editUserInfo.cgStatus = e.value;
                 let newUserFormData = { ...editUserInfo };

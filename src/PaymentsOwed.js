@@ -15,6 +15,9 @@ const PaymentsOwed = (student) => {
     phone,
     dob,
     contacted,
+    contactedBy,
+    isCg,
+    receptInfo,
     payForOwedLessons,
     paytrackerData,
   } = student;
@@ -26,8 +29,13 @@ const PaymentsOwed = (student) => {
   const [amountOwed, setAmountOwed] = useState(0);
   const [credit, setCredit] = useState(0);
   const [everyOverdueLesson, setEveryOverdueLesson] = useState([]);
+  const [unpaidLessons, setUnpaidLessons] = useState([]);
   const [didContact, setDidContact] = useState(contacted);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isContactedBy, setIsContactedBy] = useState(contactedBy);
+  // const [contactedBy, setContactedBy] = useState('D.L.');
+
   //changes opacity of lessons based on action
   // const [isExecuted, setIsExecuted] = useState(false);
   let actionExecuted = didContact ? 'good' : '';
@@ -41,12 +49,17 @@ const PaymentsOwed = (student) => {
 
   // change contactedStatus on DB
   const changeContactedStatus = () => {
+    let contactInitials = receptInfo.userInitials;
+    if (didContact) contactInitials = '';
+
     Axios.put(`${domain}/paytracker/user/${userId}/changeContacted`, {
       contactedStatus: !contacted,
+      contactedBy: contactInitials,
     })
       .then((res) => {
         console.log(res);
         setDidContact(!didContact);
+        setIsContactedBy(contactInitials);
       })
       .catch((err) => console.log(err));
   };
@@ -62,7 +75,9 @@ const PaymentsOwed = (student) => {
         setCredit(res.data.credits.credit); //credits avaliable
         setAmountOwed(res.data.amountOwed.amountOwed); //amount Owed
         // setOverdueLessonsInfo(res.data.overdueLessonsInfo);
+        setUnpaidLessons(res.data.unpaidLessons);
       })
+      .then(console.log(unpaidLessons))
       .catch((err) => console.log(err));
   };
 
@@ -80,9 +95,13 @@ const PaymentsOwed = (student) => {
       exit={{ opacity: 0 }}
       className={`payment-block ${actionExecuted}`}
     >
-      <h5>
-        {fn} {ln}
-      </h5>
+      <div className='payTracker-title'>
+        <h5>
+          {fn} {ln} {isCg ? '💖' : ''}
+        </h5>
+        <h5>{isContactedBy ? isContactedBy : ''}</h5>
+      </div>
+
       <div className='contact-info'>
         {phone && <p>Phone: {phone}</p>}
         {email && <p>Email: {email}</p>}
@@ -114,10 +133,12 @@ const PaymentsOwed = (student) => {
         setIsModalOpen={setIsModalOpen}
         userId={userId}
         everyOverdueLesson={everyOverdueLesson}
+        setEveryOverdueLesson={setEveryOverdueLesson}
         payForOwedLessons={payForOwedLessons}
         credit={credit}
         getUserInfo={getUserInfo}
         amountOwed={amountOwed}
+        unpaidLessons={unpaidLessons}
       />
     </motion.article>
   );

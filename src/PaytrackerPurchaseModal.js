@@ -12,11 +12,13 @@ const PaytrackerPurchaseModal = (props) => {
     setIsModalOpen,
     userId,
     everyOverdueLesson,
+    setEveryOverdueLesson,
     payForOwedLessons,
     credit,
     getUserInfo,
     amountOwed,
     receptInfo,
+    unpaidLessons,
   } = props;
 
   const isCreditDisabled = credit ? false : true;
@@ -24,6 +26,11 @@ const PaytrackerPurchaseModal = (props) => {
   const [lessonTable, setLessonTable] = useState([]);
   const [payCreditToDb, setPayCreditToDb] = useState(0);
   const [total, setTotal] = useState(0);
+  const [isUnpaidChecked, setIsUnpaidChecked] = useState(false);
+  const [invoiceNumber, setInvoiceNumber] = useState('');
+  const [allLessons, setAllLessons] = useState([]); //everyoverdue lesson + unpaid lEssons
+  // const [discountAmount, setDiscountAmount] = useState(0);
+  const [newTotal, setNewTotal] = useState(0);
   const [payMethod, setPayMethod] = useState({ label: 'Visa', value: 'Visa' });
 
   const payMethods = [
@@ -65,7 +72,7 @@ const PaytrackerPurchaseModal = (props) => {
 
   useEffect(() => {
     setLessonTable(
-      everyOverdueLesson.map((overdueLesson) => {
+      allLessons.map((overdueLesson) => {
         const overdueLessonDate = overdueLesson.date.substring(0, 10);
         return (
           <tr>
@@ -76,7 +83,25 @@ const PaytrackerPurchaseModal = (props) => {
         );
       })
     );
+  }, [allLessons]);
+
+  useEffect(() => {
+    setAllLessons(everyOverdueLesson);
   }, [everyOverdueLesson]);
+
+  useEffect(() => {
+    //change everyOverdueLesson
+    if (isUnpaidChecked) {
+      //change total
+      let unpaidLessonsTotal = 0;
+      unpaidLessons.map((lesson) => (unpaidLessonsTotal += lesson.lessonPrice));
+      setAllLessons([...everyOverdueLesson, ...unpaidLessons]);
+      setNewTotal(total + unpaidLessonsTotal);
+    } else {
+      setAllLessons(everyOverdueLesson);
+      setNewTotal(total);
+    }
+  }, [isUnpaidChecked, total]);
 
   if (!open) return null;
 
@@ -88,7 +113,7 @@ const PaytrackerPurchaseModal = (props) => {
             onSubmit={(e) => {
               e.preventDefault();
               payForOwedLessons(
-                everyOverdueLesson,
+                allLessons,
                 userId,
                 payCreditToDb,
                 payMethod.value
@@ -112,7 +137,39 @@ const PaytrackerPurchaseModal = (props) => {
                   <tbody>{lessonTable}</tbody>
                 </table>
               </div>
-
+              {unpaidLessons.length ? (
+                <div className='paytrackerModalCredits'>
+                  <p>
+                    <label>Include Unpaid Lessons</label>
+                  </p>
+                  <p>
+                    <input
+                      name='unpaidToggle'
+                      type='checkbox'
+                      className='toggleUnpaid'
+                      checked={isUnpaidChecked}
+                      onChange={() => setIsUnpaidChecked(!isUnpaidChecked)}
+                    />
+                  </p>
+                </div>
+              ) : (
+                ''
+              )}
+              <div className='paytrackerModalCredits'>
+                <p>
+                  <label htmlFor='Invoice'>Invoice Number</label>
+                </p>
+                <p>
+                  <input
+                    name='Invoice'
+                    placeholder='add invoice number...'
+                    type='text'
+                    value={invoiceNumber}
+                    onChange={(e) => setInvoiceNumber(e.target.value)}
+                    className='payTrackerModal-container'
+                  />
+                </p>
+              </div>
               <div className='paytrackerModalCredits'>
                 <p>
                   <label htmlFor='payMethod'>Pay Method:</label>
@@ -127,6 +184,41 @@ const PaytrackerPurchaseModal = (props) => {
                   />
                 </p>
               </div>
+              {/* <div className='paytrackerModalCredits'>
+                <p>
+                  <label htmlFor='discount'>Discount</label>
+                </p>
+                <p>
+                  <input
+                    name='discount'
+                    value={discountAmount}
+                    onChange={(e) => {
+                      setDiscountAmount(e.target.value);
+                    }}
+                    type='range'
+                    min='0'
+                    max='100'
+                    step='10'
+                    placeholder='amount...'
+                    list='tickmarks'
+                  />
+                  <datalist id='tickmarks'>
+                    <option value='0' label='0%'></option>
+                    <option value='10'></option>
+                    <option value='20'></option>
+                    <option value='30'></option>
+                    <option value='40'></option>
+                    <option value='50' label='50%'>
+                      50
+                    </option>
+                    <option value='60'></option>
+                    <option value='70'></option>
+                    <option value='80'></option>
+                    <option value='90'></option>
+                    <option value='100' label='100%'></option>
+                  </datalist>
+                </p>
+              </div> */}
               {isCreditDisabled ? (
                 <></>
               ) : (
@@ -142,7 +234,7 @@ const PaytrackerPurchaseModal = (props) => {
                       placeholder='Enter Credit'
                       type='number'
                       min='0'
-                      max={credit >= amountOwed ? amountOwed : credit}
+                      max={credit >= newTotal ? newTotal : credit}
                       value={payCreditToDb}
                       onChange={(e) => {
                         setPayCreditToDb(e.target.value);
@@ -155,7 +247,7 @@ const PaytrackerPurchaseModal = (props) => {
                 <p>
                   <label htmlFor='payWithCredit'>Total:</label>
                 </p>
-                <p>${total}</p>
+                <p>${newTotal.toFixed(2)}</p>
               </div>
             </div>
             <div className='modalSection'>

@@ -31,6 +31,7 @@ const User = () => {
   const [purchaseInfo, setPurchaseInfo] = useState([]);
   const [saleInfo, setSaleInfo] = useState([]);
   const [lessonHistory, setLessonHistory] = useState([]);
+  const [unpaidLessons, setUnpaidLessons] = useState([]);
   const [lessonInfo, setLessonInfo] = useState([]);
   const [lessonsAvailable, setLessonsAvailable] = useState([]);
   // const [displayLessons, setDisplayLessons] = useState('');
@@ -50,6 +51,8 @@ const User = () => {
     email: '',
     dob: '',
     phone: '',
+    cgStatus: '',
+    medicalDesc: '',
     credit: '',
   });
 
@@ -60,6 +63,8 @@ const User = () => {
       email: userInfo.email,
       dob: userInfo.dob,
       phone: userInfo.phone,
+      cgStatus: userInfo.isCg,
+      medicalDesc: userInfo.medicalDesc,
       credit: credit,
     };
 
@@ -100,6 +105,8 @@ const User = () => {
       email: editUserInfo.email,
       dob: editUserInfo.dob,
       phone: editUserInfo.phone,
+      cgStatus: editUserInfo.cgStatus,
+      medicalDesc: editUserInfo.medicalDesc,
       // credit: editUserInfo.credit,
     };
 
@@ -112,7 +119,10 @@ const User = () => {
       email: editUserInfo.email,
       dob: editUserInfo.dob,
       phone: editUserInfo.phone,
+      cgStatus: editUserInfo.cgStatus,
+      medicalDesc: editUserInfo.medicalDesc,
       creditChange: putCredit,
+      receptInitials: user.userInitials,
     })
       .then((res) => {
         console.log(res);
@@ -128,13 +138,13 @@ const User = () => {
     getUserData();
   }, []);
 
-  useEffect(() => {
-    renderPurchaseLog();
-  }, [purchaseInfo]);
+  // useEffect(() => {
+  //   renderPurchaseLog();
+  // }, [purchaseInfo]);
 
-  useEffect(() => {
-    renderSalesLog();
-  }, [purchaseInfo]);
+  // useEffect(() => {
+  //   renderSalesLog();
+  // }, [purchaseInfo]);
 
   //get userinfo, purchase and sales data in three seperate arrays
   const getUserData = () => {
@@ -146,6 +156,7 @@ const User = () => {
         setPurchaseInfo(res.data.purchaseLog);
         setSaleInfo(res.data.salesLog);
         setLessonHistory(res.data.lessonHistory);
+        setUnpaidLessons(res.data.unpaidLessons);
         setLessonInfo(res.data.lessonTypes);
         setLessonsAvailable(res.data.avaliableLessons);
         setCredit(res.data.credits.credit ? res.data.credits.credit : 0);
@@ -225,6 +236,7 @@ const User = () => {
                 userInfo={userInfo}
                 credit={credit}
                 editUserInfo={editUserInfo}
+                setEditUserInfo={setEditUserInfo}
                 handleEditFormChange={handleEditFormChange}
                 handleEditFormSubmit={handleEditFormSubmit}
                 setIsEditingUserInfo={setIsEditingUserInfo}
@@ -253,6 +265,7 @@ const User = () => {
                 setCredit={setCredit}
                 receptInfo={user}
                 lessonHistory={lessonHistory}
+                unpaidLessons={unpaidLessons}
                 setLessonHistory={setLessonHistory}
                 getUserData={getUserData}
               />

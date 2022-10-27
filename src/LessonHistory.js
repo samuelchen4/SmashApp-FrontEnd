@@ -28,7 +28,7 @@ const LessonHistory = (props) => {
             <td>
               {lesson.scheduleddate ? lesson.scheduleddate.slice(0, 10) : 'N/A'}
             </td>
-            <td>{lesson.credit ? lesson.credit : 0}</td>
+            <td>{lesson.creditUsed ? `$${lesson.creditUsed}` : `$0`}</td>
             <td>
               {lesson.receptInitial_purchase
                 ? lesson.receptInitial_purchase
@@ -38,6 +38,7 @@ const LessonHistory = (props) => {
             <td>
               {lesson.receptInitial_sale ? lesson.receptInitial_sale : 'N/A'}
             </td>
+            <td>{lesson.credit ? `$${lesson.credit}` : `$0`}</td>
           </tr>
         );
       })
@@ -64,6 +65,7 @@ const LessonHistory = (props) => {
                   <td>Purchase Authorized</td>
                   <td>Attended</td>
                   <td>Sale Authorized</td>
+                  <td>Credits Gained</td>
                 </tr>
               </thead>
               <tbody>{lessonHistoryTableBody}</tbody>

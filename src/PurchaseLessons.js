@@ -17,6 +17,7 @@ const PurchaseLessons = (propsFromUser) => {
     domain,
     receptInfo,
     lessonHistory,
+    unpaidLessons,
     setLessonHistory,
     getUserData,
   } = propsFromUser;
@@ -24,18 +25,9 @@ const PurchaseLessons = (propsFromUser) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const todaysDate = new Date();
-  const [discountNotes, setDiscountNotes] = useState('');
-  const [discountAmount, setDiscountAmount] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [studentsDropdown, setStudentsDropdown] = useState([]);
-  const [payCredit, setPayCredit] = useState('');
-  const [paymentTotal, setPaymentTotal] = useState(0);
-  const [lessonType, setLessonType] = useState(1);
-  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
+
+  //lessonInfo section varaibles
   const [lessonDropdown, setLessonDropdown] = useState('');
-  const [displayLessons, setDisplayLessons] = useState('');
-  const [addedStudents, setAddedStudents] = useState([]);
   const [addedLesson, setAddedLesson] = useState({
     label: '',
     value: '',
@@ -43,17 +35,38 @@ const PurchaseLessons = (propsFromUser) => {
     Capacity: '',
     isSemi: '',
   });
+  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
+  const [studentsDropdown, setStudentsDropdown] = useState([]);
+  const [addedStudents, setAddedStudents] = useState([]); //partners
+  const [lessonAmountToDb, setLessonAmountToDb] = useState(0); //price
 
-  const [payMethod, setPayMethod] = useState({ label: 'Visa', value: 'Visa' });
+  //discounts section variables
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [discountNotes, setDiscountNotes] = useState('');
+
+  //credit section variables
+  const [payCredit, setPayCredit] = useState('');
+
+  //misc section variables
+  const [purchaseDate, setPurchaseDate] = useState('');
+  const [invoiceNumber, setInvoiceNumber] = useState('');
+  const [isUnpaidChecked, setIsUnpaidChecked] = useState(false);
+  const [unpaidPurchaseIds, setUnpaidPurchaseIds] = useState([]);
   const payMethods = [
     { label: 'Visa', value: 'Visa' },
     { label: 'Etransfer', value: 'Etransfer' },
     { label: 'Cash', value: 'Cash' },
     { label: 'Credit', value: 'Credit' },
   ];
+  const [payMethod, setPayMethod] = useState({ label: 'Visa', value: 'Visa' });
+
+  //clear or submit section variables
+
+  //subtotal and total variables
+  const [paymentTotal, setPaymentTotal] = useState(0);
+  const [quantity, setQuantity] = useState(0);
 
   //properties for modal, if falsey dont open modal
-  const [lessonAmountToDb, setLessonAmountToDb] = useState(0);
   let creditAmount = 0;
 
   useEffect(() => {
@@ -113,6 +126,7 @@ const PurchaseLessons = (propsFromUser) => {
   };
 
   const submitPurchases = () => {
+    console.log(unpaidLessons);
     setLessonAmountToDb(
       Math.round(addedLesson.price * (1 - discountAmount / 100))
     );
@@ -130,7 +144,24 @@ const PurchaseLessons = (propsFromUser) => {
     console.log(creditAmount);
     console.log(lessonAmountToDb);
 
-    //handles amount of lessons
+    //check if unpaidPurchases is empty
+    if (unpaidPurchaseIds.length) {
+      //if not change paid status for all purchase ids using Promise.all to do them at the same time
+      Promise.all(
+        unpaidPurchaseIds.map(async (unpaidLessons) => {
+          Axios.put(`${domain}/user/${userId}/payUnpaidLessons`, {
+            purchaseId: unpaidLessons.purchase_id,
+            payMethod: payMethod.value,
+            receptInitials: receptInfo.userInitials,
+            newLessonPrice:
+              unpaidLessons.lessonPrice * (1 - discountAmount / 100),
+            discountAmount: discountAmount / 100,
+            discountNotes,
+          });
+        })
+      );
+    }
+
     Promise.all(
       purchaseLessonDates.map(async (purchaseLessonDate) => {
         const lessonDate = purchaseLessonDate.format();
@@ -381,6 +412,8 @@ const PurchaseLessons = (propsFromUser) => {
                   }}
                 />
               </div>
+            </section>
+            <section className='purchaseLessonBlock__inputs__misc'>
               <div className='inputGroup'>
                 <label htmlFor='payMethod'>Pay Method</label>
                 <Select
@@ -390,6 +423,36 @@ const PurchaseLessons = (propsFromUser) => {
                   placeholder='Visa'
                   className='react-select-container payTrackerModal-container'
                 />
+              </div>
+              <div className='inputGroup'>
+                <label htmlFor='purchaseDate'>Dates</label>
+                <DatePicker
+                  name='purchaseDate'
+                  format='YYYY/MM/DD'
+                  placeholder='Select Date'
+                  value={purchaseDate}
+                  onChange={setPurchaseDate}
+                />
+              </div>
+              <div className='inputGroup'>
+                <label htmlFor='Invoice'>Invoice Number</label>
+                <input
+                  name='Invoice'
+                  placeholder='add invoice number...'
+                  type='text'
+                  value={invoiceNumber}
+                  onChange={(e) => setInvoiceNumber(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  name='unpaidToggle'
+                  type='checkbox'
+                  className='toggleUnpaid'
+                  checked={isUnpaidChecked}
+                  onChange={() => setIsUnpaidChecked(!isUnpaidChecked)}
+                />
+                <label>Include Unpaid Lessons</label>
               </div>
             </section>
             <section className='purchaseLessonBlock__inputs__clearOrSubmit'>
@@ -442,9 +505,13 @@ const PurchaseLessons = (propsFromUser) => {
         discountAmount={discountAmount}
         discountNotes={discountNotes}
         creditAmount={payCredit}
+        purchaseDate={purchaseDate}
+        invoiceNumber={invoiceNumber}
+        unpaidLessons={isUnpaidChecked ? unpaidLessons : []}
         payMethod={payMethod}
         confirmPurchases={confirmPurchases}
         paymentTotal={paymentTotal}
+        setUnpaidPurchaseIds={setUnpaidPurchaseIds}
       ></Modal>
     </>
   );

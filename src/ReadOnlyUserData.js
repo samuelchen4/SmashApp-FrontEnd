@@ -38,55 +38,26 @@ const ReadOnlyUserData = (propsFromUser) => {
             <span className='bold600'>Phone:</span> <br />
             {userInfo.phone ? userInfo.phone : `Not Available`}
           </p>
-          {/* <p>
-                  <span className='bold600'>Birth Date:</span>
-                  <br />
-                  {userInfo.dob ? userInfo.dob.slice(0, 10) : `Not Available`}
-                </p> */}
+          <p>
+            <span className='bold600'>CG Status:</span> <br />
+            {userInfo.isCg ? 'Yes' : `No`}
+          </p>
+          <p>
+            <span className='bold600'>Medical Description:</span> <br />
+            {userInfo.medicalDesc ? userInfo.medicalDesc : `Not Available`}
+          </p>
+          <p>
+            <span className='bold600'>Birth Date:</span>
+            <br />
+            {userInfo.dob ? userInfo.dob.slice(0, 10) : `Not Available`}
+          </p>
           <p>
             <span className='bold600'>Credit: </span>
-
+            <br />
             {credit ? `$${credit}` : `$0`}
           </p>
-          {/* {displayLessons} */}
         </section>
         <section className='tables'>
-          {/* <div className='purchaseLog'>
-            <h4>Purchases Log</h4>
-            <div>
-              <table className='table'>
-                <thead>
-                  <tr>
-                    <td>Purchase Id</td>
-                    <td>Lesson</td>
-                    <td>Lesson Date</td>
-                    <td>Pay Method</td>
-                    <td>Date Bought</td>
-                    <td>Initial</td>
-                  </tr>
-                </thead>
-                <tbody>{purchaseTable}</tbody>
-              </table>
-            </div>
-          </div>
-          <div className='salesLog'>
-            <h4>Sales Log</h4>
-            <div>
-              <table className='table'>
-                <thead>
-                  <tr>
-                    <td>Sales Id</td>
-                    <td>Lesson</td>
-                    <td>Date Attended</td>
-                    <td>Pay Method</td>
-                    <td>Date Bought</td>
-                    <td>Initial</td>
-                  </tr>
-                </thead>
-                <tbody>{saleTable}</tbody>
-              </table>
-            </div>
-          </div> */}
           <LessonHistory lessonHistory={lessonHistory} />
         </section>
       </motion.div>

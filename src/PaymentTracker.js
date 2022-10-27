@@ -34,14 +34,9 @@ const PaymentTracker = (propsFromMain) => {
     setSortByValue(e.target.value);
   };
 
-  const payForOwedLessons = (
-    overdueLessonArr,
-    userId,
-    creditsUsed,
-    payMethod
-  ) => {
+  const payForOwedLessons = (allLessons, userId, creditsUsed, payMethod) => {
     Axios.put(`${domain}/paytracker/user/${userId}/payOwedLessons`, {
-      overdueLessonArr,
+      allLessons,
       creditsUsed: creditsUsed,
       receptInitials: receptInfo.userInitials,
       payMethod,
@@ -112,6 +107,7 @@ const PaymentTracker = (propsFromMain) => {
                 <AnimatePresence>
                   <PaymentsOwed
                     {...student}
+                    receptInfo={receptInfo}
                     payForOwedLessons={payForOwedLessons}
                     paytrackerData={paytrackerData}
                   />

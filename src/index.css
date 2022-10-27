@@ -605,7 +605,16 @@ width: 25rem;
 
 .payment-block h5 {
   margin: 0;
-  padding: 0.25rem 3rem 0.25rem 0.25rem;
+  /* padding: 0.25rem 3rem 0.25rem 0.25rem; */
+  font-size: 1.25rem;
+  
+}
+
+.payment-block .payTracker-title {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.15rem 0.25rem;
   font-size: 1.25rem;
   background: var(--bad);
 }
@@ -623,7 +632,7 @@ width: 25rem;
   
 }
 
-.good h5 {
+.good .payTracker-title {
   background: var(--good);
 }
 

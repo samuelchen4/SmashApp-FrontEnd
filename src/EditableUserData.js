@@ -1,6 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import LessonHistory from './LessonHistory';
+import DatePicker from 'react-multi-date-picker';
+import Select from 'react-select';
 
 const EditableUserData = (propsFromUser) => {
   const {
@@ -10,10 +12,17 @@ const EditableUserData = (propsFromUser) => {
     userInfo,
     credit,
     editUserInfo,
+    setEditUserInfo,
     handleEditFormChange,
     handleEditFormSubmit,
     setIsEditingUserInfo,
   } = propsFromUser;
+
+  const [isCg, setIsCg] = useState({ label: '', value: '' });
+  const cgStatusDropdown = [
+    { label: 'Yes', value: 1 },
+    { label: 'No', value: 0 },
+  ];
 
   return (
     <>
@@ -70,14 +79,45 @@ const EditableUserData = (propsFromUser) => {
               onChange={handleEditFormChange}
             />
           </p>
-          {/* <p>
-                  <span className='bold600'>Birth Date:</span>
-                  <br />
-                  {userInfo.dob ? userInfo.dob.slice(0, 10) : `Not Available`}
-                </p> */}
+          <p>
+            <span className='bold600'>CG Status:</span> <br />
+            <Select
+              name='cgStatus'
+              options={cgStatusDropdown}
+              // value={isCg.value}
+              onChange={(e) => {
+                editUserInfo.cgStatus = e.value;
+                let newUserFormData = { ...editUserInfo };
+                setEditUserInfo(newUserFormData);
+              }}
+            />
+          </p>
+          <p>
+            <span className='bold600'>Medical Description:</span> <br />
+            <textarea
+              name='medicalDesc'
+              value={editUserInfo.medicalDesc}
+              onChange={handleEditFormChange}
+            />
+          </p>
+          <p>
+            <span className='bold600'>Birth Date:</span>
+            <br />
+            <DatePicker
+              name='dob'
+              format='YYYY/MM/DD'
+              placeholder='Select Date'
+              value={editUserInfo.dob}
+              onChange={(e) => {
+                editUserInfo.dob = e.format();
+                let newUserFormData = { ...editUserInfo };
+
+                setEditUserInfo(newUserFormData);
+              }}
+            />
+          </p>
           <p>
             <span className='bold600'>Credit: </span>
-
             <input
               type='number'
               name='credit'

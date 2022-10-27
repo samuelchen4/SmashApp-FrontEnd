@@ -14,13 +14,44 @@ const Modal = (props) => {
     discountNotes,
     creditAmount,
     confirmPurchases,
+    unpaidLessons,
     paymentTotal,
+    setUnpaidPurchaseIds,
     payMethod,
   } = props;
 
-  // const [confirmDisabled, setConfirmDisabled] = useState(0);
+  const [newPaymentTotal, setNewPaymentTotal] = useState(0);
+  const [unpaidLessonsTable, setUnpaidLessonsTable] = useState([]);
+  let unpaidLessonsTotal = 0;
+  useEffect(() => {
+    if (unpaidLessons.length) {
+      //check if unpaidLessons is empty
+      setUnpaidLessonsTable(
+        unpaidLessons.map((unpaidLesson) => {
+          let unpaidLessonDate;
+          unpaidLessonsTotal += unpaidLesson.lessonPrice;
+          if (unpaidLesson.date) {
+            unpaidLessonDate = unpaidLesson.date.substring(0, 10);
+          }
+          return (
+            <tr>
+              <td>{unpaidLesson.lessonName}</td>
+              <td>{unpaidLessonDate ? unpaidLessonDate : 'N/A'}</td>
+              <td>${unpaidLesson.lessonPrice}</td>
+            </tr>
+          );
+        })
+      );
+      setUnpaidPurchaseIds(unpaidLessons);
+      setNewPaymentTotal(
+        paymentTotal + unpaidLessonsTotal * (1 - discountAmount / 100)
+      );
+    } else setNewPaymentTotal(paymentTotal);
+  }, [unpaidLessons, discountAmount]);
 
   if (!open) return null;
+
+  //create upiandLessonsTable from unpaidLessons passed in from purchases
 
   let lessonDates = [];
   if (purchaseLessonDates.length) {
@@ -82,9 +113,26 @@ const Modal = (props) => {
               <p>Pay Method:</p>
               <p>{payMethod.label}</p>
             </div>
+            {unpaidLessons.length ? (
+              <div style={{ marginBottom: '1rem' }}>
+                <p style={{ margin: 0 }}>Unpaid Lessons:</p>
+                <div className='paytrackerTable unpaidTable'>
+                  <table className='table'>
+                    <thead>
+                      <td>Type</td>
+                      <td>Date</td>
+                      <td>Price</td>
+                    </thead>
+                    <tbody>{unpaidLessonsTable}</tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
             <div className='modalData'>
               <p>Total:</p>
-              <p>${paymentTotal}</p>
+              <p>${newPaymentTotal.toFixed(2)}</p>
             </div>
           </div>
           <div className='modalSection'>

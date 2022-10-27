@@ -34,7 +34,8 @@ const Classlist = (classlistInfo) => {
   const createClasslistTable = () => {
     setClasslistTable(
       classlist.map((student, index) => {
-        const { fn, ln, email, phone, purchase_id, paid } = student;
+        const { fn, ln, email, phone, medicalDesc, purchase_id, paid } =
+          student;
         const purchaseId = purchase_id;
         return (
           <tr key={purchaseId}>
@@ -43,6 +44,7 @@ const Classlist = (classlistInfo) => {
             </td>
             <td>{phone}</td>
             <td>{email}</td>
+            <td>{medicalDesc ? medicalDesc : ''}</td>
             <td>{paid ? `Yes` : `No`}</td>
             <td>
               <input
@@ -159,6 +161,7 @@ const Classlist = (classlistInfo) => {
             <td>
               <button onClick={copyEmails}>Email</button>
             </td>
+            <td>Med Notes</td>
             <td>Paid</td>
             <td>Attended</td>
           </tr>

@@ -8,8 +8,8 @@ const LogoutButton = () => {
     <button
       onClick={() =>
         logout({
-          returnTo: 'http://localhost:3000/login',
-          // returnTo: 'https://master.d2itr8wow24jd5.amplifyapp.com/login',
+          // returnTo: 'http://localhost:3000/login',
+          returnTo: 'https://master.d2itr8wow24jd5.amplifyapp.com/login',
         })
       }
     >

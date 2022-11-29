@@ -15,12 +15,13 @@ const Users = () => {
   const [sortBy, setSortBy] = useState('ASC');
 
   const getUsers = () => {
-    Axios.get(`https://fzkytcnpth.execute-api.us-west-2.amazonaws.com/users`)
-      .then((res) => {
-        // console.log(res);
-        setUsers(res.data);
-      })
-      .catch((err) => console.log(err));
+    Axios.get(
+      `https://fzkytcnpth.execute-api.us-west-2.amazonaws.com/users`
+    ).then((res) => {
+      // console.log(res);
+      setUsers(res.data);
+    });
+    // .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Users = () => {
           }
         })
         .map((user) => {
-          console.log(user);
+          // console.log(user);
           return (
             <motion.article
               animate={{ opacity: 1 }}

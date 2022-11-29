@@ -116,7 +116,8 @@ const PaytrackerPurchaseModal = (props) => {
                 allLessons,
                 userId,
                 payCreditToDb,
-                payMethod.value
+                payMethod.value,
+                invoiceNumber
               );
             }}
           >

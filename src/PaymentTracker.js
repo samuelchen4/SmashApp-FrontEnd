@@ -8,6 +8,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 const PaymentTracker = (propsFromMain) => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { paytrackerData, setPaytrackerData, receptInfo } = propsFromMain;
+  //unchanged mutated data
+  const [ptData, setPtData] = useState(paytrackerData);
+
   //set paytracker data to this
   // const [data, setData] = useState([]);
   const [isOutstanding, setIsOutstanding] = useState(true);
@@ -34,12 +37,19 @@ const PaymentTracker = (propsFromMain) => {
     setSortByValue(e.target.value);
   };
 
-  const payForOwedLessons = (allLessons, userId, creditsUsed, payMethod) => {
+  const payForOwedLessons = (
+    allLessons,
+    userId,
+    creditsUsed,
+    payMethod,
+    invoiceNumber
+  ) => {
     Axios.put(`${domain}/paytracker/user/${userId}/payOwedLessons`, {
       allLessons,
       creditsUsed: creditsUsed,
       receptInitials: receptInfo.userInitials,
       payMethod,
+      invoiceNumber,
     })
       .then((res) => {
         console.log(res);
@@ -52,6 +62,13 @@ const PaymentTracker = (propsFromMain) => {
   //get data based on payments owed
 
   //use effect to sort data based on sortByValue
+  useEffect(() => {
+    if (sortByValue === 'cg')
+      setPtData(paytrackerData.filter((user) => user.isCg === 1));
+    else if (sortByValue === 'nonCg') {
+      setPtData(paytrackerData.filter((user) => user.isCg === 0));
+    } else setPtData(paytrackerData);
+  }, [sortByValue]);
 
   return (
     <article className='payment-tracker'>
@@ -78,14 +95,16 @@ const PaymentTracker = (propsFromMain) => {
             whileHover={{ cursor: 'pointer' }}
           >
             <option value='all'>all</option>
-            <option value='date'>date</option>
-            <option value='amount'>amount</option>
+            {/* <option value='date'>date</option>
+            <option value='amount'>amount</option> */}
+            <option value='cg'>cg</option>
+            <option value='nonCg'>non-cg</option>
           </motion.select>
         </div>
       </section>
       <main>
         <ul className='payment-main' onScroll={onScroll}>
-          {paytrackerData
+          {ptData
             .filter((student) => {
               if (search === '') {
                 return student;

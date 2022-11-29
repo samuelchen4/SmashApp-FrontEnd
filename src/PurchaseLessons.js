@@ -157,6 +157,8 @@ const PurchaseLessons = (propsFromUser) => {
               unpaidLessons.lessonPrice * (1 - discountAmount / 100),
             discountAmount: discountAmount / 100,
             discountNotes,
+            purchaseDate,
+            invoiceNumber,
           });
         })
       );
@@ -178,6 +180,8 @@ const PurchaseLessons = (propsFromUser) => {
             priceWithDiscountIncluded: lessonAmountToDb,
             receptInitials: receptInfo.userInitials,
             payMethod: payMethod.value,
+            purchaseDate,
+            invoiceNumber,
           })
             .then((res) => {
               console.log(res);
@@ -214,6 +218,8 @@ const PurchaseLessons = (propsFromUser) => {
             priceWithDiscountIncluded: lessonAmountToDb,
             receptInitials: receptInfo.userInitials,
             payMethod: payMethod.value,
+            purchaseDate,
+            invoiceNumber,
           })
             .then((res) => {
               console.log(res);

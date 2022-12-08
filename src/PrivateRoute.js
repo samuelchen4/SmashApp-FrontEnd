@@ -11,7 +11,7 @@ const PrivateRoute = ({ children }) => {
   useEffect(() => {
     if (!isLoading) {
       console.log(user);
-      Axios.get('')
+      Axios.get('');
     }
   }, [isLoading]);
 
@@ -28,7 +28,7 @@ const PrivateRoute = ({ children }) => {
   } else if (!isLoading && !isAuthenticated) {
     navigate('/login');
   } else {
-    <h1>Is Loading</h1>;
+    return <h1>Is Loading</h1>;
   }
 
   //   if (!isAuthenticated) {

@@ -337,7 +337,7 @@ const PurchaseLessons = (propsFromUser) => {
                   plugins={[<DatePanel />]}
                   value={purchaseLessonDates}
                   onChange={setPurchaseLessonDates}
-                  minDate={todaysDate}
+                  // minDate={todaysDate}
                   style={{
                     width: '100%',
                     height: '100%',

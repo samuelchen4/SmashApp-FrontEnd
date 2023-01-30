@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import './index.css';
 import './react-select-search.css';
+import store from './store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -18,7 +20,9 @@ root.render(
     redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com'}
   >
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>
   </Auth0Provider>
 );

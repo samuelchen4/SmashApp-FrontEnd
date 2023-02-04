@@ -1,7 +1,14 @@
 //getting up redux store and thunk middleware
 
-import { configureStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './reducers/index';
+import { configureStore } from '@reduxjs/toolkit';
+import { studentListReducer } from './reducers/studentReducer';
 
-export default configureStore(rootReducer, applyMiddleware(thunk));
+// configureStore applies redux-thunk
+export const store = configureStore({
+  reducer: {
+    students: studentListReducer,
+    //this root reducer can have multiple reducers inside, configureStore
+    //automatically combines reducers
+    //eg/ agenda: agendaReducer,
+  },
+});

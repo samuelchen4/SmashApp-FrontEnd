@@ -5,25 +5,13 @@ import Sidebar from '../sidemenu/Sidebar';
 import Navbar from '../Navbar';
 import Axios from 'axios';
 import UserBlock from '../UserBlock';
+import Loader from '../components/Loader';
 import '../users.css';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const UsersScreen = () => {
-  const domain = 'http://localhost:5000';
-  const [users, setUsers] = useState([]);
   const [renderUsers, setRenderUsers] = useState('');
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState('ASC');
-
-  const getUsers = () => {
-    Axios.get(
-      `https://fzkytcnpth.execute-api.us-west-2.amazonaws.com/users`
-    ).then((res) => {
-      // console.log(res);
-      setUsers(res.data);
-    });
-    // .catch((err) => console.log(err));
-  };
 
   //TESTING REDUX
   const dispatch = useDispatch();
@@ -31,18 +19,14 @@ const UsersScreen = () => {
   useEffect(() => {
     dispatch(getStudents());
   }, [dispatch]);
-  // END TEST good
-  //pull from state
-  // state a variable to the state you want with useSelector
-  const studentListRedux = useSelector((state) => state.students.list);
 
-  useEffect(() => {
-    getUsers();
-  }, [sortBy]);
+  // get object from state first
+  const students = useSelector((state) => state.students);
+  const { list: studentList, isLoading } = students;
 
   useEffect(() => {
     setRenderUsers(
-      users
+      studentList
         .filter((user) => {
           if (!search) {
             return user;
@@ -53,7 +37,6 @@ const UsersScreen = () => {
           }
         })
         .map((user) => {
-          // console.log(user);
           return (
             <motion.article
               animate={{ opacity: 1 }}
@@ -70,9 +53,8 @@ const UsersScreen = () => {
           );
         })
     );
-  }, [users, search]);
+  }, [studentList, search]);
 
-  // console.log(renderUsers);
   return (
     <div className='meat'>
       <Sidebar />
@@ -95,18 +77,18 @@ const UsersScreen = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
-                <i class='bx bx-search-alt'></i>
+                <i className='bx bx-search-alt'></i>
               </div>
               <select
                 name='sort-by'
-                onChange={(e) => setSortBy(e.target.value)}
+                // onChange={(e) => setSortBy(e.target.value)}
               >
                 <option value='ASC'>Ascending</option>
                 <option value='DESC'>Descending</option>
               </select>
             </form>
             <motion.section layout className='user-grid'>
-              {renderUsers}
+              {isLoading ? <Loader /> : renderUsers}
             </motion.section>
           </motion.main>
         </div>

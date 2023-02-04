@@ -10,6 +10,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 const Main = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
+
   const [paytrackerData, setPaytrackerData] = useState([]);
 
   const { user, isAuthenticated } = useAuth0();

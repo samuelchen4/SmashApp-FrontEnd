@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import './index.css';
 import './react-select-search.css';
-import store from './store';
+import { store } from './store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
@@ -16,8 +16,8 @@ root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
-    // redirectUri={'http://localhost:3000/'}
-    redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com'}
+    redirectUri={'http://localhost:3000/'}
+    // redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com'}
   >
     <React.StrictMode>
       <Provider store={store}>

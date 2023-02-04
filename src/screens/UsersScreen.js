@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Sidebar from './sidemenu/Sidebar';
-import Navbar from './Navbar';
+import { useSelector, useDispatch } from 'react-redux';
+import { getStudents } from '../actions/studentActions';
+import Sidebar from '../sidemenu/Sidebar';
+import Navbar from '../Navbar';
 import Axios from 'axios';
-import UserBlock from './UserBlock';
-import './users.css';
+import UserBlock from '../UserBlock';
+import '../users.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Users = () => {
+const UsersScreen = () => {
   const domain = 'http://localhost:5000';
   const [users, setUsers] = useState([]);
   const [renderUsers, setRenderUsers] = useState('');
@@ -23,6 +24,17 @@ const Users = () => {
     });
     // .catch((err) => console.log(err));
   };
+
+  //TESTING REDUX
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getStudents());
+  }, [dispatch]);
+  // END TEST good
+  //pull from state
+  // state a variable to the state you want with useSelector
+  const studentListRedux = useSelector((state) => state.students.list);
 
   useEffect(() => {
     getUsers();
@@ -103,4 +115,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UsersScreen;

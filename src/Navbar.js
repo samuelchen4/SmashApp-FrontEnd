@@ -1,12 +1,18 @@
 import Axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-
 import NavAddUser from './NavAddUser';
 import NavAddLesson from './NavAddLesson.js';
 import './index.css';
 import NavChangeLessonDate from './NavChangeLessonDate';
 import LogoutButton from './LogoutButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { addStudent } from './actions/studentActions';
+import {
+  ADD_STUDENTS_REQUEST,
+  ADD_STUDENTS_SUCCESS,
+  ADD_STUDENTS_FAIL,
+} from './constants/student';
 
 const Navbar = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
@@ -16,6 +22,9 @@ const Navbar = () => {
   const [isEditLesson, setIsEditLesson] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [allLessons, setAllLessons] = useState([]);
+
+  const dispatch = useDispatch();
+  const { list: studentList } = useSelector((state) => state.students);
 
   useEffect(() => {
     if (!isLoading) {
@@ -30,6 +39,23 @@ const Navbar = () => {
     phone: '',
     dob: '',
   });
+
+  // submits user data
+  const submitUserHandler = (e) => {
+    e.preventDefault();
+    const { fn, ln } = addUserInfo;
+
+    // check if user already exists in data base
+    if (
+      !studentList.some((student) => student.fn === fn && student.ln === ln)
+    ) {
+      // dispatch add user
+      dispatch(addStudent(addUserInfo));
+    } else {
+      window.alert(`${fn} ${ln} already exists in database`);
+    }
+    setIsAddUser(false);
+  };
 
   const handleEditAddUserInfo = (event) => {
     event.preventDefault();
@@ -84,22 +110,6 @@ const Navbar = () => {
     });
   };
 
-  // const renderUsersDropdown = () => {
-  //   setUsersDropdown(
-  //     usersArr.map((user) => {
-  //       return (
-  //         <option value={user.user_id}>
-  //           {user.fn} {user.ln}
-  //         </option>
-  //       );
-  //     })
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   renderUsersDropdown();
-  // }, [usersArr]);
-
   const addUserDB = (e) => {
     e.preventDefault();
     // console.log(e.target.fn.value);
@@ -144,10 +154,9 @@ const Navbar = () => {
         </button>
         {isAddUser && (
           <NavAddUser
-            addUserDB={addUserDB}
             handleEditAddUserInfo={handleEditAddUserInfo}
             addUserInfo={addUserInfo}
-            setAddUserInfo={setAddUserInfo}
+            submitUserHandler={submitUserHandler}
           />
         )}
       </section>

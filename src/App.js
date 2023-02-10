@@ -12,7 +12,7 @@ import Main from './Main';
 import LoginPage from './LoginPage';
 import UsersScreen from './screens/UsersScreen';
 import User from './User';
-import Lessons from './Lessons';
+import LessonsScreen from './screens/LessonsScreen';
 import PrivateRoute from './PrivateRoute';
 import Private from './Private';
 
@@ -44,7 +44,7 @@ function App() {
           path='/lessons'
           element={
             <PrivateRoute>
-              <Lessons />
+              <LessonsScreen />
             </PrivateRoute>
           }
         />

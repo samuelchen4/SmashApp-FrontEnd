@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Lessons from './Lessons.js';
 import Private from './Private.js';
 import SemiPrivate from './SemiPrivate.js';
 import Group from './Group.js';
@@ -7,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AgendaDatePicker from './AgendaDatePicker.js';
 import Axios from 'axios';
 import { format } from 'date-fns';
-import { DatasetController } from 'chart.js';
 
 //this component will display all lessons happening on the date chosen.
 //Date will default to the current date

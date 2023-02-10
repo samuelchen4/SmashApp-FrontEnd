@@ -1,19 +1,18 @@
-import { Link } from 'react-router-dom';
 import React, { useState, useEffect, Fragment } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import AddLessonsReadonly from './AddLessonsReadonly';
 import AddLessonsEditable from './AddLessonsEditable';
-import Lessons from './Lessons';
+
+import { addLessons, updateLesson } from './actions/lessonsActions';
+import { apiDomain } from './utils/domains';
 
 const AddLesson = (propsFromLessons) => {
   const { lessons, setLessons, domain } = propsFromLessons;
-  // const [lessons, setLessons] = useState([]);
   const [lessonsTable, setLessonsTable] = useState([]);
 
   const [addedLessonName, setAddedLessonName] = useState('');
   const [addedLessonPrice, setAddedLessonPrice] = useState(0);
-  const [addedLessonCapacity, setAddedLessonCapacity] = useState(0);
 
   const [editLessonId, setEditLessonId] = useState(null);
 
@@ -22,6 +21,9 @@ const AddLesson = (propsFromLessons) => {
     lessonName: '',
     price: '',
   });
+
+  //testing post with redux
+  const dispatch = useDispatch();
 
   useEffect(() => {
     renderLessons();
@@ -46,30 +48,41 @@ const AddLesson = (propsFromLessons) => {
     );
   };
 
-  const addLesson = () => {
-    //send post request to database
-    //add capacity to front-end later
-    Axios.post(`${domain}/lessons/add`, {
+  const handleSubmitAddLesson = (e) => {
+    e.preventDefault();
+
+    const addLessonData = {
       lessonName: addedLessonName,
       lessonPrice: addedLessonPrice,
-      lessonCapacity: addedLessonCapacity,
-    })
-      .then((res) => {
-        //update lessons state
-        setLessons([
-          ...lessons,
-          {
-            type_id: res.data.lessonId,
-            type_name: addedLessonName,
-            price: addedLessonPrice,
-            Capacity: addedLessonCapacity,
-          },
-        ]);
-        setAddedLessonName('');
-        setAddedLessonPrice(0);
-      })
-      .catch((err) => console.log(err));
+    };
+    // dispatch addLessons
+    dispatch(addLessons(addLessonData));
   };
+
+  // const addLesson = () => {
+  //   //send post request to database
+  //   //add capacity to front-end later
+  //   Axios.post(`${domain}/lessons/add`, {
+  //     lessonName: addedLessonName,
+  //     lessonPrice: addedLessonPrice,
+  //     lessonCapacity: addedLessonCapacity,
+  //   })
+  //     .then((res) => {
+  //       //update lessons state
+  //       setLessons([
+  //         ...lessons,
+  //         {
+  //           type_id: res.data.lessonId,
+  //           type_name: addedLessonName,
+  //           price: addedLessonPrice,
+  //           Capacity: addedLessonCapacity,
+  //         },
+  //       ]);
+  //       setAddedLessonName('');
+  //       setAddedLessonPrice(0);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   const handleEditClick = (event, lesson) => {
     event.preventDefault();
@@ -107,31 +120,34 @@ const AddLesson = (propsFromLessons) => {
     const editedLesson = {
       lessonId: editLessonId,
       lessonName: editFormData.lessonName,
-      price: editFormData.price,
-      Capacity: 0,
+      lessonPrice: editFormData.price,
+      lessonCapacity: 0,
     };
+    // console.log(editedLesson);
+    // const lessonId = editedLesson.lessonId;
 
-    const lessonId = editedLesson.lessonId;
+    // const newLessons = [...lessons];
+    // console.log(newLessons);
 
-    const newLessons = [...lessons];
-    console.log(newLessons);
+    // const index = lessons.findIndex(
+    //   (lesson) => lesson.type_id === editLessonId
+    // );
 
-    const index = lessons.findIndex(
-      (lesson) => lesson.type_id === editLessonId
-    );
+    // newLessons[index].type_name = editedLesson.lessonName;
+    // newLessons[index].price = editedLesson.price;
 
-    newLessons[index].type_name = editedLesson.lessonName;
-    newLessons[index].price = editedLesson.price;
+    //dispatch updateLesson
+    dispatch(updateLesson(editedLesson.lessonId, editedLesson));
 
     //send update to server
-    Axios.put(`${domain}/lessons/update/${lessonId}`, {
-      lessonName: editedLesson.lessonName,
-      lessonPrice: editedLesson.price,
-      lessonCapacity: editedLesson.Capacity,
-    });
+    // Axios.put(`${apiDomain}/lessons/update/${lessonId}`, {
+    //   lessonName: editedLesson.lessonName,
+    //   lessonPrice: editedLesson.price,
+    //   lessonCapacity: editedLesson.Capacity,
+    // });
 
     //update start on Front-end
-    setLessons(newLessons);
+    // setLessons(newLessons);
     setEditLessonId(null);
   };
 
@@ -151,13 +167,7 @@ const AddLesson = (propsFromLessons) => {
     <div className='addLesson'>
       <h3>Add Lesson</h3>
       <section className='addLessonBody'>
-        <form
-          className='formControls'
-          onSubmit={(e) => {
-            e.preventDefault();
-            addLesson();
-          }}
-        >
+        <form className='formControls' onSubmit={handleSubmitAddLesson}>
           <input
             placeholder='lesson name...'
             type='text'
@@ -188,7 +198,7 @@ const AddLesson = (propsFromLessons) => {
               </thead>
               <tbody>
                 {lessons.map((lesson) => (
-                  <Fragment>
+                  <Fragment key={lesson.type_id}>
                     {editLessonId === lesson.type_id ? (
                       <AddLessonsEditable
                         lesson={lesson}

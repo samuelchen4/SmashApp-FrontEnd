@@ -3,17 +3,13 @@ import Axios from 'axios';
 import { format } from 'date-fns';
 
 const NavAddUser = (propsFromNavbar) => {
-  const { addUserDB, handleEditAddUserInfo, addUserInfo, setAddUserInfo } =
+  const { handleEditAddUserInfo, addUserInfo, submitUserHandler } =
     propsFromNavbar;
-  const [fn, setFn] = useState('');
-  const [ln, setLn] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
 
   return (
     <section className='drop-down'>
       <h3>Add User</h3>
-      <form className='add-user' onSubmit={addUserDB}>
+      <form className='add-user' onSubmit={submitUserHandler}>
         <div className='name'>
           <input
             placeholder='First Name'

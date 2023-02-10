@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Lessons from './Lessons';
 import { motion, AnimatePresence } from 'framer-motion';
 import LessonsTable from './LessonsTable';
 import Axios from 'axios';
-import { set } from 'date-fns/esm';
 import PaytrackerPurchaseModal from './PaytrackerPurchaseModal';
 
 const PaymentsOwed = (student) => {

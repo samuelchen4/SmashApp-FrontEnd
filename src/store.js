@@ -3,15 +3,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { studentListReducer } from './reducers/studentReducer';
 import { lessonsReducer, lessonsAddReducer } from './reducers/lessonsReducer';
+import { agendaReducer } from './reducers/agendaReducer';
+import { receptReducer } from './reducers/receptReducer';
+import { paytrackerReducer } from './reducers/paytrackerReducer';
 
 // configureStore applies redux-thunk
 export const store = configureStore({
   reducer: {
     students: studentListReducer,
     lessons: lessonsReducer,
-    // lessonsAdd: lessonsAddReducer,
-    //this root reducer can have multiple reducers inside, configureStore
-    //automatically combines reducers
-    //eg/ agenda: agendaReducer,
+    agenda: agendaReducer,
+    paytracker: paytrackerReducer,
+    recept: receptReducer,
   },
 });

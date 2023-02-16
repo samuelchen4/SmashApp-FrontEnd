@@ -1,28 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import PaymentsOwed from './PaymentsOwed';
-import smashingIcon from './imgs/icon-badmintonplayer.png';
 import { motion, AnimatePresence } from 'framer-motion';
-// import { data } from './dummydata';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPaytrackerInfo } from './actions/paytrackerActions';
+import { apiDomain } from './utils/domains';
 
-const PaymentTracker = (propsFromMain) => {
-  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
-  const { paytrackerData, setPaytrackerData, receptInfo } = propsFromMain;
-  //unchanged mutated data
-  const [ptData, setPtData] = useState(paytrackerData);
-
-  //set paytracker data to this
-  // const [data, setData] = useState([]);
-  const [isOutstanding, setIsOutstanding] = useState(true);
-
+const PaymentTracker = () => {
   const [sortByValue, setSortByValue] = useState('all');
-
-  //search payment
   const [search, setSearch] = useState('');
-  const searchPayment = (e) => {
-    e.preventDefault();
-    setSearch(e.target.value);
-  };
 
   //scrollbar
   const [isScrolling, setIsScrolling] = useState(false);
@@ -31,44 +17,17 @@ const PaymentTracker = (propsFromMain) => {
     setIsScrolling(true);
   };
 
-  //sort by
-  const sortBy = (e) => {
-    e.preventDefault();
-    setSortByValue(e.target.value);
-  };
+  // redux
+  const dispatch = useDispatch();
+  const paytrackerInfo = useSelector((state) => state.paytracker);
+  const { paytrackerList, isLoading } = paytrackerInfo;
 
-  const payForOwedLessons = (
-    allLessons,
-    userId,
-    creditsUsed,
-    payMethod,
-    invoiceNumber
-  ) => {
-    Axios.put(`${domain}/paytracker/user/${userId}/payOwedLessons`, {
-      allLessons,
-      creditsUsed: creditsUsed,
-      receptInitials: receptInfo.userInitials,
-      payMethod,
-      invoiceNumber,
-    })
-      .then((res) => {
-        console.log(res);
-        const newData = paytrackerData.filter((user) => user.user_id != userId);
-        setPaytrackerData(newData);
-      })
-      .catch((err) => console.log(err));
-  };
+  const recept = useSelector((state) => state.recept);
+  const { receptInfo } = recept;
 
-  //get data based on payments owed
-
-  //use effect to sort data based on sortByValue
   useEffect(() => {
-    if (sortByValue === 'cg')
-      setPtData(paytrackerData.filter((user) => user.isCg === 1));
-    else if (sortByValue === 'nonCg') {
-      setPtData(paytrackerData.filter((user) => user.isCg === 0));
-    } else setPtData(paytrackerData);
-  }, [sortByValue]);
+    dispatch(getPaytrackerInfo());
+  }, [dispatch]);
 
   return (
     <article className='payment-tracker'>
@@ -81,7 +40,7 @@ const PaymentTracker = (propsFromMain) => {
             name='search'
             placeholder='search...'
             value={search}
-            onChange={searchPayment}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <i class='bx bx-search-alt'></i>
         </form>
@@ -91,20 +50,26 @@ const PaymentTracker = (propsFromMain) => {
             name='sortby'
             id='sortby'
             value={sortByValue}
-            onChange={sortBy}
+            onChange={(e) => setSortByValue(e.target.value)}
             whileHover={{ cursor: 'pointer' }}
           >
             <option value='all'>all</option>
-            {/* <option value='date'>date</option>
-            <option value='amount'>amount</option> */}
-            <option value='cg'>cg</option>
-            <option value='nonCg'>non-cg</option>
+            <option value={1}>cg</option>
+            <option value={0}>non-cg</option>
           </motion.select>
         </div>
       </section>
       <main>
         <ul className='payment-main' onScroll={onScroll}>
-          {ptData
+          {paytrackerList
+            .filter((student) => {
+              const { isCg } = student;
+              if (sortByValue === 'all') {
+                return student;
+              } else if (isCg === Number(sortByValue)) {
+                return student;
+              }
+            })
             .filter((student) => {
               if (search === '') {
                 return student;
@@ -124,22 +89,11 @@ const PaymentTracker = (propsFromMain) => {
                 key={student.user_id}
               >
                 <AnimatePresence>
-                  <PaymentsOwed
-                    {...student}
-                    receptInfo={receptInfo}
-                    payForOwedLessons={payForOwedLessons}
-                    paytrackerData={paytrackerData}
-                  />
+                  <PaymentsOwed id={student.user_id} />
                 </AnimatePresence>
               </motion.li>
             ))}
         </ul>
-        {isOutstanding || (
-          <div className='payments-due-icon'>
-            <img src={smashingIcon} alt='#' />
-            <h4>No Outstanding Payments!</h4>
-          </div>
-        )}
       </main>
     </article>
   );

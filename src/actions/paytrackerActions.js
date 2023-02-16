@@ -81,7 +81,7 @@ export const payPaytrackerLessons =
     userId,
     creditsUsed,
     payMethod,
-    invoiceNumber,
+    invoice,
     receptInitials,
     index
   ) =>
@@ -96,7 +96,7 @@ export const payPaytrackerLessons =
           creditsUsed,
           receptInitials,
           payMethod,
-          invoiceNumber,
+          invoice,
         }
       );
 

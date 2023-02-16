@@ -5,7 +5,7 @@ import Sidebar from '../sidemenu/Sidebar';
 import Navbar from '../Navbar';
 import Axios from 'axios';
 import UserBlock from '../UserBlock';
-import Loader from '../components/Loader';
+import MyLoader from '../components/MyLoader';
 import '../users.css';
 import { motion } from 'framer-motion';
 
@@ -88,7 +88,7 @@ const UsersScreen = () => {
               </select>
             </form>
             <motion.section layout className='user-grid'>
-              {isLoading ? <Loader /> : renderUsers}
+              {isLoading ? <MyLoader content='Loading...' /> : renderUsers}
             </motion.section>
           </motion.main>
         </div>

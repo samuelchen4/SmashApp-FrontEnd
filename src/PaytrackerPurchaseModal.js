@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import logo from './imgs/GaoLogoNoBorder.png';
-import DatePicker from 'react-multi-date-picker';
 import ReactDom from 'react-dom';
 import Select from 'react-select';
+import { payPaytrackerLessons } from './actions/paytrackerActions';
 
-import smashlogo from './imgs/smashLogo.jpg';
+const PaytrackerPurchaseModal = ({ id, open, setOpen }) => {
+  // REDUX
+  const dispatch = useDispatch();
 
-const PaytrackerPurchaseModal = (props) => {
+  const receptInfo = useSelector((state) => state.recept);
+  const { userInitials } = receptInfo;
+
+  const paytracker = useSelector((state) => state.paytracker);
+  const { paytrackerList } = paytracker;
+
+  const index = paytrackerList.findIndex((student) => student.user_id === id);
+  //primitive properties
+  const { fn, ln, email, phone, dob, contacted, contactedBy, isCg } =
+    paytrackerList[index];
+
+  //array properties
   const {
-    open,
-    setIsModalOpen,
-    userId,
+    lessonInfo,
+    amountOwed: amountOwedArr,
     everyOverdueLesson,
-    setEveryOverdueLesson,
-    payForOwedLessons,
-    credit,
-    getUserInfo,
-    amountOwed,
-    receptInfo,
     unpaidLessons,
-  } = props;
+    credits,
+  } = paytrackerList[index];
+
+  const { amountOwed } = amountOwedArr;
+
+  const { credit } = credits;
+  // END REDUX
 
   const isCreditDisabled = credit ? false : true;
-
   const [lessonTable, setLessonTable] = useState([]);
-  const [payCreditToDb, setPayCreditToDb] = useState(0);
+  const [payCreditToDb, setPayCreditToDb] = useState(0); //the credit allowed to be used
   const [total, setTotal] = useState(0);
   const [isUnpaidChecked, setIsUnpaidChecked] = useState(false);
   const [invoiceNumber, setInvoiceNumber] = useState('');
@@ -40,14 +52,31 @@ const PaytrackerPurchaseModal = (props) => {
     { label: 'Credit', value: 'Credit' },
   ];
 
-  //on open update the credits and lessonAmounts
-  useEffect(() => {
-    if (open) {
-      getUserInfo();
+  // handle submit payments
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // check if credit input is more than credit amount
+    if (payCreditToDb > credit)
+      return alert(`Not enough credits. ${fn} ${ln} has $${credit} credit`);
+    // check if total is negative
+    else if (total < 0)
+      return alert(`Credits input is more than purchase amount`);
+    // call dispatch
+    else {
+      dispatch(
+        payPaytrackerLessons(
+          allLessons,
+          id,
+          payCreditToDb,
+          payMethod,
+          invoiceNumber,
+          userInitials,
+          index
+        )
+      );
+      setOpen(false);
     }
-    console.log(credit);
-    console.log(amountOwed);
-  }, [open]);
+  };
 
   useEffect(() => {
     if (credit) {
@@ -86,17 +115,13 @@ const PaytrackerPurchaseModal = (props) => {
   }, [allLessons]);
 
   useEffect(() => {
-    setAllLessons(everyOverdueLesson);
-  }, [everyOverdueLesson]);
-
-  useEffect(() => {
     //change everyOverdueLesson
     if (isUnpaidChecked) {
       //change total
       let unpaidLessonsTotal = 0;
       unpaidLessons.map((lesson) => (unpaidLessonsTotal += lesson.lessonPrice));
-      setAllLessons([...everyOverdueLesson, ...unpaidLessons]);
-      setNewTotal(total + unpaidLessonsTotal);
+      setAllLessons(unpaidLessons);
+      setNewTotal(unpaidLessonsTotal);
     } else {
       setAllLessons(everyOverdueLesson);
       setNewTotal(total);
@@ -109,18 +134,7 @@ const PaytrackerPurchaseModal = (props) => {
     <>
       <div className='overLay'>
         <div className=' userSection modal'>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              payForOwedLessons(
-                allLessons,
-                userId,
-                payCreditToDb,
-                payMethod.value,
-                invoiceNumber
-              );
-            }}
-          >
+          <form>
             <div className='modalSection'>
               <img src={logo} alt='smashcity logo' width='100px' />
               <h3 className='modalTitle'>Confirm your purchase</h3>
@@ -141,7 +155,7 @@ const PaytrackerPurchaseModal = (props) => {
               {unpaidLessons.length ? (
                 <div className='paytrackerModalCredits'>
                   <p>
-                    <label>Include Unpaid Lessons</label>
+                    <label>Include Unattended Lessons</label>
                   </p>
                   <p>
                     <input
@@ -185,41 +199,6 @@ const PaytrackerPurchaseModal = (props) => {
                   />
                 </p>
               </div>
-              {/* <div className='paytrackerModalCredits'>
-                <p>
-                  <label htmlFor='discount'>Discount</label>
-                </p>
-                <p>
-                  <input
-                    name='discount'
-                    value={discountAmount}
-                    onChange={(e) => {
-                      setDiscountAmount(e.target.value);
-                    }}
-                    type='range'
-                    min='0'
-                    max='100'
-                    step='10'
-                    placeholder='amount...'
-                    list='tickmarks'
-                  />
-                  <datalist id='tickmarks'>
-                    <option value='0' label='0%'></option>
-                    <option value='10'></option>
-                    <option value='20'></option>
-                    <option value='30'></option>
-                    <option value='40'></option>
-                    <option value='50' label='50%'>
-                      50
-                    </option>
-                    <option value='60'></option>
-                    <option value='70'></option>
-                    <option value='80'></option>
-                    <option value='90'></option>
-                    <option value='100' label='100%'></option>
-                  </datalist>
-                </p>
-              </div> */}
               {isCreditDisabled ? (
                 <></>
               ) : (
@@ -237,9 +216,7 @@ const PaytrackerPurchaseModal = (props) => {
                       min='0'
                       max={credit >= newTotal ? newTotal : credit}
                       value={payCreditToDb}
-                      onChange={(e) => {
-                        setPayCreditToDb(e.target.value);
-                      }}
+                      onChange={(e) => setPayCreditToDb(e.target.value)}
                     />
                   </p>
                 </div>
@@ -253,18 +230,13 @@ const PaytrackerPurchaseModal = (props) => {
             </div>
             <div className='modalSection'>
               <div className='modalData'>
-                <button
-                  className='cancelButton'
-                  onClick={() => setIsModalOpen(false)}
-                >
+                <button className='cancelButton' onClick={() => setOpen(false)}>
                   Cancel
                 </button>
                 <button
                   className='purchaseButton'
                   type='submit'
-                  // onClick={() =>
-                  //   payForOwedLessons(everyOverdueLesson, userId, payCreditToDb)
-                  // }
+                  onClick={submitHandler}
                 >
                   CONFIRM
                 </button>

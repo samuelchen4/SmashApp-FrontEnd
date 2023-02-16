@@ -55,15 +55,12 @@ export const updateLesson =
       // get lessonList
       const state = getState();
       const { lessonsList } = state.lessons;
-      console.log(lessonsList);
-      console.log(updateLessonData);
 
       // send put all fields in put request
       const { data } = await Axios.put(
         `${apiDomain}/lessons/update/${lessonId}`,
         updateLessonData
       );
-      console.log(data);
       const {
         lessonId: type_id,
         lessonName: type_name,

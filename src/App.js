@@ -1,20 +1,13 @@
 import React from 'react';
-import Navbar from './Navbar';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Switch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 //Routes
-import Main from './Main';
+import MainScreen from './screens/MainScreen';
 import LoginPage from './LoginPage';
 import UsersScreen from './screens/UsersScreen';
 import User from './User';
 import LessonsScreen from './screens/LessonsScreen';
 import PrivateRoute from './PrivateRoute';
-import Private from './Private';
 
 // import Calendar from './AgendaCalendar';
 
@@ -26,7 +19,7 @@ function App() {
           path='/'
           element={
             <PrivateRoute>
-              <Main />
+              <MainScreen />
             </PrivateRoute>
           }
         />

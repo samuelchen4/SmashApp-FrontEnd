@@ -26,12 +26,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { list: studentList } = useSelector((state) => state.students);
 
-  useEffect(() => {
-    if (!isLoading) {
-      console.log(user);
-    }
-  }, [isLoading]);
-
   const [addUserInfo, setAddUserInfo] = useState({
     fn: '',
     ln: '',
@@ -112,7 +106,7 @@ const Navbar = () => {
 
   const addUserDB = (e) => {
     e.preventDefault();
-    // console.log(e.target.fn.value);
+
     const submitAddUserData = { ...addUserInfo };
     Axios.post(`${domain}/navbar/addNewUser`, {
       fn: submitAddUserData.fn,
@@ -132,7 +126,6 @@ const Navbar = () => {
   const getAddLessonsInfo = () => {
     Axios.get(`${domain}/navbar/addLesson/Info`)
       .then((res) => {
-        console.log(res);
         setAllUsers(res.data.allUsers);
         setAllLessons(res.data.allLessons);
       })

@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { lessonToCredit } from './actions/agendaActions';
 
-const Credit = (privateLessonInfo) => {
+const Credit = ({ id, setIsNoShowOpen }) => {
+  // REDUX
+  const dispatch = useDispatch();
+  const recept = useSelector((state) => state.recept);
+  const { userInitials } = recept.receptInfo;
+
+  const agenda = useSelector((state) => state.agenda);
+  const { agendaLessons, isLoading } = agenda;
+  const index = agendaLessons.findIndex(
+    (purchase) => purchase.purchase_id === id
+  );
+
   const {
-    userId,
-    purchaseId,
-    lessonPrice,
+    user_id: userId,
+    fn,
+    ln,
+    purchaseHandled,
     paid,
-    setIsNoShowOpen,
-    setIsDisabled,
-    receptInfo,
-    // setEditPaytrackerUser,
-    getPaytrackerUsers,
-  } = privateLessonInfo;
-  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
-  const [rangeValue, setRangeValue] = useState('100');
-  const [creditValue, setCreditValue] = useState(lessonPrice);
+    lessonName: typeName,
+    priceWithDiscountIncluded,
+  } = agendaLessons[index];
+  // END REDUX
+
+  const [rangeValue, setRangeValue] = useState('100'); // discount value
+  const [creditValue, setCreditValue] = useState(priceWithDiscountIncluded); // credit value
   //   console.log(rangeValue);
   //   console.log(price);
 
@@ -25,22 +35,22 @@ const Credit = (privateLessonInfo) => {
   //   return Number(price.toFixed(2));
   // };
 
-  const submitDidNotAttend = (event) => {
-    event.preventDefault();
-    //send post request
-    Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
-      attended: 0,
-      lessonPrice: creditValue,
-      receptInitials: receptInfo.userInitials,
-    })
-      .then((res) => {
-        console.log(res);
-        getPaytrackerUsers();
-        setIsDisabled(true);
-        setIsNoShowOpen(false);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const submitDidNotAttend = (event) => {
+  //   event.preventDefault();
+  //   //send post request
+  //   Axios.put(`${domain}/agenda/private/${purchaseId}/toCredit`, {
+  //     attended: 0,
+  //     lessonPrice: creditValue,
+  //     receptInitials: receptInfo.userInitials,
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       getPaytrackerUsers();
+  //       setIsDisabled(true);
+  //       setIsNoShowOpen(false);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   // const changeHandledStatus = () => {
   //   Axios.put(`${domain}/agenda/private/purchaseHandled`, {
@@ -48,8 +58,24 @@ const Credit = (privateLessonInfo) => {
   //   });
   // };
 
+  const discountHandler = (e) => {
+    e.preventDefault();
+    setRangeValue(e.target.value);
+    setCreditValue(
+      Number(
+        (Number(e.target.value) / 100) * priceWithDiscountIncluded
+      ).toFixed(2)
+    );
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(lessonToCredit(id, creditValue, userInitials));
+    setIsNoShowOpen(false);
+  };
+
   return (
-    <form onSubmit={submitDidNotAttend} className='credit'>
+    <form onSubmit={submitHandler} className='credit'>
       <div>
         <label htmlFor='amount'>Amount:</label>
         <input
@@ -61,14 +87,7 @@ const Credit = (privateLessonInfo) => {
           placeholder='amount...'
           list='tickmarks'
           value={rangeValue}
-          onChange={(e) => {
-            e.preventDefault();
-            setRangeValue(e.target.value);
-            setCreditValue(
-              Number((Number(e.target.value) / 100) * lessonPrice).toFixed(2)
-            );
-            console.log(creditValue);
-          }}
+          onChange={discountHandler}
         />
         <datalist id='tickmarks'>
           <option value='0' label='0%'></option>

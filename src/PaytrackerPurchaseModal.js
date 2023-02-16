@@ -91,7 +91,6 @@ const PaytrackerPurchaseModal = ({ id, open, setOpen }) => {
 
   useEffect(() => {
     if (payCreditToDb || amountOwed) {
-      console.log(payCreditToDb);
       calculateTotal();
     }
   }, [payCreditToDb, amountOwed]);

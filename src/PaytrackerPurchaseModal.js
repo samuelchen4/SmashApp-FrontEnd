@@ -9,8 +9,8 @@ const PaytrackerPurchaseModal = ({ id, open, setOpen }) => {
   // REDUX
   const dispatch = useDispatch();
 
-  const receptInfo = useSelector((state) => state.recept);
-  const { userInitials } = receptInfo;
+  const recept = useSelector((state) => state.recept);
+  const { userInitials } = recept.receptInfo;
 
   const paytracker = useSelector((state) => state.paytracker);
   const { paytrackerList } = paytracker;
@@ -39,7 +39,7 @@ const PaytrackerPurchaseModal = ({ id, open, setOpen }) => {
   const [payCreditToDb, setPayCreditToDb] = useState(0); //the credit allowed to be used
   const [total, setTotal] = useState(0);
   const [isUnpaidChecked, setIsUnpaidChecked] = useState(false);
-  const [invoiceNumber, setInvoiceNumber] = useState('');
+  const [invoiceNumber, setInvoiceNumber] = useState(0);
   const [allLessons, setAllLessons] = useState([]); //everyoverdue lesson + unpaid lEssons
   // const [discountAmount, setDiscountAmount] = useState(0);
   const [newTotal, setNewTotal] = useState(0);
@@ -63,13 +63,14 @@ const PaytrackerPurchaseModal = ({ id, open, setOpen }) => {
       return alert(`Credits input is more than purchase amount`);
     // call dispatch
     else {
+      // make sure invoiceNumber is a number and not a string
       dispatch(
         payPaytrackerLessons(
           allLessons,
           id,
-          payCreditToDb,
-          payMethod,
-          invoiceNumber,
+          payCreditToDb ? payCreditToDb : 0,
+          payMethod.value,
+          invoiceNumber ? invoiceNumber : 0,
           userInitials,
           index
         )

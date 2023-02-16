@@ -1,146 +1,94 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import Axios from 'axios';
 import Credit from './Credit';
-import { set } from 'date-fns/esm';
 //Semiprivate border, hold Private components as children
 
-const SemiPrivate = (semiPrivateLessonInfo) => {
-  // return <section className='semiPrivate'>{studentComponents}</section>;
-  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
+const SemiPrivate = ({ id, attendLessonHandler, unattendLessonHandler }) => {
+  // REDUX
+  const recept = useSelector((state) => state.recept);
+  const { userInitials } = recept.receptInfo;
+
+  const agenda = useSelector((state) => state.agenda);
+  const { agendaLessons, isLoading } = agenda;
+  const index = agendaLessons.findIndex(
+    (purchase) => purchase.purchase_id === id
+  );
+
   const {
-    lessonName,
+    user_id: userId,
     fn,
     ln,
-    email,
-    phone,
-    dob,
-    contacted,
-    scheduleddate,
     purchaseHandled,
-    attended,
     paid,
-    user_id,
-    purchase_id,
-    type_id,
-    partner1_id,
-    partner2_id,
-    partner3_id,
+    lessonName: typeName,
     priceWithDiscountIncluded,
-    duration,
-    getPaytrackerUsers,
-    receptInfo,
-  } = semiPrivateLessonInfo;
+    partnerArr,
+  } = agendaLessons[index];
+  // END REDUX
 
-  const userId = user_id;
-  const purchaseId = purchase_id;
-  const typeName = lessonName;
-  const partner1Id = partner1_id;
-  const partner2Id = partner2_id;
-  const partner3Id = partner3_id;
-
-  // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);
-  const [isExecuted, setIsExecuted] = useState(false);
-  const [partnerNames, setPartnerNames] = useState('');
-  const [creditValue, setCreditValue] = useState(priceWithDiscountIncluded);
-
-  //use to disable actions and grey out component once something has been submitted
-  const [isDisabled, setIsDisabled] = useState(purchaseHandled);
-
-  // const [partnerName1, setPartnerName1] = useState('');
-  // const [partnerName2, setPartnerName2] = useState('');
-  // const [partnerName3, setPartnerName3] = useState('');
-  const [partnerNameArr, setPartnerNameArr] = useState([]);
-
-  //get first and last name based on id
-  const getPartnerNames = () => {
-    Axios.get(
-      `${domain}/agenda/private/partnerInfo/${partner1Id}/${partner2Id}/${partner3Id}`
-    ).then((res) => {
-      console.log(res.data);
-      setPartnerNameArr(res.data);
-    });
-  };
 
   const getPartnerNamesString = () => {
-    const partnerNameString = partnerNameArr
+    const partnerNameString = partnerArr
       .map((partnerInfo) => {
         return ` ${partnerInfo.fn} ${partnerInfo.ln}`;
       })
       .join();
-    setPartnerNames(partnerNameString);
+    return partnerNameString;
   };
-
-  const inputSale = () => {
-    Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
-      attended: 1,
-      lessonPrice: priceWithDiscountIncluded,
-      receptInitials: receptInfo.userInitials,
-    })
-      .then((res) => {
-        console.log(res);
-        getPaytrackerUsers();
-        setIsNoShowOpen(false);
-        setIsDisabled(true);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const undoSale = () => {
-    Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
-      .then((res) => {
-        console.log(res);
-        getPaytrackerUsers();
-        setIsDisabled(false);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getPartnerNames();
-  }, []);
-
-  useEffect(() => {
-    console.log(partnerNameArr);
-    getPartnerNamesString();
-  }, [partnerNameArr]);
 
   return (
     <motion.section>
       <section className='semiPrivate'>
-        <h5 disabled={isDisabled}>
+        <h5 disabled={purchaseHandled}>
           {fn} {ln}
         </h5>
-        <div className='lesson-info' disabled={isDisabled}>
+        <div className='lesson-info' disabled={purchaseHandled}>
           <p>
             <span className='bold600'>Lesson Type:</span> {typeName}
           </p>
           <p>
-            <span className='bold600'>Partners:</span> {partnerNames}
+            <span className='bold600'>Partners:</span> {getPartnerNamesString()}
           </p>
           <p className='lesson-time'>
-            <span className='bold600'>Duration:</span> {duration}
+            <span className='bold600'>Duration:</span> add Duration
           </p>
           <p className='lesson-time'>
             <span className='bold600'>Paid:</span> {paid ? 'Yes' : 'No'}
           </p>
         </div>
-
         <div className='agenda-main-action'>
-          <button className='btn' onClick={inputSale} disabled={isDisabled}>
+          <button
+            className='btn'
+            onClick={(e) => {
+              attendLessonHandler(
+                e,
+                id,
+                priceWithDiscountIncluded,
+                userInitials,
+                paid
+              );
+              setIsNoShowOpen(false);
+            }}
+            disabled={purchaseHandled}
+          >
             Came
           </button>
           <button
             className='btn'
-            disabled={isDisabled}
+            disabled={purchaseHandled}
             onClick={() => {
               setIsNoShowOpen(!isNoShowOpen);
             }}
           >
             No Show
           </button>
-          <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
+          <button
+            className='undoBtn'
+            disabled={!purchaseHandled}
+            onClick={(e) => unattendLessonHandler(e, id)}
+          >
             <i class='bx bx-undo'></i>
           </button>
         </div>
@@ -157,22 +105,12 @@ const SemiPrivate = (semiPrivateLessonInfo) => {
               }}
               transition={{ ease: 'linear', duration: 0.2 }}
             >
-              <Credit
-                userId={userId}
-                purchaseId={purchaseId}
-                lessonPrice={priceWithDiscountIncluded}
-                paid={paid}
-                setIsNoShowOpen={setIsNoShowOpen}
-                setIsDisabled={setIsDisabled}
-                getPaytrackerUsers={getPaytrackerUsers}
-                receptInfo={receptInfo}
-              />
+              <Credit id={id} setIsNoShowOpen={setIsNoShowOpen} />
             </motion.div>
           )}
         </AnimatePresence>
       </section>
     </motion.section>
-    // </AnimatePresence>
   );
 };
 

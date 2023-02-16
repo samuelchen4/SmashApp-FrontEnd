@@ -1,78 +1,41 @@
 // AGENDA SUB COMPONENT FOR PRIVATE CLASSES
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getPaytrackerInfo } from './actions/paytrackerActions';
 import { motion, AnimatePresence } from 'framer-motion';
-import Axios from 'axios';
 import Credit from './Credit';
 
-const Private = (privateLessonInfo) => {
-  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
+const Private = ({ id, attendLessonHandler, unattendLessonHandler }) => {
+  // REDUX
+
+  const recept = useSelector((state) => state.recept);
+  const { userInitials } = recept.receptInfo;
+
+  const agenda = useSelector((state) => state.agenda);
+  const { agendaLessons, isLoading } = agenda;
+  const index = agendaLessons.findIndex(
+    (purchase) => purchase.purchase_id === id
+  );
+
   const {
-    lessonName,
+    user_id: userId,
     fn,
     ln,
-    email,
-    phone,
-    dob,
-    contacted,
-    scheduleddate,
     purchaseHandled,
-    attended,
     paid,
-    user_id,
-    purchase_id,
-    type_id,
+    lessonName: typeName,
     priceWithDiscountIncluded,
-    duration,
-    getPaytrackerUsers,
-    receptInfo,
-    // setPaytrackerData,
-    // editPaytrackerUser,
-    // getPaytrackerUsers,
-    // duration,
-  } = privateLessonInfo;
+  } = agendaLessons[index];
+  // END REDUX
 
-  const userId = user_id;
-  const purchaseId = purchase_id;
-  const typeName = lessonName;
-
-  // const [creditOpen, setCreditOpen] = useState(false)
   const [isNoShowOpen, setIsNoShowOpen] = useState(false);
-  const [isExecuted, setIsExecuted] = useState(false);
-
-  //use to disable actions and grey out component once something has been submitted
-  const [isDisabled, setIsDisabled] = useState(purchaseHandled);
-
-  const inputSale = () => {
-    Axios.put(`${domain}/agenda/private/${purchaseId}/attended`, {
-      attended: 1,
-      lessonPrice: priceWithDiscountIncluded,
-      receptInitials: receptInfo.userInitials,
-    })
-      .then((res) => {
-        console.log(res);
-        setIsDisabled(true);
-        setIsNoShowOpen(false);
-        getPaytrackerUsers();
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const undoSale = () => {
-    Axios.put(`${domain}/agenda/private/${purchaseId}/undoSale/`)
-      .then((res) => {
-        console.log(res);
-        setIsDisabled(false);
-        getPaytrackerUsers();
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <section className='private'>
-      <h5 disabled={isDisabled}>
+      <h5 disabled={purchaseHandled}>
         {fn} {ln}
       </h5>
-      <div className='lesson-info' disabled={isDisabled}>
+      <div className='lesson-info' disabled={purchaseHandled}>
         <p>
           <span className='bold600'>Lesson Type:</span> {typeName}
         </p>
@@ -80,26 +43,43 @@ const Private = (privateLessonInfo) => {
           <span className='bold600'>Partners:</span> N/A
         </p>
         <p className='lesson-time'>
-          <span className='bold600'>Duration:</span> {duration}
+          <span className='bold600'>Duration:</span> add duration
         </p>
         <p className='lesson-time'>
           <span className='bold600'>Paid:</span> {paid ? 'Yes' : 'No'}
         </p>
       </div>
       <div className='agenda-main-action'>
-        <button className='btn' onClick={inputSale} disabled={isDisabled}>
+        <button
+          className='btn'
+          onClick={(e) => {
+            attendLessonHandler(
+              e,
+              id,
+              priceWithDiscountIncluded,
+              userInitials,
+              paid
+            );
+            setIsNoShowOpen(false);
+          }}
+          disabled={purchaseHandled}
+        >
           Came
         </button>
         <button
           className='btn'
-          disabled={isDisabled}
+          disabled={purchaseHandled}
           onClick={() => {
             setIsNoShowOpen(!isNoShowOpen);
           }}
         >
           No Show
         </button>
-        <button className='undoBtn' disabled={!isDisabled} onClick={undoSale}>
+        <button
+          className='undoBtn'
+          disabled={!purchaseHandled}
+          onClick={(e) => unattendLessonHandler(e, id)}
+        >
           <i class='bx bx-undo'></i>
         </button>
       </div>
@@ -116,21 +96,11 @@ const Private = (privateLessonInfo) => {
             }}
             transition={{ ease: 'linear', duration: 0.2 }}
           >
-            <Credit
-              userId={userId}
-              purchaseId={purchaseId}
-              lessonPrice={priceWithDiscountIncluded}
-              paid={paid}
-              setIsNoShowOpen={setIsNoShowOpen}
-              setIsDisabled={setIsDisabled}
-              getPaytrackerUsers={getPaytrackerUsers}
-              receptInfo={receptInfo}
-            />
+            <Credit id={id} setIsNoShowOpen={setIsNoShowOpen} />
           </motion.div>
         )}
       </AnimatePresence>
     </section>
-    // </motion.section>
   );
 };
 

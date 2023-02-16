@@ -8,13 +8,6 @@ const PrivateRoute = ({ children }) => {
 
   //   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!isLoading) {
-      console.log(user);
-      Axios.get('');
-    }
-  }, [isLoading]);
-
   //   const changeLoading = setTimeout(setIsLoading(false), '1000');
 
   const navigate = useNavigate();

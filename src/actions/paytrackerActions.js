@@ -36,7 +36,7 @@ export const getPaytrackerInfo = () => async (dispatch) => {
 
     dispatch({ type: GET_PAYTRACKER_SUCCESS, payload: newData });
   } catch (err) {
-    dispatch({ type: GET_PAYTRACKER_FAIL, payload: err });
+    dispatch({ type: GET_PAYTRACKER_FAIL, payload: err.message });
   }
 };
 

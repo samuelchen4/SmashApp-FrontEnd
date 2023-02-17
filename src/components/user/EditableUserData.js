@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import LessonHistory from './LessonHistory';
+import LessonHistory from '../../LessonHistory';
 import DatePicker from 'react-multi-date-picker';
 import Select from 'react-select';
 

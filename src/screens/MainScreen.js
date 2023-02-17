@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Sidebar from '../sidemenu/Sidebar';
-import PaymentTracker from '../PaymentTracker';
-import Agenda from '../Agenda';
-import Navbar from '../Navbar';
+import PaymentTracker from '../components/paytracker/PaymentTracker';
+import Agenda from '../components/agenda/Agenda';
+import Navbar from '../components/navbar/Navbar';
 import { motion } from 'framer-motion';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useDispatch, useSelector } from 'react-redux';

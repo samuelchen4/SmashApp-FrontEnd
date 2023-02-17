@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import { format } from 'date-fns';
+import React from 'react';
 
 const NavAddUser = (propsFromNavbar) => {
   const { handleEditAddUserInfo, addUserInfo, submitUserHandler } =

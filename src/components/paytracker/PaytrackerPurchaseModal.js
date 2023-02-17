@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import logo from './imgs/GaoLogoNoBorder.png';
+import logo from '../../imgs/GaoLogoNoBorder.png';
 import ReactDom from 'react-dom';
 import Select from 'react-select';
-import { payPaytrackerLessons } from './actions/paytrackerActions';
+import { payPaytrackerLessons } from '../../actions/paytrackerActions';
 
 const PaytrackerPurchaseModal = ({ id, open, setOpen }) => {
   // REDUX

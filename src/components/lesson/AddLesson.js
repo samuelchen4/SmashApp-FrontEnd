@@ -1,11 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Axios from 'axios';
-import AddLessonsReadonly from './AddLessonsReadonly';
-import AddLessonsEditable from './AddLessonsEditable';
+import { useDispatch } from 'react-redux';
+import AddLessonsReadonly from '../../AddLessonsReadonly';
+import AddLessonsEditable from '../../AddLessonsEditable';
 
-import { addLessons, updateLesson } from './actions/lessonsActions';
-import { apiDomain } from './utils/domains';
+import { addLessons, updateLesson } from '../../actions/lessonsActions';
 
 const AddLesson = (propsFromLessons) => {
   const { lessons, setLessons, domain } = propsFromLessons;
@@ -58,31 +56,6 @@ const AddLesson = (propsFromLessons) => {
     // dispatch addLessons
     dispatch(addLessons(addLessonData));
   };
-
-  // const addLesson = () => {
-  //   //send post request to database
-  //   //add capacity to front-end later
-  //   Axios.post(`${domain}/lessons/add`, {
-  //     lessonName: addedLessonName,
-  //     lessonPrice: addedLessonPrice,
-  //     lessonCapacity: addedLessonCapacity,
-  //   })
-  //     .then((res) => {
-  //       //update lessons state
-  //       setLessons([
-  //         ...lessons,
-  //         {
-  //           type_id: res.data.lessonId,
-  //           type_name: addedLessonName,
-  //           price: addedLessonPrice,
-  //           Capacity: addedLessonCapacity,
-  //         },
-  //       ]);
-  //       setAddedLessonName('');
-  //       setAddedLessonPrice(0);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
 
   const handleEditClick = (event, lesson) => {
     event.preventDefault();

@@ -1,7 +1,6 @@
 // AGENDA SUB COMPONENT FOR PRIVATE CLASSES
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getPaytrackerInfo } from './actions/paytrackerActions';
 import { motion, AnimatePresence } from 'framer-motion';
 import Credit from './Credit';
 

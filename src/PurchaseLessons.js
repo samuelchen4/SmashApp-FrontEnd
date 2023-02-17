@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select';
-import AddLesson from './AddLesson';
 import Modal from './Modal';
 
 const PurchaseLessons = (propsFromUser) => {

@@ -5,14 +5,12 @@ import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const AgendaDatePicker = ({ setSelectedDate }) => {
-  // const [startDate, setStartDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date('2022-05-12'));
+  const [startDate, setStartDate] = useState(new Date());
   //change format of date
 
   return (
     <DatePicker
       selected={startDate}
-      // selected={'2022-05-11'}
       onChange={(date) => {
         setSelectedDate(
           format(

@@ -1,26 +1,18 @@
-import React, {
-  useState,
-  useEffect,
-  TextareaHTMLAttributes,
-  Fragment,
-} from 'react';
-import Navbar from './components/navbar/Navbar';
-import Sidebar from './sidemenu/Sidebar';
-import SelectStudents from './SelectStudents';
-import PurchaseLessons from './PurchaseLessons';
-import { Link, useParams } from 'react-router-dom';
-import { set } from 'date-fns/esm';
+import React, { useState, useEffect } from 'react';
+import Navbar from '../components/navbar/Navbar';
+import Sidebar from '../sidemenu/Sidebar';
+import PurchaseLessons from '../components/user/PurchaseLessons';
+import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 import { motion } from 'framer-motion';
-import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 // import DatePicker from 'react-multi-date-picker';
 // import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 import Select from 'react-select'; //accepts value and label properties
-import ReadOnlyUserData from './ReadOnlyUserData';
-import EditableUserData from './EditableUserData';
+import ReadOnlyUserData from '../components/user/ReadOnlyUserData';
+import EditableUserData from '../components/user/EditableUserData';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const User = () => {
+const UserScreen = () => {
   const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { id } = useParams();
 
@@ -277,4 +269,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default UserScreen;

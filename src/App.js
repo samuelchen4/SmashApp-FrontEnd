@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MainScreen from './screens/MainScreen';
 import LoginPage from './LoginPage';
 import UsersScreen from './screens/UsersScreen';
-import User from './User';
+import UserScreen from './screens/UserScreen';
 import LessonsScreen from './screens/LessonsScreen';
 import PrivateRoute from './PrivateRoute';
 
@@ -45,7 +45,7 @@ function App() {
           path='/user/:id'
           element={
             <PrivateRoute>
-              <User />
+              <UserScreen />
             </PrivateRoute>
           }
         />

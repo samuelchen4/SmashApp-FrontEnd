@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import LessonHistory from './LessonHistory';
+import LessonHistory from '../../LessonHistory';
 
 const ReadOnlyUserData = (propsFromUser) => {
   const {

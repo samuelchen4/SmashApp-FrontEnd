@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logo from './imgs/GaoLogoNoBorder.png';
+import logo from '../../imgs/GaoLogoNoBorder.png';
 import DatePicker from 'react-multi-date-picker';
 
 const Modal = (props) => {

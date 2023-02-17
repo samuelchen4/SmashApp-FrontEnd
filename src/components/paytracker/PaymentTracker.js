@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
 import PaymentsOwed from './PaymentsOwed';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPaytrackerInfo } from './actions/paytrackerActions';
-import { apiDomain } from './utils/domains';
+import { getPaytrackerInfo } from '../../actions/paytrackerActions';
+import { getAgendaLessons } from '../../actions/agendaActions';
 
 const PaymentTracker = () => {
   const [sortByValue, setSortByValue] = useState('all');
@@ -12,7 +11,6 @@ const PaymentTracker = () => {
 
   //scrollbar
   const [isScrolling, setIsScrolling] = useState(false);
-  let hasScrolled = isScrolling ? 'is-scrolling' : '';
   const onScroll = () => {
     setIsScrolling(true);
   };
@@ -20,15 +18,19 @@ const PaymentTracker = () => {
   // redux
   const dispatch = useDispatch();
   const paytrackerInfo = useSelector((state) => state.paytracker);
-  const { paytrackerList, isLoading } = paytrackerInfo;
+  const { paytrackerList, isPaidLoading } = paytrackerInfo;
 
-  const recept = useSelector((state) => state.recept);
-  const { receptInfo } = recept;
+  const agendaInfo = useSelector((state) => state.agenda);
+  const { date } = agendaInfo;
 
   useEffect(() => {
     dispatch(getPaytrackerInfo());
   }, [dispatch]);
 
+  // trigger agenda rerender when changes to paytracker happen
+  useEffect(() => {
+    if (!isPaidLoading) dispatch(getAgendaLessons(date));
+  }, [isPaidLoading]);
   return (
     <article className='payment-tracker'>
       <h2>Payment Tracker</h2>

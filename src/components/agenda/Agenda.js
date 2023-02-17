@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Private from './Private.js';
 import SemiPrivate from './SemiPrivate.js';
 import { motion, AnimatePresence } from 'framer-motion';
-import AgendaDatePicker from './AgendaDatePicker.js';
+import AgendaDatePicker from '../../AgendaDatePicker.js';
 import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getAgendaLessons,
   attendLesson,
   unattendLesson,
-} from './actions/agendaActions';
-import { getPaytrackerInfo } from './actions/paytrackerActions';
-import Loader from './components/MyLoader';
+} from '../../actions/agendaActions';
+import { getPaytrackerInfo } from '../../actions/paytrackerActions';
+import Loader from '../MyLoader';
 
 const Agenda = () => {
   const [selectedDate, setSelectedDate] = useState(
-    format(new Date('2022-05-12'), 'yyyy-MM-dd') // remove inside date when done debugging
+    format(new Date(), 'yyyy-MM-dd')
   );
 
   const dispatch = useDispatch();

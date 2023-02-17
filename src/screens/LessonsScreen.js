@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { apiDomain } from '../utils/domains';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../sidemenu/Sidebar';
-import Navbar from '../Navbar';
-import AddLesson from '../AddLesson';
-import LessonStatistics from '../LessonStatistics';
+import Navbar from '../components/navbar/Navbar';
+import AddLesson from '../components/lesson/AddLesson';
 import { getLessons } from '../actions/lessonsActions';
-import Axios from 'axios';
 import '../users.css';
 import { motion } from 'framer-motion';
 

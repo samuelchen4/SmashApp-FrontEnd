@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { lessonToCredit } from './actions/agendaActions';
+import { lessonToCredit } from '../../actions/agendaActions';
 
 const Credit = ({ id, setIsNoShowOpen }) => {
   // REDUX

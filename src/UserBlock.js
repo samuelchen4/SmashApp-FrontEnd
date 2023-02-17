@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import User from './User';
 
 const UserBlock = (user) => {
   const { user_id, fn, ln, email, phone, dob } = user;

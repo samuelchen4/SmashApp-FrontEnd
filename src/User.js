@@ -4,7 +4,7 @@ import React, {
   TextareaHTMLAttributes,
   Fragment,
 } from 'react';
-import Navbar from './Navbar';
+import Navbar from './components/navbar/Navbar';
 import Sidebar from './sidemenu/Sidebar';
 import SelectStudents from './SelectStudents';
 import PurchaseLessons from './PurchaseLessons';

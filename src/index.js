@@ -7,6 +7,7 @@ import { store } from './store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { frontEndTestURL } from './utils/domains';
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -16,8 +17,9 @@ root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
-    redirectUri={'http://localhost:3000/'}
+    // redirectUri={'http://localhost:3000/'}
     // redirectUri={'https://master.d2itr8wow24jd5.amplifyapp.com'}
+    redirectUri={frontEndTestURL}
   >
     <React.StrictMode>
       <Provider store={store}>

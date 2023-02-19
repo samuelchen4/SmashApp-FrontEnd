@@ -1,28 +1,44 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import LessonHistory from '../../LessonHistory';
-import DatePicker from 'react-multi-date-picker';
+import DatePicker, { DateObject } from 'react-multi-date-picker';
 import Select from 'react-select';
 
 const EditableUserData = (propsFromUser) => {
   const {
-    purchaseTable,
-    saleTable,
-    lessonHistory,
-    userInfo,
-    credit,
     editUserInfo,
     setEditUserInfo,
     handleEditFormChange,
-    handleEditFormSubmit,
+    submitUserInfoChangesHandler,
     setIsEditingUserInfo,
   } = propsFromUser;
 
-  const [isCg, setIsCg] = useState({ label: '', value: '' });
+  const recept = useSelector((state) => state.recept);
+  const { userInitials } = recept.receptInfo;
+
+  const studentInfo = useSelector((state) => state.studentInfo);
+  const { userInfo } = studentInfo;
+  const { user_id: id } = userInfo;
+
+  const { fn, ln, email, dob, phone, cgStatus, medicalDesc, credit } =
+    editUserInfo;
+
   const cgStatusDropdown = [
     { label: 'Yes', value: 1 },
     { label: 'No', value: 0 },
   ];
+
+  const onChangeHandler = (selectedOption) => {
+    editUserInfo.isCg = selectedOption.value;
+    let newUserFormData = { ...editUserInfo };
+    setEditUserInfo(newUserFormData);
+  };
+
+  const changeDateHandler = (value) => {
+    const changeDate = { ...editUserInfo, dob: value };
+    setEditUserInfo(changeDate);
+  };
 
   return (
     <>
@@ -34,7 +50,7 @@ const EditableUserData = (propsFromUser) => {
               name='fn'
               required='required'
               placeholder='enter a first name...'
-              value={editUserInfo.fn}
+              value={fn}
               onChange={handleEditFormChange}
             />
             <input
@@ -42,14 +58,20 @@ const EditableUserData = (propsFromUser) => {
               name='ln'
               required='required'
               placeholder='enter a last name...'
-              value={editUserInfo.ln}
+              value={ln}
               onChange={handleEditFormChange}
             />
           </span>
         </h2>
         <p className='edit'>
           <button onClick={() => setIsEditingUserInfo(false)}>cancel</button>
-          <button onClick={handleEditFormSubmit}>save</button>
+          <button
+            onClick={(e) =>
+              submitUserInfoChangesHandler(e, id, editUserInfo, userInitials)
+            }
+          >
+            save
+          </button>
         </p>
       </div>
       <motion.div
@@ -64,7 +86,7 @@ const EditableUserData = (propsFromUser) => {
               type='text'
               name='email'
               placeholder='enter an email...'
-              value={editUserInfo.email}
+              value={email}
               onChange={handleEditFormChange}
             />
           </p>
@@ -75,7 +97,7 @@ const EditableUserData = (propsFromUser) => {
               type='text'
               name='phone'
               placeholder='enter a phone number...'
-              value={editUserInfo.phone}
+              value={phone}
               onChange={handleEditFormChange}
             />
           </p>
@@ -84,19 +106,14 @@ const EditableUserData = (propsFromUser) => {
             <Select
               name='cgStatus'
               options={cgStatusDropdown}
-              value={editUserInfo.cgStatus}
-              onChange={(e) => {
-                editUserInfo.cgStatus = e.value;
-                let newUserFormData = { ...editUserInfo };
-                setEditUserInfo(newUserFormData);
-              }}
+              onChange={onChangeHandler}
             />
           </p>
           <p>
             <span className='bold600'>Medical Description:</span> <br />
             <textarea
               name='medicalDesc'
-              value={editUserInfo.medicalDesc}
+              value={medicalDesc}
               onChange={handleEditFormChange}
             />
           </p>
@@ -107,13 +124,14 @@ const EditableUserData = (propsFromUser) => {
               name='dob'
               format='YYYY/MM/DD'
               placeholder='Select Date'
-              value={editUserInfo.dob}
-              onChange={(e) => {
-                editUserInfo.dob = e.format();
-                let newUserFormData = { ...editUserInfo };
+              value={dob}
+              // onChange={(e) => {
+              //   editUserInfo.dob = e.format();
+              //   let newUserFormData = { ...editUserInfo };
 
-                setEditUserInfo(newUserFormData);
-              }}
+              //   setEditUserInfo(newUserFormData);
+              // }}
+              onChange={changeDateHandler}
             />
           </p>
           <p>
@@ -122,7 +140,7 @@ const EditableUserData = (propsFromUser) => {
               type='number'
               name='credit'
               placeholder='enter credit...'
-              value={editUserInfo.credit}
+              value={credit}
               onChange={handleEditFormChange}
             />
           </p>
@@ -164,7 +182,7 @@ const EditableUserData = (propsFromUser) => {
               </table>
             </div>
           </div> */}
-          <LessonHistory lessonHistory={lessonHistory} />
+          <LessonHistory />
         </section>
       </motion.div>
     </>

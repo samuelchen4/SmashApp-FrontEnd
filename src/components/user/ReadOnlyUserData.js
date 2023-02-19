@@ -1,23 +1,23 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import LessonHistory from '../../LessonHistory';
 
 const ReadOnlyUserData = (propsFromUser) => {
-  const {
-    purchaseTable,
-    saleTable,
-    lessonHistory,
-    userInfo,
-    credit,
-    handleClickEdit,
-  } = propsFromUser;
+  const { handleClickEdit } = propsFromUser;
+
+  const studentInfo = useSelector((state) => state.studentInfo);
+  const { userInfo, credits } = studentInfo;
+
+  const { fn, ln, email, dob, phone, isCg, medicalDesc } = userInfo;
+  const { credit } = credits;
 
   return (
     <>
       <div className='title-block'>
         <h2>
           <span className='title'>
-            {userInfo.fn} {userInfo.ln}
+            {fn} {ln}
           </span>
         </h2>
         <p className='edit'>
@@ -31,25 +31,25 @@ const ReadOnlyUserData = (propsFromUser) => {
         <section className='userInfo'>
           <p>
             <span className='bold600'>Email:</span>
-            <br /> {userInfo.email ? userInfo.email : `Not Available`}
+            <br /> {email ? email : `Not Available`}
           </p>
 
           <p>
             <span className='bold600'>Phone:</span> <br />
-            {userInfo.phone ? userInfo.phone : `Not Available`}
+            {phone ? phone : `Not Available`}
           </p>
           <p>
             <span className='bold600'>CG Status:</span> <br />
-            {userInfo.isCg ? 'Yes' : `No`}
+            {isCg ? 'Yes' : `No`}
           </p>
           <p>
             <span className='bold600'>Medical Description:</span> <br />
-            {userInfo.medicalDesc ? userInfo.medicalDesc : `Not Available`}
+            {medicalDesc ? medicalDesc : `Not Available`}
           </p>
           <p>
             <span className='bold600'>Birth Date:</span>
             <br />
-            {userInfo.dob ? userInfo.dob.slice(0, 10) : `Not Available`}
+            {dob ? dob.slice(0, 10) : `Not Available`}
           </p>
           <p>
             <span className='bold600'>Credit: </span>
@@ -58,7 +58,7 @@ const ReadOnlyUserData = (propsFromUser) => {
           </p>
         </section>
         <section className='tables'>
-          <LessonHistory lessonHistory={lessonHistory} />
+          <LessonHistory />
         </section>
       </motion.div>
     </>

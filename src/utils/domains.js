@@ -7,4 +7,4 @@ export const apiDomainTest =
 export const frontEndURL = 'https://main.d2itr8wow24jd5.amplifyapp.com';
 
 export const frontEndTestURL =
-  'https://bugfix-datepicker-allow-change-date.d2itr8wow24jd5.amplifyapp.com';
+  'https://feature-adding-global-state-redux.d2itr8wow24jd5.amplifyapp.com/';

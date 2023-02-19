@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
-const LessonHistory = (props) => {
-  const { lessonHistory } = props;
+const LessonHistory = () => {
+  // REDUX
+  const studentInfo = useSelector((state) => state.studentInfo);
+  const { lessonHistory } = studentInfo;
+
+  // END REDUX
   const [lessonHistoryTableBody, setLessonHistoryTableBody] = useState([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    console.log(lessonHistory);
     renderLessonHistory();
   }, [lessonHistory, search]);
-
-  //   useEffect(() => {
-  //     renderLessonHistory();
-  //   }, [lessonHistory]);
 
   const renderLessonHistory = () => {
     setLessonHistoryTableBody(

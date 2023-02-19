@@ -1,62 +1,60 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getStudentInfo,
+  updateStudentInfo,
+} from '../actions/studentInfoActions';
 import Navbar from '../components/navbar/Navbar';
 import Sidebar from '../sidemenu/Sidebar';
 import PurchaseLessons from '../components/user/PurchaseLessons';
 import { useParams } from 'react-router-dom';
-import Axios from 'axios';
 import { motion } from 'framer-motion';
-// import DatePicker from 'react-multi-date-picker';
-// import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import Select from 'react-select'; //accepts value and label properties
 import ReadOnlyUserData from '../components/user/ReadOnlyUserData';
 import EditableUserData from '../components/user/EditableUserData';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const UserScreen = () => {
-  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
   const { id } = useParams();
 
-  const { user, isAuthenticated } = useAuth0();
+  // REDUX
+  const dispatch = useDispatch();
+  const studentInfo = useSelector((state) => state.studentInfo);
+  const { userInfo, credits, isPurchaseLoading } = studentInfo;
+  const { user_id, fn, ln, email, dob, phone, isCg, medicalDesc } = userInfo;
+  const { credit } = credits;
+
+  // END REDUX
+
+  useEffect(() => {
+    dispatch(getStudentInfo(id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!isPurchaseLoading) dispatch(getStudentInfo(id));
+  }, [dispatch, isPurchaseLoading]);
 
   const [isEditingUserInfo, setIsEditingUserInfo] = useState(false);
-
-  const [purchaseInfo, setPurchaseInfo] = useState([]);
-  const [saleInfo, setSaleInfo] = useState([]);
-  const [lessonHistory, setLessonHistory] = useState([]);
-  const [unpaidLessons, setUnpaidLessons] = useState([]);
-  const [lessonInfo, setLessonInfo] = useState([]);
-  const [lessonsAvailable, setLessonsAvailable] = useState([]);
-  // const [displayLessons, setDisplayLessons] = useState('');
-
-  const [purchaseTable, setPurchaseTable] = useState('');
-  const [saleTable, setSaleTable] = useState('');
-
-  const [students, setStudents] = useState([]);
-
-  const [credit, setCredit] = useState(0);
-
-  const [userInfo, setUserInfo] = useState('');
-
   const [editUserInfo, setEditUserInfo] = useState({
+    user_id,
     fn: '',
     ln: '',
     email: '',
     dob: '',
     phone: '',
-    cgStatus: '',
+    isCg: '',
     medicalDesc: '',
     credit: '',
   });
 
   const handleClickEdit = () => {
     const currentUserValues = {
-      fn: userInfo.fn,
-      ln: userInfo.ln,
-      email: userInfo.email,
-      dob: userInfo.dob,
-      phone: userInfo.phone,
-      cgStatus: userInfo.isCg,
-      medicalDesc: userInfo.medicalDesc,
+      user_id,
+      fn: fn,
+      ln: ln,
+      email: email,
+      dob: dob,
+      phone: phone,
+      isCg,
+      medicalDesc: medicalDesc,
       credit: credit,
     };
 
@@ -76,136 +74,17 @@ const UserScreen = () => {
     setEditUserInfo(newUserFormData);
   };
 
-  const calculateCreditChange = () => {
-    //calculates how much credit to add or subtract
-    //based on current credit value and the value inputted
-    //call this function in handleEditFormSubmit
+  // purchase lesson call
 
-    const initialCredit = credit;
-    const changedCredit = Number(editUserInfo.credit);
-
-    const creditDifference = changedCredit - initialCredit;
-    console.log(initialCredit, changedCredit, creditDifference);
-    return creditDifference;
-  };
-
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-    const editedUserInfo = {
-      fn: editUserInfo.fn,
-      ln: editUserInfo.ln,
-      email: editUserInfo.email,
-      dob: editUserInfo.dob,
-      phone: editUserInfo.phone,
-      cgStatus: editUserInfo.cgStatus,
-      medicalDesc: editUserInfo.medicalDesc,
-      // credit: editUserInfo.credit,
-    };
-
-    const editedCredit = editUserInfo.credit;
-
-    const putCredit = calculateCreditChange();
-    Axios.put(`${domain}/user/${id}`, {
-      fn: editUserInfo.fn,
-      ln: editUserInfo.ln,
-      email: editUserInfo.email,
-      dob: editUserInfo.dob,
-      phone: editUserInfo.phone,
-      cgStatus: editUserInfo.cgStatus,
-      medicalDesc: editUserInfo.medicalDesc,
-      creditChange: putCredit,
-      receptInitials: user.userInitials,
-    })
-      .then((res) => {
-        console.log(res);
-        setUserInfo(editedUserInfo);
-        setCredit(editedCredit);
-      })
-      .catch((err) => console.log(err));
-
+  const submitUserInfoChangesHandler = (
+    e,
+    userId,
+    newUserInfo,
+    receptInitials
+  ) => {
+    e.preventDefault();
+    dispatch(updateStudentInfo(userId, newUserInfo, receptInitials));
     setIsEditingUserInfo(false);
-  };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-  // useEffect(() => {
-  //   renderPurchaseLog();
-  // }, [purchaseInfo]);
-
-  // useEffect(() => {
-  //   renderSalesLog();
-  // }, [purchaseInfo]);
-
-  //get userinfo, purchase and sales data in three seperate arrays
-  const getUserData = () => {
-    const userId = id;
-    Axios.get(`${domain}/user/${userId}`)
-      .then((res) => {
-        // console.log(res);
-        setUserInfo(res.data.userInfo);
-        setPurchaseInfo(res.data.purchaseLog);
-        setSaleInfo(res.data.salesLog);
-        setLessonHistory(res.data.lessonHistory);
-        setUnpaidLessons(res.data.unpaidLessons);
-        setLessonInfo(res.data.lessonTypes);
-        setLessonsAvailable(res.data.avaliableLessons);
-        setCredit(res.data.credits.credit ? res.data.credits.credit : 0);
-        setStudents(res.data.users);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  // const setPartnerDropdownData = () => {
-  //   setStudentsDropdown(
-  //     students.map((user) => {
-  //       return {
-  //         label: `${user.fn} ${user.ln}`,
-  //         value: user.user_id,
-  //       };
-  //     })
-  //   );
-  // };
-
-  const renderPurchaseLog = () => {
-    setPurchaseTable(
-      purchaseInfo.map((purchase) => {
-        return (
-          <tr key={purchase.purchase_id}>
-            <td>{purchase.purchase_id}</td>
-            <td>{purchase.type_name}</td>
-            <td>
-              {purchase.scheduleddate
-                ? purchase.scheduleddate.slice(0, 10)
-                : 'N/A'}
-            </td>
-            <td>{purchase.pay_method}</td>
-            <td>{purchase.date ? purchase.date.slice(0, 10) : 'N/A'}</td>
-            <td>{purchase.receptInitial_purchase}</td>
-          </tr>
-        );
-      })
-    );
-  };
-
-  const renderSalesLog = () => {
-    setSaleTable(
-      saleInfo.map((sale) => {
-        return (
-          <tr key={sale.purchase_id}>
-            <td>{sale.purchase_id}</td>
-            <td>{sale.type_name}</td>
-            <td>
-              {sale.scheduleddate ? sale.scheduleddate.slice(0, 10) : 'N/A'}
-            </td>
-            <td>{sale.pay_method}</td>
-            <td>{sale.date.slice(0, 10)}</td>
-            <td>{sale.receptInitial_sale}</td>
-          </tr>
-        );
-      })
-    );
   };
 
   return (
@@ -222,45 +101,20 @@ const UserScreen = () => {
           >
             {isEditingUserInfo ? (
               <EditableUserData
-                purchaseTable={purchaseTable}
-                saleTable={saleTable}
-                lessonHistory={lessonHistory}
-                userInfo={userInfo}
-                credit={credit}
                 editUserInfo={editUserInfo}
                 setEditUserInfo={setEditUserInfo}
                 handleEditFormChange={handleEditFormChange}
-                handleEditFormSubmit={handleEditFormSubmit}
+                submitUserInfoChangesHandler={submitUserInfoChangesHandler}
                 setIsEditingUserInfo={setIsEditingUserInfo}
               />
             ) : (
-              <ReadOnlyUserData
-                purchaseTable={purchaseTable}
-                saleTable={saleTable}
-                lessonHistory={lessonHistory}
-                userInfo={userInfo}
-                credit={credit}
-                handleClickEdit={handleClickEdit}
-              />
+              <ReadOnlyUserData handleClickEdit={handleClickEdit} />
             )}
-
             <motion.div
               whileHover={{ backgroundColor: '#fbfbfc' }}
               className='purchaseLesson userSection'
             >
-              <PurchaseLessons
-                lessonInfo={lessonInfo}
-                credit={credit}
-                students={students}
-                domain={domain}
-                userId={id}
-                setCredit={setCredit}
-                receptInfo={user}
-                lessonHistory={lessonHistory}
-                unpaidLessons={unpaidLessons}
-                setLessonHistory={setLessonHistory}
-                getUserData={getUserData}
-              />
+              <PurchaseLessons userId={id} />
             </motion.div>
           </motion.main>
         </div>

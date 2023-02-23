@@ -10,7 +10,7 @@ Consist of 5 Pages:
 - Lessons Page
 - User Page
 
-Application Domain: https://feature-adding-global-state-redux.d2itr8wow24jd5.amplifyapp.com/
+Application Domain: https://main.d2itr8wow24jd5.amplifyapp.com
 
 ## Login Page
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const LessonHistory = () => {
   // REDUX
   const studentInfo = useSelector((state) => state.studentInfo);
-  const { lessonHistory } = studentInfo;
+  const { lessonHistory, isPurchaseLoading } = studentInfo;
 
   // END REDUX
   const [lessonHistoryTableBody, setLessonHistoryTableBody] = useState([]);

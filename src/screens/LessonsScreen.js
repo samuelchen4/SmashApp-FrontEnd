@@ -1,25 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { apiDomain } from '../utils/domains';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../sidemenu/Sidebar';
 import Navbar from '../components/navbar/Navbar';
 import AddLesson from '../components/lesson/AddLesson';
-import { getLessons } from '../actions/lessonsActions';
 import '../users.css';
 import { motion } from 'framer-motion';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getLessons } from '../actions/lessonsActions';
+import { getStudents } from '../actions/studentActions';
+import { getPaytrackerInfo } from '../actions/paytrackerActions';
+import { GET_LOGIN_SUCCESS } from '../constants/recept';
 
 const LessonsScreen = () => {
   const dispatch = useDispatch();
 
-  // going to remove this
-  const [lessons, setLessons] = useState([]);
+  const { user, isAuthenticated, isLoading: auth0Loading } = useAuth0();
+
+  const lessons = useSelector((state) => state.lessons);
+  const { isLoading: lessonLoading, lessonsList } = lessons;
+
+  const students = useSelector((state) => state.students);
+  const { list: studentsList, isLoading: studentLoading } = students;
+
+  const paytracker = useSelector((state) => state.paytracker);
+  const { paytrackerList, isLoading: paytrackerLoading } = paytracker;
 
   useEffect(() => {
-    dispatch(getLessons());
-  }, [dispatch]);
-
-  const lessonsObj = useSelector((state) => state.lessons);
-  const { lessonsList, isLoading } = lessonsObj;
+    // receptInfo
+    if (isAuthenticated && !auth0Loading)
+      dispatch({ type: GET_LOGIN_SUCCESS, payload: user });
+    // lessons
+    if (!lessonLoading && !lessonsList.length) dispatch(getLessons());
+    // students
+    if (!studentLoading && !studentsList.length) dispatch(getStudents());
+    // paytracker
+    if (!paytrackerLoading && !paytrackerList.length)
+      dispatch(getPaytrackerInfo());
+  }, [
+    dispatch,
+    isAuthenticated,
+    auth0Loading,
+    lessonLoading,
+    lessonsList,
+    studentLoading,
+    studentsList,
+    paytrackerLoading,
+    paytrackerList,
+  ]);
 
   return (
     <div className='meat'>
@@ -35,12 +62,7 @@ const LessonsScreen = () => {
           >
             <h2>Lessons</h2>
             <motion.div className='top userSection'>
-              <AddLesson
-                setLessons={setLessons}
-                lessons={lessonsList}
-                domain={apiDomain}
-                isLoading={isLoading}
-              />
+              <AddLesson lessons={lessonsList} />
             </motion.div>
             <motion.div className='lessonModule userSection'>
               {/* <LessonStatistics lessons={lessonsList} domain={apiDomain} /> */}

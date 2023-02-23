@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import LessonHistory from '../../LessonHistory';
-import DatePicker, { DateObject } from 'react-multi-date-picker';
+import DatePicker from 'react-multi-date-picker';
 import Select from 'react-select';
 
 const EditableUserData = (propsFromUser) => {
@@ -125,12 +125,6 @@ const EditableUserData = (propsFromUser) => {
               format='YYYY/MM/DD'
               placeholder='Select Date'
               value={dob}
-              // onChange={(e) => {
-              //   editUserInfo.dob = e.format();
-              //   let newUserFormData = { ...editUserInfo };
-
-              //   setEditUserInfo(newUserFormData);
-              // }}
               onChange={changeDateHandler}
             />
           </p>
@@ -146,42 +140,6 @@ const EditableUserData = (propsFromUser) => {
           </p>
         </section>
         <section className='tables'>
-          {/* <div className='purchaseLog'>
-            <h4>Purchases Log</h4>
-            <div>
-              <table className='table'>
-                <thead>
-                  <tr>
-                    <td>Purchase Id</td>
-                    <td>Lesson</td>
-                    <td>Lesson Date</td>
-                    <td>Pay Method</td>
-                    <td>Date Bought</td>
-                    <td>Initial</td>
-                  </tr>
-                </thead>
-                <tbody>{purchaseTable}</tbody>
-              </table>
-            </div>
-          </div>
-          <div className='salesLog'>
-            <h4>Sales Log</h4>
-            <div>
-              <table className='table'>
-                <thead>
-                  <tr>
-                    <td>Sales Id</td>
-                    <td>Lesson</td>
-                    <td>Date Attended</td>
-                    <td>Pay Method</td>
-                    <td>Date Bought</td>
-                    <td>Initial</td>
-                  </tr>
-                </thead>
-                <tbody>{saleTable}</tbody>
-              </table>
-            </div>
-          </div> */}
           <LessonHistory />
         </section>
       </motion.div>

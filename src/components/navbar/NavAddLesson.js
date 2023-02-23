@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import AgendaDatePicker from '../../AgendaDatePicker.js';
-import { format } from 'date-fns';
 import Select from 'react-select';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';

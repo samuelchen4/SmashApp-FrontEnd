@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavAddUser from './NavAddUser';
 import NavAddLesson from './NavAddLesson.js';
-import '../../index.css';
+import '../../styles/index.css';
 import NavChangeLessonDate from './NavChangeLessonDate';
-import LogoutButton from '../../LogoutButton';
+import LogoutButton from '../auth/LogoutButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { addStudent } from '../../actions/studentActions';
 

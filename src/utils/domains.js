@@ -6,6 +6,6 @@ export const apiDomainTest =
 
 export const frontEndURL = 'https://main.d2itr8wow24jd5.amplifyapp.com';
 
-// export const frontEndTestURL =
-//   'https://feature-adding-global-state-redux.d2itr8wow24jd5.amplifyapp.com';
-export const frontEndTestURL = 'http://localhost:3000';
+export const frontEndTestURL =
+  'https://feature-adding-global-state-redux.d2itr8wow24jd5.amplifyapp.com';
+// export const frontEndTestURL = 'http://localhost:3000';

@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 //Routes
 import MainScreen from './screens/MainScreen';
-import LoginPage from './LoginPage';
+import LoginScreen from './screens/LoginScreen';
 import UsersScreen from './screens/UsersScreen';
 import UserScreen from './screens/UserScreen';
 import LessonsScreen from './screens/LessonsScreen';
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './utils/PrivateRoute';
 
 // import Calendar from './AgendaCalendar';
 
@@ -23,7 +23,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path='/login' element={<LoginPage />} />
+        <Route path='/login' element={<LoginScreen />} />
         <Route
           path='/users'
           element={

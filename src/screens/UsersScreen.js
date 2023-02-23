@@ -7,9 +7,9 @@ import { getPaytrackerInfo } from '../actions/paytrackerActions';
 import { GET_LOGIN_SUCCESS } from '../constants/recept';
 import Sidebar from '../sidemenu/Sidebar';
 import Navbar from '../components/navbar/Navbar';
-import UserBlock from '../UserBlock';
+import UserBlock from '../components/users/UserBlock';
 import MyLoader from '../components/MyLoader';
-import '../users.css';
+import '../styles/users.css';
 import { motion } from 'framer-motion';
 
 const UsersScreen = () => {

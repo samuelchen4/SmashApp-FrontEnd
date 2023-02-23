@@ -4,7 +4,7 @@ import { purchaseLessons } from '../../actions/studentInfoActions';
 import MyLoader from '../MyLoader';
 import logo from '../../imgs/GaoLogoNoBorder.png';
 
-const Modal = ({ userId, isModalOpen, setIsModalOpen }) => {
+const Modal = ({ userId, isModalOpen, setIsModalOpen, clearSelections }) => {
   // redux
   const dispatch = useDispatch();
   const studentInfo = useSelector((state) => state.studentInfo);
@@ -38,6 +38,7 @@ const Modal = ({ userId, isModalOpen, setIsModalOpen }) => {
 
   const submitHandler = () => {
     dispatch(purchaseLessons(userId));
+    clearSelections();
     setIsModalOpen(false);
   };
 

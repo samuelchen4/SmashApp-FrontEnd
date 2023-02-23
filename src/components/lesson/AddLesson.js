@@ -1,14 +1,11 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import AddLessonsReadonly from '../../AddLessonsReadonly';
 import AddLessonsEditable from '../../AddLessonsEditable';
 
 import { addLessons, updateLesson } from '../../actions/lessonsActions';
 
-const AddLesson = (propsFromLessons) => {
-  const { lessons, setLessons, domain } = propsFromLessons;
-  const [lessonsTable, setLessonsTable] = useState([]);
-
+const AddLesson = ({ lessons }) => {
   const [addedLessonName, setAddedLessonName] = useState('');
   const [addedLessonPrice, setAddedLessonPrice] = useState(0);
 
@@ -22,29 +19,6 @@ const AddLesson = (propsFromLessons) => {
 
   //testing post with redux
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    renderLessons();
-  }, [lessons]);
-
-  const renderLessons = () => {
-    setLessonsTable(
-      lessons.map((lesson) => {
-        return (
-          <tr key={lesson.type_id}>
-            <td>{lesson.type_id}</td>
-            <td>{lesson.type_name}</td>
-            <td>${lesson.price}</td>
-            <td>
-              <button className='deleteBtn'>
-                <i class='bx bx-x'></i>
-              </button>
-            </td>
-          </tr>
-        );
-      })
-    );
-  };
 
   const handleSubmitAddLesson = (e) => {
     e.preventDefault();
@@ -96,44 +70,14 @@ const AddLesson = (propsFromLessons) => {
       lessonPrice: editFormData.price,
       lessonCapacity: 0,
     };
-    // console.log(editedLesson);
-    // const lessonId = editedLesson.lessonId;
 
-    // const newLessons = [...lessons];
-    // console.log(newLessons);
-
-    // const index = lessons.findIndex(
-    //   (lesson) => lesson.type_id === editLessonId
-    // );
-
-    // newLessons[index].type_name = editedLesson.lessonName;
-    // newLessons[index].price = editedLesson.price;
-
-    //dispatch updateLesson
     dispatch(updateLesson(editedLesson.lessonId, editedLesson));
 
-    //send update to server
-    // Axios.put(`${apiDomain}/lessons/update/${lessonId}`, {
-    //   lessonName: editedLesson.lessonName,
-    //   lessonPrice: editedLesson.price,
-    //   lessonCapacity: editedLesson.Capacity,
-    // });
-
-    //update start on Front-end
-    // setLessons(newLessons);
     setEditLessonId(null);
   };
 
-  const handleCancelClick = (event) => {
+  const handleCancelClick = () => {
     setEditLessonId(null);
-  };
-
-  const handleDeleteClick = (lessonId) => {
-    const newLessons = [...lessons];
-    const index = lessons.findIndex((lesson) => lesson.type_id === lessonId);
-
-    newLessons.splice(index, 1);
-    setLessons(newLessons);
   };
 
   return (
@@ -175,7 +119,6 @@ const AddLesson = (propsFromLessons) => {
                     {editLessonId === lesson.type_id ? (
                       <AddLessonsEditable
                         lesson={lesson}
-                        setLessons={setLessons}
                         editFormData={editFormData}
                         handleEditFormChange={handleEditFormChange}
                         handleCancelClick={handleCancelClick}
@@ -184,7 +127,6 @@ const AddLesson = (propsFromLessons) => {
                       <AddLessonsReadonly
                         lesson={lesson}
                         handleEditClick={handleEditClick}
-                        handleDeleteClick={handleDeleteClick}
                       />
                     )}
                   </Fragment>

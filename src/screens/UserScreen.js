@@ -11,12 +11,52 @@ import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ReadOnlyUserData from '../components/user/ReadOnlyUserData';
 import EditableUserData from '../components/user/EditableUserData';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getLessons } from '../actions/lessonsActions';
+import { getStudents } from '../actions/studentActions';
+import { getPaytrackerInfo } from '../actions/paytrackerActions';
+import { GET_LOGIN_SUCCESS } from '../constants/recept';
 
 const UserScreen = () => {
   const { id } = useParams();
 
   // REDUX
   const dispatch = useDispatch();
+
+  const { user, isAuthenticated, isLoading: auth0Loading } = useAuth0();
+
+  const lessons = useSelector((state) => state.lessons);
+  const { isLoading: lessonLoading, lessonsList } = lessons;
+
+  const students = useSelector((state) => state.students);
+  const { list: studentsList, isLoading: studentLoading } = students;
+
+  const paytracker = useSelector((state) => state.paytracker);
+  const { paytrackerList, isLoading: paytrackerLoading } = paytracker;
+
+  useEffect(() => {
+    // receptInfo
+    if (isAuthenticated && !auth0Loading)
+      dispatch({ type: GET_LOGIN_SUCCESS, payload: user });
+    // lessons
+    if (!lessonLoading && !lessonsList.length) dispatch(getLessons());
+    // students
+    if (!studentLoading && !studentsList.length) dispatch(getStudents());
+    // paytracker
+    if (!paytrackerLoading && !paytrackerList.length)
+      dispatch(getPaytrackerInfo());
+  }, [
+    dispatch,
+    isAuthenticated,
+    auth0Loading,
+    lessonLoading,
+    lessonsList,
+    studentLoading,
+    studentsList,
+    paytrackerLoading,
+    paytrackerList,
+  ]);
+
   const studentInfo = useSelector((state) => state.studentInfo);
   const { userInfo, credits, isPurchaseLoading } = studentInfo;
   const { user_id, fn, ln, email, dob, phone, isCg, medicalDesc } = userInfo;

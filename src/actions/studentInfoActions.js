@@ -46,9 +46,6 @@ export const updateStudentInfo =
         credit, // credit to be displayed, passed in as string, idk why
       } = newUserInfo;
 
-      console.log(newUserInfo);
-      console.log(receptInitials);
-
       // calculate credit amount to be sent to db
 
       // get old credit amount
@@ -57,11 +54,7 @@ export const updateStudentInfo =
       const { credits } = state.studentInfo;
       const { credit: oldCredit } = credits;
 
-      console.log(credit);
-      console.log(oldCredit);
       const creditToDb = Number(credit) - Number(oldCredit);
-
-      console.log(creditToDb);
 
       // userInfo and credits are on two different parts of state
       // but go together for API
@@ -144,12 +137,11 @@ export const purchaseLessons = (userId) => async (dispatch, getState) => {
 
     // decrement creditInput
     let credit = Number(creditInput);
-    console.log(credit);
 
     // arr to push onto lessonHistory
 
     // post request to db,
-    Promise.all(
+    await Promise.all(
       purchaseLessonDates.map(async (lessonDate) => {
         let postBody = {
           lessonId: addedLesson.value,
@@ -178,7 +170,7 @@ export const purchaseLessons = (userId) => async (dispatch, getState) => {
 
     // put request to db,
     if (isUnpaidChecked) {
-      Promise.all(
+      await Promise.all(
         unpaidLessons.map(async (lesson) => {
           const putBody = {
             purchaseId: lesson.purchase_id,

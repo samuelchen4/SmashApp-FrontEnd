@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
+import { getLessons } from '../actions/lessonsActions';
 import { getStudents } from '../actions/studentActions';
+import { getPaytrackerInfo } from '../actions/paytrackerActions';
+import { GET_LOGIN_SUCCESS } from '../constants/recept';
 import Sidebar from '../sidemenu/Sidebar';
 import Navbar from '../components/navbar/Navbar';
 import UserBlock from '../UserBlock';
@@ -15,13 +19,40 @@ const UsersScreen = () => {
   //TESTING REDUX
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getStudents());
-  }, [dispatch]);
+  const { user, isAuthenticated, isLoading: auth0Loading } = useAuth0();
+
+  const lessons = useSelector((state) => state.lessons);
+  const { isLoading: lessonLoading, lessonsList } = lessons;
 
   // get object from state first
   const students = useSelector((state) => state.students);
   const { list: studentList, isLoading } = students;
+
+  const paytracker = useSelector((state) => state.paytracker);
+  const { paytrackerList, isLoading: paytrackerLoading } = paytracker;
+
+  useEffect(() => {
+    // receptInfo
+    if (isAuthenticated && !auth0Loading)
+      dispatch({ type: GET_LOGIN_SUCCESS, payload: user });
+    // lessons
+    if (!lessonLoading && !lessonsList.length) dispatch(getLessons());
+    // students
+    if (!isLoading && !studentList.length) dispatch(getStudents());
+    // paytracker
+    if (!paytrackerLoading && !paytrackerList.length)
+      dispatch(getPaytrackerInfo());
+  }, [
+    dispatch,
+    isAuthenticated,
+    auth0Loading,
+    lessonLoading,
+    lessonsList,
+    isLoading,
+    studentList,
+    paytrackerLoading,
+    paytrackerList,
+  ]);
 
   useEffect(() => {
     setRenderUsers(

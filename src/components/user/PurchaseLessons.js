@@ -32,7 +32,6 @@ const PurchaseLessons = ({ userId }) => {
     { label: 'Cash', value: 'Cash' },
     { label: 'Credit', value: 'Credit' },
   ];
-
   // INPUTS
   const [addedLesson, setAddedLesson] = useState({
     //addLesson input
@@ -42,6 +41,7 @@ const PurchaseLessons = ({ userId }) => {
     Capacity: '',
     isSemi: '',
   });
+
   const [purchaseLessonDates, setPurchaseLessonDates] = useState([]); // purchaseLessonDates input
   const [addedStudents, setAddedStudents] = useState([]); //addStudents input
   const [discountAmount, setDiscountAmount] = useState(0); // discountAmount input range: 0-100
@@ -118,8 +118,7 @@ const PurchaseLessons = ({ userId }) => {
     setIsModalOpen(true);
   };
 
-  const clearSelections = (e) => {
-    e.preventDefault();
+  const clearSelections = () => {
     setAddedLesson({
       label: '',
       value: '',
@@ -345,6 +344,7 @@ const PurchaseLessons = ({ userId }) => {
         userId={userId}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        clearSelections={clearSelections}
       ></Modal>
     </>
   );

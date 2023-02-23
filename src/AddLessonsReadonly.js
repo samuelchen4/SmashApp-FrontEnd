@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const AddLessonsReadonly = ({ lesson, handleEditClick, handleDeleteClick }) => {
+const AddLessonsReadonly = ({ lesson, handleEditClick }) => {
   return (
     <tr key={lesson.type_id}>
       <td>{lesson.type_id}</td>

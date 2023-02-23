@@ -20,6 +20,7 @@ import {
 export const getAgendaLessons = (date) => async (dispatch) => {
   try {
     dispatch({ type: GET_AGENDA_LESSONS_REQUEST });
+    console.log(apiDomain);
 
     const { data } = await Axios.get(`${apiDomain}/agenda/${date}`);
 

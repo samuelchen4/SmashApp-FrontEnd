@@ -11,7 +11,7 @@ import {
   unattendLesson,
 } from '../../actions/agendaActions';
 import { getPaytrackerInfo } from '../../actions/paytrackerActions';
-import Loader from '../MyLoader';
+import Loader from '../util/MyLoader';
 
 const Agenda = () => {
   const [selectedDate, setSelectedDate] = useState(

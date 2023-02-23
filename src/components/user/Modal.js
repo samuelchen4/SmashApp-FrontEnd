@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { purchaseLessons } from '../../actions/studentInfoActions';
-import MyLoader from '../MyLoader';
+import MyLoader from '../util/MyLoader';
 import logo from '../../imgs/GaoLogoNoBorder.png';
 
 const Modal = ({ userId, isModalOpen, setIsModalOpen, clearSelections }) => {

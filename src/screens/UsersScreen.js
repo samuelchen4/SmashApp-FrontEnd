@@ -8,7 +8,7 @@ import { GET_LOGIN_SUCCESS } from '../constants/recept';
 import Sidebar from '../sidemenu/Sidebar';
 import Navbar from '../components/navbar/Navbar';
 import UserBlock from '../components/users/UserBlock';
-import MyLoader from '../components/MyLoader';
+import MyLoader from '../components/util/MyLoader';
 import '../styles/users.css';
 import { motion } from 'framer-motion';
 

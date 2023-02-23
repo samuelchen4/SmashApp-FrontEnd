@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserLesson } from '../../actions/navbarActions';
 import Select from 'react-select';
 import DatePicker from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
 
-const NavAddLesson = (propsFromNavbar) => {
-  const { allUsers, allLessons, domain, setIsAddLesson, receptInfo } =
-    propsFromNavbar;
+const NavAddLesson = ({ setIsAddLesson }) => {
+  // REDUX
+  const dispatch = useDispatch();
+  const { list: studentList, isLoading: studentListLoading } = useSelector(
+    (state) => state.students
+  );
+  const { lessonsList, isLoading: lessonsListLoading } = useSelector(
+    (state) => state.lessons
+  );
+  // END REDUX
 
+  // inputs
   const [user, setUser] = useState({
     label: '',
     value: 0,
@@ -18,37 +27,18 @@ const NavAddLesson = (propsFromNavbar) => {
     price: 0,
     isSemi: false,
   });
-  const [usersDropdown, setUsersDropdown] = useState([]);
-  // const [usersDropdownValue, setUsersDropdownValue] = useState(1);
-
   const [partners, setPartners] = useState([]);
+  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
+
+  // options
+  const [usersDropdown, setUsersDropdown] = useState([]);
   const [partnersDropdown, setPartnersDropdown] = useState([]);
   const [lessonsDropdown, setLessonsDropdown] = useState([]);
-  // const [lessonsDropdownValue, setLessonsDropdownValue] = useState(1);
-
   const todaysDate = new Date();
-  const [purchaseLessonDates, setPurchaseLessonDates] = useState([]);
-  // const [quantity, setQuantity] = useState(1);
-  // const [selectedDate, setSelectedDate] = useState(
-  //   format(new Date(), 'yyyy-MM-dd')
-  // );
-
-  useEffect(() => {
-    console.log(allUsers);
-    renderUsersDropdown();
-  }, [allUsers]);
-
-  useEffect(() => {
-    renderLessonsDropdown();
-  }, [allLessons]);
-
-  useEffect(() => {
-    renderPartnerDropdown();
-  }, [user.value]);
 
   const renderUsersDropdown = () => {
     setUsersDropdown(
-      allUsers.map((user) => {
+      studentList.map((user) => {
         return {
           label: `${user.fn} ${user.ln}`,
           value: user.user_id,
@@ -59,7 +49,7 @@ const NavAddLesson = (propsFromNavbar) => {
 
   const renderPartnerDropdown = () => {
     setPartnersDropdown(
-      allUsers
+      studentList
         .filter((partner) => partner.user_id != user.value)
         .map((user) => {
           return {
@@ -72,7 +62,7 @@ const NavAddLesson = (propsFromNavbar) => {
 
   const renderLessonsDropdown = () => {
     setLessonsDropdown(
-      allLessons.map((lesson) => {
+      lessonsList.map((lesson) => {
         const isSemi = lesson.type_name.toLowerCase().includes('semi');
         return {
           label: lesson.type_name,
@@ -84,43 +74,32 @@ const NavAddLesson = (propsFromNavbar) => {
     );
   };
 
-  const purchase = async (e) => {
+  // create options
+  useEffect(() => {
+    if (!studentListLoading) {
+      renderUsersDropdown();
+      renderPartnerDropdown();
+    }
+    if (!lessonsListLoading) renderLessonsDropdown();
+  }, [studentListLoading, lessonsListLoading, studentList, lessonsList]);
+
+  const submitHandler = (e) => {
     e.preventDefault();
-    Promise.all(
-      purchaseLessonDates.map(async (purchaseLessonDate) => {
-        const lessonDate = purchaseLessonDate.format();
-        Axios.post(`${domain}/navbar/addLesson/purchase/user/${user.value}`, {
-          lessonId: lesson.value,
-          lessonName: lesson.label,
-          lessonPrice: lesson.price,
-          partnerArr: partners,
-          purchaseLessonDate: lessonDate,
-          receptInitials: receptInfo.userInitials,
-        }).then((res) => console.log(res));
-      })
-    )
-      .then((res) => {
-        setUser({ label: '', value: 0 });
-        setLesson({ label: '', value: 0, price: 0, isSemi: false });
-        setPartners([]);
-        setPurchaseLessonDates([]);
-        setIsAddLesson(false);
-      })
-      .catch((err) => console.log(err));
+    if (!user.value) alert(`no student selected!`);
+    else if (!lesson.value) alert(`no lesson selected!`);
+    else if (!purchaseLessonDates.length) alert(`no dates selected!`);
+    else {
+      dispatch(
+        addUserLesson(user.value, purchaseLessonDates, lesson, partners)
+      );
+      setIsAddLesson(false);
+    }
   };
-
-  useEffect(() => {
-    console.log(partners);
-  }, [partners]);
-
-  useEffect(() => {
-    // console.log(purchaseLessonDate.toDate());
-  }, [purchaseLessonDates]);
 
   return (
     <section className='drop-down'>
       <h3 className='add-lesson-title'>Add Lesson</h3>
-      <form className='add-lesson' onSubmit={purchase}>
+      <form className='add-lesson' onSubmit={submitHandler}>
         <Select
           options={usersDropdown}
           onChange={setUser}
@@ -132,6 +111,7 @@ const NavAddLesson = (propsFromNavbar) => {
           options={lessonsDropdown}
           onChange={setLesson}
           placeholder='Select Lesson'
+          isDisabled={user.value ? false : true}
           isSearchable
           noOptionsMessage={() => `Student not found`}
         />

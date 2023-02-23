@@ -152,15 +152,7 @@ const Navbar = () => {
         <button className={` ${active(isAddLesson)}`} onClick={clickAddLesson}>
           <i className='bx bx-cart-add'></i>
         </button>
-        {isAddLesson && (
-          <NavAddLesson
-            allUsers={allUsers}
-            allLessons={allLessons}
-            domain={domain}
-            setIsAddLesson={setIsAddLesson}
-            receptInfo={user}
-          />
-        )}
+        {isAddLesson && <NavAddLesson setIsAddLesson={setIsAddLesson} />}
       </section>
       <section>
         <button
@@ -170,11 +162,7 @@ const Navbar = () => {
           <i className='bx bxs-edit'></i>
         </button>
         {isEditLesson && (
-          <NavChangeLessonDate
-            allUsers={allUsers}
-            allLessons={allLessons}
-            domain={domain}
-          />
+          <NavChangeLessonDate setIsEditLesson={setIsEditLesson} />
         )}
       </section>
       <section>

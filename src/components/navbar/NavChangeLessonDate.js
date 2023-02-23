@@ -1,44 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserInfo, updateUserLesson } from '../../actions/navbarActions';
 import Select from 'react-select';
 import DatePicker from 'react-multi-date-picker';
 
-const NavChangeLessonDate = (propsFromNavbar) => {
-  const { allUsers, allLessons, domain } = propsFromNavbar;
-  const todaysDate = new Date();
+const NavChangeLessonDate = ({ setIsEditLesson }) => {
+  // REDUX
+  const dispatch = useDispatch();
+  const { list: studentList, isLoading: studentListLoading } = useSelector(
+    (state) => state.students
+  );
 
+  const { isLoading: getUserInfoLoading, lessonChanged } = useSelector(
+    (state) => state.navbarUserInfo.changeLesson
+  );
+
+  const { unattendedLessons } = lessonChanged;
+  // END REDUX
+
+  // inputs
+  const todaysDate = new Date();
   const [user, setUser] = useState({
     label: '',
     value: 0,
   });
-  const [usersDropdown, setUsersDropdown] = useState([]);
-
-  const [lessons, setLessons] = useState([]);
   const [userLesson, setUserLesson] = useState({
     label: '',
     value: 0,
     userId: 0,
   });
-  const [userLessonsDropdown, setUserLessonsDropdown] = useState([]);
-  const [newLessonDate, setNewLessonDate] = useState({});
 
-  //need user
-  //lessons
-  //method for retrieving lessons based on userId
+  // reload navbar state when user input changes
+  useEffect(() => {
+    dispatch(getUserInfo(user.value));
+  }, [user]);
 
-  //get all lessons with attended = 0, handledPurchase = 0
-  const getUserLessons = () => {
-    Axios.get(`${domain}/navbar/changeLesson/getUserLessons`).then((res) => {
-      console.log(res.data);
-      setLessons(res.data);
-    });
-  };
+  // render options
+  useEffect(() => {
+    renderUsersDropdown();
+  }, [studentList]);
+
+  useEffect(() => {
+    if (!getUserInfoLoading) filterLessonsByUser();
+    if (getUserInfoLoading)
+      setUserLesson({
+        label: '',
+        value: 0,
+        userId: 0,
+      });
+  }, [user, getUserInfoLoading]);
 
   const filterLessonsByUser = () => {
-    setUserLessonsDropdown(
-      lessons
-        .filter((lesson) => lesson.user_id == user.value)
-        .map((lesson) => {
+    if (unattendedLessons.length) {
+      setUserLessonsDropdown(
+        unattendedLessons.map((lesson) => {
           const lessonDate = lesson.scheduleddate
             ? lesson.scheduleddate.slice(0, 10)
             : 'N/A';
@@ -49,25 +64,13 @@ const NavChangeLessonDate = (propsFromNavbar) => {
             lessonDate,
           };
         })
-    );
+      );
+    }
   };
-
-  useEffect(() => {
-    getUserLessons();
-  }, []);
-
-  useEffect(() => {
-    filterLessonsByUser();
-    setUserLesson('Select Lesson...');
-  }, [user.value]);
-
-  useEffect(() => {
-    renderUsersDropdown();
-  }, [allUsers]);
 
   const renderUsersDropdown = () => {
     setUsersDropdown(
-      allUsers.map((user) => {
+      studentList.map((user) => {
         return {
           label: `${user.fn} ${user.ln}`,
           value: user.user_id,
@@ -76,57 +79,28 @@ const NavChangeLessonDate = (propsFromNavbar) => {
     );
   };
 
-  const changeLessonDate = (e) => {
-    e.preventDefault();
+  // work flow
+  // 1) select user -> get unattended lessons -> set redux -> setUserLessonsDropdown -> submit new date
 
-    //change lesson date based on purchase Id
-    //purchaseId is the value property in userLesson object
-    Axios.put(`${domain}/navbar/changeLesson/purchase/${userLesson.value}`, {
-      newLessonDate: newLessonDate.format(),
-    })
-      .then((res) => {
-        console.log(res);
-        setUser({
-          label: '',
-          value: 0,
-        });
-        setUserLesson({
-          label: '',
-          value: 0,
-          userId: 0,
-        });
-        setNewLessonDate({});
-      })
-      .catch((err) => console.log(err));
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (!user.value) alert(`no user selected!`);
+    else if (!userLesson.value) alert(`no lesson selected!`);
+    else if (!newLessonDate) alert(`no date selected!`);
+    else {
+      dispatch(updateUserLesson(userLesson, newLessonDate));
+      setIsEditLesson(false);
+    }
   };
 
-  //   const purchase = async (e) => {
-  //     e.preventDefault();
-  //     Promise.all(
-  //       purchaseLessonDates.map(async (purchaseLessonDate) => {
-  //         const lessonDate = purchaseLessonDate.format();
-  //         Axios.post(`${domain}/navbar/addLesson/purchase/user/${user.value}`, {
-  //           lessonId: lesson.value,
-  //           lessonName: lesson.label,
-  //           lessonPrice: lesson.price,
-  //           partnerArr: partners,
-  //           purchaseLessonDate: lessonDate,
-  //         }).then((res) => console.log(res));
-  //       })
-  //     )
-  //       .then((res) => {
-  //         setUser({ label: '', value: 0 });
-  //         setLesson({ label: '', value: 0, price: 0, isSemi: false });
-  //         setPartners([]);
-  //         setPurchaseLessonDates([]);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   };
+  const [usersDropdown, setUsersDropdown] = useState([]);
+  const [userLessonsDropdown, setUserLessonsDropdown] = useState([]);
+  const [newLessonDate, setNewLessonDate] = useState({});
 
   return (
     <section className='drop-down'>
       <h3 className='add-lesson-title'>Change Lesson Date</h3>
-      <form className='add-lesson' onSubmit={changeLessonDate}>
+      <form className='add-lesson' onSubmit={submitHandler}>
         <Select
           options={usersDropdown}
           onChange={setUser}
@@ -139,7 +113,7 @@ const NavChangeLessonDate = (propsFromNavbar) => {
           onChange={setUserLesson}
           value={userLesson}
           placeholder='Select Lesson'
-          isDisabled={user.value ? false : true}
+          isDisabled={user.value && !getUserInfoLoading ? false : true}
           isSearchable
           noOptionsMessage={() => `No lesson found`}
         />
@@ -163,11 +137,7 @@ const NavChangeLessonDate = (propsFromNavbar) => {
             height: '100%',
           }}
         />
-        <button
-          className='dropDownSubmit'
-          // className='frontPageButton'
-          type='submit'
-        >
+        <button className='dropDownSubmit' type='submit'>
           Purchase
         </button>
       </form>

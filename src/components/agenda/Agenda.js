@@ -43,7 +43,6 @@ const Agenda = () => {
 
   useEffect(() => {
     dispatch(getAgendaLessons(selectedDate));
-    // getSemiPrivateData();
   }, [selectedDate, dispatch]);
   // console.log(data);
 

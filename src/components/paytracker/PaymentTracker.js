@@ -18,14 +18,18 @@ const PaymentTracker = () => {
   // redux
   const dispatch = useDispatch();
   const paytrackerInfo = useSelector((state) => state.paytracker);
-  const { paytrackerList, isPaidLoading } = paytrackerInfo;
+  const {
+    paytrackerList,
+    isPaidLoading,
+    isLoading: isListLoading,
+  } = paytrackerInfo;
 
   const agendaInfo = useSelector((state) => state.agenda);
   const { date } = agendaInfo;
 
   useEffect(() => {
-    dispatch(getPaytrackerInfo());
-  }, [dispatch]);
+    if (!paytrackerList.length && !isListLoading) dispatch(getPaytrackerInfo());
+  }, [paytrackerList, isListLoading, dispatch]);
 
   // trigger agenda rerender when changes to paytracker happen
   useEffect(() => {

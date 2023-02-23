@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePaytrackerContactedInfo } from '../../actions/paytrackerActions';
-import LessonsTable from '../../LessonsTable';
+import LessonsTable from './LessonsTable';
 import PaytrackerPurchaseModal from './PaytrackerPurchaseModal';
 
 const PaymentsOwed = (student) => {

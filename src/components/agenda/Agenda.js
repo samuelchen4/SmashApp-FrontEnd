@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Private from './Private.js';
 import SemiPrivate from './SemiPrivate.js';
 import { motion, AnimatePresence } from 'framer-motion';
-import AgendaDatePicker from '../../AgendaDatePicker.js';
+import AgendaDatePicker from './AgendaDatePicker.js';
 import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import {

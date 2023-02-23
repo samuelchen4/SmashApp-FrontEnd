@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import AddLessonsReadonly from '../../AddLessonsReadonly';
-import AddLessonsEditable from '../../AddLessonsEditable';
+import AddLessonsReadonly from './AddLessonsReadonly';
+import AddLessonsEditable from './AddLessonsEditable';
 
 import { addLessons, updateLesson } from '../../actions/lessonsActions';
 

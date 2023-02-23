@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 // import { format } from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 // import SelectSearch from 'react-select-search';
-import './react-select-search.css';
+// import './react-select-search.css';
 import Select from 'react-select'; //accepts value and label properties
-import makeAnimated from 'react-select/animated';
 
 const AddStudent = (propsFromGroup) => {
   const {

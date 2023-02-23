@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Classlist from './Classlist';
 import AddStudent from './AddStudent';
 import { motion, AnimatePresence } from 'framer-motion';
-import PieChart from './PieChart';
+import PieChart from '../lesson/PieChart';
 
 const Group = (groupInfo) => {
   const {

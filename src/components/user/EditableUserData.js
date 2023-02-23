@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import LessonHistory from '../../LessonHistory';
+import LessonHistory from './LessonHistory';
 import DatePicker from 'react-multi-date-picker';
 import Select from 'react-select';
 

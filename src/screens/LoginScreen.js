@@ -1,19 +1,11 @@
 import React from 'react';
-import LoginButton from './LoginButton';
-import logo from './imgs/GaoLogoNoBorder.png';
-import backgroundImg from './imgs/loginBackgroundPhoto.jpg';
-import smashlogo from './imgs/smashLogo.jpg';
-import backgroundVideo from './imgs/Badminton Smash (man)_Trim.mp4';
+import LoginButton from '../components/auth/LoginButton';
+import backgroundVideo from '../imgs/Badminton Smash (man)_Trim.mp4';
 
-const LoginPage = () => {
+const LoginScreen = () => {
   return (
     <div className='loginMain'>
       <div className='loginOverlay'>
-        {/* <img
-          src={backgroundImg}
-          alt='background Img'
-          className='backgroundImg'
-        /> */}
         <video
           src={backgroundVideo}
           autoPlay
@@ -23,7 +15,6 @@ const LoginPage = () => {
         />
         <div className='loginText'>
           <div className=' loginPage'>
-            {/* <img src={logo} alt='smashcity logo' width='150px' /> */}
             <div className='loginWords'>
               <div className='loginWordsTitle'>
                 <h1>SmashCity Application</h1>
@@ -37,12 +28,6 @@ const LoginPage = () => {
                 </a>
                 <LoginButton />
               </div>
-              {/* <img
-                src={logo}
-                alt='smashcity logo'
-                height='100px'
-                className='loginLogo'
-              /> */}
             </div>
           </div>
         </div>
@@ -51,4 +36,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginScreen;

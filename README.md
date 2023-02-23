@@ -41,13 +41,17 @@ Shows a list of students who have attended lessons but did not pay. Shows which 
 
 List of all lessons that students can register for. On this page, you can add lessons, adjust their names and prices. Adjusting a lesson will not affect lessons that have already been scheduled.
 
-##### Lessons Page Img: ![Lessons Page](./public/Lessons%20Page.jpg 'Lessons Page')
+##### Lessons Page Img:
+
+![Lessons Page](./public/Lessons%20Page.jpg 'Lessons Page')
 
 ## Users Page
 
 List of all users in Database. Clicking on a user will go to their individual **_User Page_**.
 
-##### Users Page Img: ![Users Page](./public/Users%20Page.jpg 'Users Page')
+##### Users Page Img:
+
+![Users Page](./public/Users%20Page.jpg 'Users Page')
 
 ## User Page
 
@@ -56,4 +60,6 @@ The User page has two main functions:
 - get or update user information
 - purchase a lesson for this specific user
 
-##### Users Page Img: ![User Page](./public/User%20Page.jpg 'User Page')
+##### Users Page Img:
+
+![User Page](./public/User%20Page.jpg 'User Page')

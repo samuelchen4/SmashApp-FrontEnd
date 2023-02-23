@@ -10,6 +10,8 @@ Consist of 5 Pages:
 - Lessons Page
 - User Page
 
+Application Domain: https://feature-adding-global-state-redux.d2itr8wow24jd5.amplifyapp.com/
+
 ## Login Page
 
 This application is using Auth0 library to handle authorization and authentication. If users are not logged in, users will be redirected to this login page. You can go to the clients website or login to the application.

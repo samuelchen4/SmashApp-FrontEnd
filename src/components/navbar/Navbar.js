@@ -10,13 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addStudent } from '../../actions/studentActions';
 
 const Navbar = () => {
-  const domain = 'https://fzkytcnpth.execute-api.us-west-2.amazonaws.com';
-  const { user, isLoading } = useAuth0();
   const [isAddUser, setIsAddUser] = useState(false);
   const [isAddLesson, setIsAddLesson] = useState(false);
   const [isEditLesson, setIsEditLesson] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
-  const [allLessons, setAllLessons] = useState([]);
 
   const dispatch = useDispatch();
   const { list: studentList } = useSelector((state) => state.students);
@@ -34,8 +30,9 @@ const Navbar = () => {
     e.preventDefault();
     const { fn, ln } = addUserInfo;
 
+    if (!fn.length || !ln.length) alert(`no first name or last name`);
     // check if user already exists in data base
-    if (
+    else if (
       !studentList.some((student) => student.fn === fn && student.ln === ln)
     ) {
       // dispatch add user
@@ -59,8 +56,6 @@ const Navbar = () => {
 
     setAddUserInfo(newUserInfo);
   };
-
-  const [lessonTypes, setLessonTypes] = useState([]);
 
   const active = (iconState) => {
     if (iconState) {
@@ -87,49 +82,6 @@ const Navbar = () => {
     setIsAddLesson(false);
     setIsEditLesson(!isEditLesson);
   };
-
-  //Add Lesson stuff
-  const [usersArr, setUsersArr] = useState([]);
-  const [usersDropdown, setUsersDropdown] = useState([]);
-  const [usersDropdownValue, setUsersDropdownValue] = useState(1);
-  const getUsers = () => {
-    Axios.get(`${domain}/navbar/addLesson/users`).then((res) => {
-      console.log(res);
-      setUsersArr(res.data);
-    });
-  };
-
-  const addUserDB = (e) => {
-    e.preventDefault();
-
-    const submitAddUserData = { ...addUserInfo };
-    Axios.post(`${domain}/navbar/addNewUser`, {
-      fn: submitAddUserData.fn,
-      ln: submitAddUserData.ln,
-      dob: submitAddUserData.dob,
-      phone: submitAddUserData.phone,
-      email: submitAddUserData.email,
-    })
-      .then(() => {
-        setAllUsers([...allUsers, submitAddUserData]);
-        setAddUserInfo({ fn: '', ln: '', email: '', phone: '', dob: '' });
-        setIsAddUser(false);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const getAddLessonsInfo = () => {
-    Axios.get(`${domain}/navbar/addLesson/Info`)
-      .then((res) => {
-        setAllUsers(res.data.allUsers);
-        setAllLessons(res.data.allLessons);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getAddLessonsInfo();
-  }, []);
 
   return (
     <div className='navbar'>
